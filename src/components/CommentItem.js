@@ -3,11 +3,11 @@ import { Box, Stack, Avatar, Divider, Text } from "@chakra-ui/core";
 import React from "react";
 
 // TODO - rename ReviewItem
-const CommentItem = ({ review }) => {
+const CommentItem = ({ review, ...rest }) => {
   const { comment, dateOfVisit, rating, reply } = review;
 
   return (
-    <Box>
+    <Box {...rest}>
       <Stack direction="row" spacing="10">
         {/* TODO - from where to get this Url? Etc. */}
         <Avatar name="Dan Abrahmov" mr={4} src="https://bit.ly/dan-abramov" />
@@ -25,7 +25,7 @@ const CommentItem = ({ review }) => {
       </Stack>
       {reply && (
         <>
-          <Divider mb={4} />
+          <Divider my={4} />
           <Box textAlign="right">
             <Text fontSize="xs">owner's reply</Text>
             <Text fontStyle="italic" fontSize="sm" color="gray.600">

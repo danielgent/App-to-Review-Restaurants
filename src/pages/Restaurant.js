@@ -5,6 +5,8 @@ import {
   Text,
   CircularProgress,
   useDisclosure,
+  Button,
+  Stack,
 } from "@chakra-ui/core";
 import { useParams } from "react-router-dom";
 import axios from "axios";
@@ -71,7 +73,7 @@ const Restaurant = () => {
 
   const innerContent =
     recentReviews.length === 0 ? (
-      <Text>No reviews yet</Text>
+      <Text mb={6}>No reviews yet</Text>
     ) : (
       <>
         <Text>Avg {averageRating}</Text>
@@ -97,9 +99,11 @@ const Restaurant = () => {
         </Section>
         <Section>
           <SectionTitle>Recent reviews</SectionTitle>
-          {recentReviews.map((review) => (
-            <CommentItem key={review._id} review={review} />
-          ))}
+          <Stack spacing="8">
+            {recentReviews.map((review) => (
+              <CommentItem key={review._id} review={review} />
+            ))}
+          </Stack>
         </Section>
       </>
     );
@@ -107,7 +111,8 @@ const Restaurant = () => {
   return (
     <Box p={4}>
       <Heading as="h1">{name}</Heading>
-      {innerContent}
+      <Box p={8}>{innerContent}</Box>
+      <Button onClick={onOpen}>Rate this restaurant</Button>
       <AddReviewModal
         isOpen={isOpen}
         onClose={onClose}
