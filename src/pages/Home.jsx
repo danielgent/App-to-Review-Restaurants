@@ -1,19 +1,43 @@
 import React from "react";
-import { Box } from "@chakra-ui/core";
+import { Box, CircularProgress } from "@chakra-ui/core";
+import axios from "axios";
 
 import RestaurantListItem from "components/RestaurantListItem";
-import restaurants from "fixtures/restaurants";
-
-// TODO - create component-examples page and move all that there for development and reference. DIY styleguide
+// import restaurants from "fixtures/restaurants";
 
 const Home = (props) => {
+  const [restaurants, setRestaurants] = React.useState(null);
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [
+    filters,
+    // setFilters
+  ] = React.useState({});
 
-return (  <Box p={4}>
-  {restaurants.map((restaurant) => (
-    <RestaurantListItem key={restaurant.id} restaurant={restaurant} />
-  ))}
-</Box>
-)
+  React.useEffect(() => {
+    setIsLoading(true);
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/restaurants`, {
+        params: filters,
+      })
+      .then((response) => {
+        setRestaurants(response.data);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [filters]);
+
+  if (isLoading) {
+    return <CircularProgress isIndeterminate color="green"></CircularProgress>;
+  }
+
+  return (
+    <Box p={4}>
+      {restaurants.map((restaurant) => (
+        <RestaurantListItem key={restaurant._id} restaurant={restaurant} />
+      ))}
+    </Box>
+  );
 };
 
 Home.propTypes = {};
