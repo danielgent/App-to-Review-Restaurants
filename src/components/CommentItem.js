@@ -1,10 +1,26 @@
-import { Box, Stack, Avatar, Divider, Text } from "@chakra-ui/core";
+import {
+  Box,
+  Stack,
+  Avatar,
+  Divider,
+  Text,
+  Button,
+  useDisclosure,
+} from "@chakra-ui/core";
 
 import React from "react";
+
+import AddReplyModal from "components/AddReplyModal";
 
 // TODO - rename ReviewItem
 const CommentItem = ({ review, ...rest }) => {
   const { comment, dateOfVisit, rating, reply } = review;
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const handleSubmit = () => {
+    // TODO - tell parent to refetch all
+    onClose();
+  };
 
   return (
     <Box {...rest}>
@@ -23,7 +39,7 @@ const CommentItem = ({ review, ...rest }) => {
           </Text>
         </Box>
       </Stack>
-      {reply && (
+      {reply ? (
         <>
           <Divider my={4} />
           <Box textAlign="right">
@@ -33,11 +49,20 @@ const CommentItem = ({ review, ...rest }) => {
             </Text>
           </Box>
         </>
+      ) : (
+        // TODO - won't be like this. Should only appear on owner's restaurant detail page under a list of unreplied reviews
+        <Box>
+          <Button onClick={onOpen}>Leave Review</Button>
+          <AddReplyModal
+            isOpen={isOpen}
+            onClose={onClose}
+            onSubmit={handleSubmit}
+            reviewId={review._id}
+          />
+        </Box>
       )}
     </Box>
   );
 };
-
-CommentItem.propTypes = {};
 
 export default CommentItem;
