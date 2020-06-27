@@ -1,8 +1,10 @@
 import React from "react";
-import { Box, CircularProgress } from "@chakra-ui/core";
+import { Box, CircularProgress, Button, useDisclosure } from "@chakra-ui/core";
 import axios from "axios";
 
 import RestaurantListItem from "components/RestaurantListItem";
+import AddRestaurantModal from "components/AddRestaurantModal";
+
 // import restaurants from "fixtures/restaurants";
 
 const Home = (props) => {
@@ -12,6 +14,8 @@ const Home = (props) => {
     filters,
     // setFilters
   ] = React.useState({});
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   React.useEffect(() => {
     setIsLoading(true);
@@ -36,6 +40,8 @@ const Home = (props) => {
       {restaurants.map((restaurant) => (
         <RestaurantListItem key={restaurant._id} restaurant={restaurant} />
       ))}
+      <Button onClick={onOpen}>Create new restaurant</Button>
+      <AddRestaurantModal isOpen={isOpen} onClose={onClose} />
     </Box>
   );
 };
