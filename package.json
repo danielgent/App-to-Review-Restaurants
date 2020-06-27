@@ -17,6 +17,7 @@
     "emotion-theming": "^10.0.27",
     "express": "^4.17.1",
     "formik": "^2.1.4",
+    "lodash": "^4.17.15",
     "mongoose": "^5.9.20",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
