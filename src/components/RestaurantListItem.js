@@ -1,22 +1,7 @@
 import React from "react";
 // import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import {
-  Box,
-  Heading,
-  Stack,
-  FormControl,
-  FormLabel,
-  FormErrorMessage,
-  Input,
-  Button,
-  Icon,
-  Avatar,
-  Alert,
-  Divider,
-  Text,
-  Flex,
-} from "@chakra-ui/core";
+import { Text, Flex } from "@chakra-ui/core";
 
 const RestaurantListItem = ({ restaurant }) => {
   const { name, id, averageRating } = restaurant;

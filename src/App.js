@@ -24,14 +24,16 @@ function App() {
             <Link to="/logout">Sign out</Link>
           </Flex>
         </Box>
-        <Box px={30} py={50}>
-          <Switch>
-            <Route path="/sign-up" component={SignUp} />
-            <Route path="/login" component={LogIn} />
-            <Route path="/logout" component={LogOut} />
-            <Route path="/restaurant/:id" component={Restaurant} />
-            <Route path="/" component={Home} />
-          </Switch>
+        <Box px={30} py={50} backgroundColor="gray.100">
+          <Box backgroundColor="white" rounded="md">
+            <Switch>
+              <Route path="/sign-up" component={SignUp} />
+              <Route path="/login" component={LogIn} />
+              <Route path="/logout" component={LogOut} />
+              <Route path="/restaurant/:id" component={Restaurant} />
+              <Route path="/" component={Home} />
+            </Switch>
+          </Box>
         </Box>
       </Router>
     </ThemeProvider>
