@@ -29,7 +29,7 @@ const CommentItem = ({ review, ...rest }) => {
         <Avatar name="Dan Abrahmov" mr={4} src="https://bit.ly/dan-abramov" />
         <Box>
           <Text>{comment}</Text>
-          {/* TODO - star component ASAP */}
+          {/* TODO - review star component ASAP */}
           <Text fontSize="lg" fontWeight="bold">
             {rating}
           </Text>

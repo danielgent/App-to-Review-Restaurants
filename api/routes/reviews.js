@@ -3,12 +3,14 @@ var router = express.Router();
 
 var ReviewsModel = require("../models/ReviewsModel");
 
+// TO CHECK: is this endpoint ever used?
 router.get("/", async (req, res) => {
   const reviews = await ReviewsModel.find({}).exec();
 
   res.status(200).send(reviews);
 });
 
+// TO CHECK: is this endpoint ever used?
 router.get("/:id", async (req, res) => {
   const id = req.params.id;
 
@@ -45,6 +47,20 @@ router.post("/", (req, res) => {
     // if (err) return handleError(err, res);
 
     res.status(200).json(dbRes);
+  });
+});
+
+router.post("/:id/reply", (req, res) => {
+  const id = req.params.id;
+
+  ReviewsModel.findById(id, function (err, resMongo) {});
+
+  const review_update = { reply: req.body.reply };
+
+  ReviewsModel.findByIdAndUpdate(id, review_update, function (err, resMongo) {
+    // if (err) return handleError(err, res);
+
+    return res.status(200).json({ message: "Updated Successfully", data: {} });
   });
 });
 
