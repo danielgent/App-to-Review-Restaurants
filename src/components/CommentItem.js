@@ -2,8 +2,9 @@ import { Box, Stack, Avatar, Divider, Text } from "@chakra-ui/core";
 
 import React from "react";
 
+// TODO - rename ReviewItem
 const CommentItem = ({ review }) => {
-  const { comment, date, rating, reply } = review;
+  const { comment, dateOfVisit, rating, reply } = review;
 
   return (
     <Box>
@@ -18,7 +19,7 @@ const CommentItem = ({ review }) => {
           </Text>
           <Text fontSize="sm">
             {/* TODO - format */}
-            {date}
+            {dateOfVisit}
           </Text>
         </Box>
       </Stack>

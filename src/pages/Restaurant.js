@@ -1,5 +1,11 @@
 import React from "react";
-import { Box, Heading, Text, CircularProgress } from "@chakra-ui/core";
+import {
+  Box,
+  Heading,
+  Text,
+  CircularProgress,
+  useDisclosure,
+} from "@chakra-ui/core";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
@@ -7,6 +13,7 @@ import axios from "axios";
 // import reviews from "fixtures/reviews";
 
 import CommentItem from "components/CommentItem";
+import AddReviewModal from "components/AddReviewModal";
 
 const SectionTitle = (props) => (
   <Heading as="h2" size="md" mb={6} color="gray.600" {...props} />
@@ -14,23 +21,41 @@ const SectionTitle = (props) => (
 
 const Section = (props) => <Box padding={2} mb={4} {...props} />;
 
+const refetch = ({ setIsLoading, setRestaurant, id }) => {
+  setIsLoading(true);
+  axios
+    .get(`${process.env.REACT_APP_API_URL}/restaurants/${id}`)
+    .then((response) => {
+      setRestaurant(response.data);
+    })
+    .finally(() => {
+      setIsLoading(false);
+    });
+};
+
 const Restaurant = () => {
   let { id } = useParams();
 
   const [restaurant, setRestaurant] = React.useState(null);
   const [isLoading, setIsLoading] = React.useState(true);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   React.useEffect(() => {
-    setIsLoading(true);
-    axios
-      .get(`${process.env.REACT_APP_API_URL}/restaurants/${id}`)
-      .then((response) => {
-        setRestaurant(response.data);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    refetch({
+      setIsLoading,
+      setRestaurant,
+      id,
+    });
   }, [id]);
+
+  const handleSubmit = () => {
+    refetch({
+      setIsLoading,
+      setRestaurant,
+      id,
+    });
+    onClose();
+  };
 
   if (isLoading) {
     return <CircularProgress isIndeterminate color="green"></CircularProgress>;
@@ -83,6 +108,12 @@ const Restaurant = () => {
     <Box p={4}>
       <Heading as="h1">{name}</Heading>
       {innerContent}
+      <AddReviewModal
+        isOpen={isOpen}
+        onClose={onClose}
+        onSubmit={handleSubmit}
+        restaurantId={id}
+      />
     </Box>
   );
 };

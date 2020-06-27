@@ -63,10 +63,8 @@ router.get("/:id", async (req, res) => {
   });
 });
 
-// must be owner or can't do
+// PERMISSIONS - owner
 router.post("/", (req, res) => {
-  console.log("CREATING NEW ONE");
-
   // TODO - load first user
   // const users = await UserModel.find(
   //   role

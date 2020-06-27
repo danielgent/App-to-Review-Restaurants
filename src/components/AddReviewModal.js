@@ -18,12 +18,14 @@ import {
 import { Formik, Form, Field } from "formik";
 import axios from "axios";
 
-const AddReviewModal = ({ isOpen, onClose, onSubmit }) => {
+const AddReviewModal = ({ isOpen, onClose, onSubmit, restaurantId }) => {
   const handleSubmit = (values, { setSubmitting, resetForm }) => {
     axios
       .post(`${process.env.REACT_APP_API_URL}/reviews`, {
-        name: values.name,
-        // TODO - correct fields
+        comment: values.comment,
+        restaurant: restaurantId,
+        // TODO -use NumberInput from Chakra
+        rating: Number.parseInt(values.rating, 10),
       })
       .then(function (response) {
         onSubmit();
@@ -38,16 +40,18 @@ const AddReviewModal = ({ isOpen, onClose, onSubmit }) => {
     <Formik
       enableReinitialize
       initialValues={{
-        // TODO - correct fields
-
-        name: "",
+        comment: "",
+        rating: "",
       }}
       validate={(values) => {
         const errors = {};
         // TODO - correct fields
 
-        if (!values.name) {
-          errors.name = "Please enter a name";
+        if (!values.comment) {
+          errors.comment = "Please enter a comment";
+        }
+        if (!values.rating) {
+          errors.rating = "Please rate";
         }
         return errors;
       }}
@@ -58,23 +62,39 @@ const AddReviewModal = ({ isOpen, onClose, onSubmit }) => {
           <ModalOverlay />
           <ModalContent>
             <Form>
-              <ModalHeader>Create new Review</ModalHeader>
+              <ModalHeader>Rate this restaurant</ModalHeader>
               <ModalCloseButton />
               <ModalBody>
                 <Box p={4}>
                   <Stack spacing={5}>
-                    {/* // TODO - correct fields */}
-                    <Field type="text" name="name" autoComplete="off">
+                    <Field type="text" name="comment" autoComplete="off">
                       {({ field, form }) => {
                         const { errors, touched } = form;
                         return (
                           <FormControl
                             w={{ xs: "100%", sm: "280px" }}
-                            isInvalid={errors.name && touched.name}
+                            isInvalid={errors.comment && touched.comment}
                           >
-                            <FormLabel htmlFor="name">Name</FormLabel>
-                            <Input id="name" type="text" {...field} />
-                            <FormErrorMessage>{errors.name}</FormErrorMessage>
+                            <FormLabel htmlFor="comment">Comment</FormLabel>
+                            <Input id="comment" type="text" {...field} />
+                            <FormErrorMessage>
+                              {errors.comment}
+                            </FormErrorMessage>
+                          </FormControl>
+                        );
+                      }}
+                    </Field>
+                    <Field type="text" name="rating" autoComplete="off">
+                      {({ field, form }) => {
+                        const { errors, touched } = form;
+                        return (
+                          <FormControl
+                            w={{ xs: "100%", sm: "280px" }}
+                            isInvalid={errors.rating && touched.rating}
+                          >
+                            <FormLabel htmlFor="rating">Rating</FormLabel>
+                            <Input id="rating" type="text" {...field} />
+                            <FormErrorMessage>{errors.rating}</FormErrorMessage>
                           </FormControl>
                         );
                       }}
