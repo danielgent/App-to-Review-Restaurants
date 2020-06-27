@@ -13,9 +13,9 @@ const createApp = (db) => {
       origin: process.env.REACT_APP_ORIGIN,
     })
   );
-  // var users = require("./routes/users");
+  var users = require("./routes/users");
 
-  // app.use("/users", users);
+  app.use("/users", users);
 
   return app;
 };
