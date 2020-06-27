@@ -1,18 +1,33 @@
 import React from "react";
+import { Box, Flex } from "@chakra-ui/core";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 import SignUp from "./pages/SignUp";
 import LogIn from "./pages/LogIn";
 import LogOut from "./pages/LogOut";
+import Home from "./pages/Home";
 
 import "./App.css";
 
 function App() {
   // TODO - put user fetching code here and show spinner until fetched. much easier
   return (
-    <div className="App">
-      <header className="App-header"></header>
-    </div>
+    <Router>
+      <Box>
+        <Flex>
+          {/* TODO - use that menu component */}
+          <Link to="/sign-up">Sign up</Link>
+          <Link to="/login">Log in</Link>
+          <Link to="/logout">Sign out</Link>
+        </Flex>
+      </Box>
+      <Switch>
+        <Route path="/sign-up" component={SignUp} />
+        <Route path="/login" component={LogIn} />
+        <Route path="/" component={Home} />
+        <Route path="/logout" component={LogOut} />
+      </Switch>
+    </Router>
   );
 }
 
