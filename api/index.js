@@ -18,16 +18,21 @@ createApp(db).listen(port, () => {
   console.log(`running at port ${port}`);
 });
 
+// TODO - extract out
 const seedDatabases = async () => {
   var UserModel = require("./models/UserModel");
+  var RestaurantModel = require("./models/RestaurantModel");
+  var ReviewsModel = require("./models/ReviewsModel");
 
   // Deprecated methods but work for testing
   await UserModel.remove({}).exec();
+  await RestaurantModel.remove({}).exec();
+  await ReviewsModel.remove({}).exec();
 
   console.log("Adding database test data");
 
-  // TODO
-  UserModel({
+  // TODO - do this but for three restaurants.  Create such structure for looping, store each id
+  const newOwner = UserModel({
     username: "some-owner",
     password: Bcrypt.hashSync(
       "some-password",
@@ -35,6 +40,27 @@ const seedDatabases = async () => {
     ),
     email: "owner@example.com",
     role: "owner",
+  });
+
+  console.log("newOwner id", newOwner._id);
+
+  newOwner.save();
+
+  const newRestaurant = RestaurantModel({
+    name: "Owner's Diner",
+    owner: newOwner._id,
+  });
+
+  console.log("newRestaurant id", newRestaurant._id);
+  newRestaurant.save();
+
+  ReviewsModel({
+    comment: "some comment here",
+    // NOTE - owner leaving review here
+    reviewer: newOwner._id,
+    restaurant: newRestaurant._id,
+    rating: 5,
+    dateOfVisit: new Date().toDateString(),
   }).save();
 };
 

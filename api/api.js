@@ -14,8 +14,12 @@ const createApp = (db) => {
     })
   );
   var users = require("./routes/users");
+  var reviews = require("./routes/reviews");
+  var restaurants = require("./routes/restaurants");
 
   app.use("/users", users);
+  app.use("/reviews", reviews);
+  app.use("/restaurants", restaurants);
 
   return app;
 };
