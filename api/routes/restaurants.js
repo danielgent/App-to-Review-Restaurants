@@ -63,4 +63,34 @@ router.get("/:id", async (req, res) => {
   });
 });
 
+// must be owner or can't do
+router.post("/", (req, res) => {
+  console.log("CREATING NEW ONE");
+
+  // TODO - load first user
+  // const users = await UserModel.find(
+  //   role
+  //     ? {
+  //         role,
+  //       }
+  //     : {},
+  //   "username role"
+  // ).exec();
+
+  const restaurant = {
+    ...req.body,
+    // TODO - this should come from auth data
+    owner: "123123131",
+    dateAdded: new Date().toDateString(),
+  };
+
+  var restaurant_instance = new RestaurantModel(restaurant);
+  restaurant_instance.save(function (err, dbRes) {
+    // no validation here necessary. user can make duplicate names
+    // if (err) return handleError(err, res);
+
+    res.status(200).json(dbRes);
+  });
+});
+
 module.exports = router;

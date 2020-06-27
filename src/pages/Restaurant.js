@@ -44,6 +44,15 @@ const Restaurant = () => {
     recentReviews,
   } = restaurant;
 
+  if (recentReviews.length === 0) {
+    return (
+      <Box p={4}>
+        <Heading as="h1">{name}</Heading>
+        <Text>No reviews yet</Text>
+      </Box>
+    );
+  }
+
   return (
     <Box p={4}>
       <Heading as="h1">{name}</Heading>
