@@ -18,7 +18,6 @@ const enrichRestaurant = async (r) => {
   let lowReview = null;
 
   for (let i = 0; i < total; i++) {
-    console.log("loop i ", i);
     const r = reviews[i];
     sum += r.rating;
     if (!lowReview || r.rating <= lowReview.rating) {
@@ -32,7 +31,7 @@ const enrichRestaurant = async (r) => {
   const averageRating = sum / total;
 
   return {
-    // TODO - investigate this. Can't just spread in mongoose model
+    // mongoose model
     ...r._doc,
     averageRating,
     highReview,
@@ -52,19 +51,13 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/:id", async (req, res) => {
-  // TODO derive fields:
-  // * averageRating: need helper function to do same as above? or copy for now
-  // * highReview: need to also loop through reviews and get this.
-  // * lowReview: need to also loop through reviews and get this.
   const id = req.params.id;
 
   RestaurantModel.findById(id, function (err, resMongo) {
-    return res.status(200).json(resMongo);
+    enrichRestaurant(resMongo).then((enriched) => {
+      return res.status(200).json(enriched);
+    });
   });
 });
 
 module.exports = router;
-
-// CODE IDEA
-// for some efficency wanted to query all the comments for each restaurant.
-// couldn't get promises to resolve thgou

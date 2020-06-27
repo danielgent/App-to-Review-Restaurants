@@ -1,13 +1,10 @@
 import React from "react";
-import { Box, Heading, Text } from "@chakra-ui/core";
+import { Box, Heading, Text, CircularProgress } from "@chakra-ui/core";
 import { useParams } from "react-router-dom";
+import axios from "axios";
 
-// doing joins on FE for now. Read up on this a bit
-import restaurants from "fixtures/restaurants";
-import reviews from "fixtures/reviews";
-// import users from "fixtures/users";
-// 1. get working quickest way. 2. optimise later. will be small project. do hardest parts first
-// remmeber that totally failed last time in obvious ways
+// import restaurants from "fixtures/restaurants";
+// import reviews from "fixtures/reviews";
 
 import CommentItem from "components/CommentItem";
 
@@ -20,17 +17,39 @@ const Section = (props) => <Box padding={2} mb={4} {...props} />;
 const Restaurant = () => {
   let { id } = useParams();
 
+  const [restaurant, setRestaurant] = React.useState(null);
+  const [isLoading, setIsLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    setIsLoading(true);
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/restaurants/${id}`)
+      .then((response) => {
+        setRestaurant(response.data);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [id]);
+
   // FAKE BE BIT---------------------------------------------------
-  const restaurant = restaurants.find((r) => r.id === id);
+  // const restaurant = restaurants.find((r) => r.id === id);
 
-  const highReview = reviews.find((r) => r.id === restaurant.highReview);
-  const lowReview = reviews.find((r) => r.id === restaurant.lowReview);
+  // const highReview = reviews.find((r) => r.id === restaurant.highReview);
+  // const lowReview = reviews.find((r) => r.id === restaurant.lowReview);
 
-  const recentReviews = reviews.filter((r) => r.restaurant === id);
+  // const recentReviews = reviews.filter((r) => r.restaurant === id);
 
   // ------------------------------------------------------------------
 
-  const { name, averageRating } = restaurant;
+  if (isLoading) {
+    return <CircularProgress isIndeterminate color="green"></CircularProgress>;
+  }
+
+  const { name, averageRating, highReview, lowReview } = restaurant;
+
+  // TODO NEXT...
+  const recentReviews = [];
 
   return (
     <Box p={4}>
