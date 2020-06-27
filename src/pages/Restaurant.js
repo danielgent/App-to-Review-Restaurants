@@ -44,46 +44,45 @@ const Restaurant = () => {
     recentReviews,
   } = restaurant;
 
-  if (recentReviews.length === 0) {
-    return (
-      <Box p={4}>
-        <Heading as="h1">{name}</Heading>
-        <Text>No reviews yet</Text>
-      </Box>
+  const innerContent =
+    recentReviews.length === 0 ? (
+      <Text>No reviews yet</Text>
+    ) : (
+      <>
+        <Text>Avg {averageRating}</Text>
+        <Section
+          backgroundColor="green.100"
+          borderColor="green.400"
+          borderWidth="2px"
+          padding={4}
+          rounded="md"
+        >
+          <SectionTitle>Top review</SectionTitle>
+          <CommentItem review={highReview} />
+        </Section>
+        <Section
+          backgroundColor="red.100"
+          borderColor="red.400"
+          borderWidth="2px"
+          padding={4}
+          rounded="md"
+        >
+          <SectionTitle>Worst review</SectionTitle>
+          <CommentItem review={lowReview} />
+        </Section>
+        <Section>
+          <SectionTitle>Recent reviews</SectionTitle>
+          {recentReviews.map((review) => (
+            <CommentItem key={review._id} review={review} />
+          ))}
+        </Section>
+      </>
     );
-  }
 
   return (
     <Box p={4}>
       <Heading as="h1">{name}</Heading>
-      <Text>Avg {averageRating}</Text>
-      <Section
-        backgroundColor="green.100"
-        borderColor="green.400"
-        borderWidth="2px"
-        padding={4}
-        rounded="md"
-      >
-        <SectionTitle>Top review</SectionTitle>
-        <CommentItem review={highReview} />
-      </Section>
-      <Section
-        backgroundColor="red.100"
-        borderColor="red.400"
-        borderWidth="2px"
-        padding={4}
-        rounded="md"
-      >
-        <SectionTitle>Worst review</SectionTitle>
-        <CommentItem review={lowReview} />
-      </Section>
-
-      <Section>
-        <SectionTitle>Recent reviews</SectionTitle>
-        {recentReviews.map((review) => (
-          <CommentItem key={review._id} review={review} />
-        ))}
-      </Section>
+      {innerContent}
     </Box>
   );
 };

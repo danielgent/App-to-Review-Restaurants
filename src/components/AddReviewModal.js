@@ -18,11 +18,12 @@ import {
 import { Formik, Form, Field } from "formik";
 import axios from "axios";
 
-const AddRestaurantModal = ({ isOpen, onClose, onSubmit }) => {
+const AddReviewModal = ({ isOpen, onClose, onSubmit }) => {
   const handleSubmit = (values, { setSubmitting, resetForm }) => {
     axios
-      .post(`${process.env.REACT_APP_API_URL}/restaurants`, {
+      .post(`${process.env.REACT_APP_API_URL}/reviews`, {
         name: values.name,
+        // TODO - correct fields
       })
       .then(function (response) {
         onSubmit();
@@ -37,10 +38,14 @@ const AddRestaurantModal = ({ isOpen, onClose, onSubmit }) => {
     <Formik
       enableReinitialize
       initialValues={{
+        // TODO - correct fields
+
         name: "",
       }}
       validate={(values) => {
         const errors = {};
+        // TODO - correct fields
+
         if (!values.name) {
           errors.name = "Please enter a name";
         }
@@ -53,11 +58,12 @@ const AddRestaurantModal = ({ isOpen, onClose, onSubmit }) => {
           <ModalOverlay />
           <ModalContent>
             <Form>
-              <ModalHeader>Create new restaurant</ModalHeader>
+              <ModalHeader>Create new Review</ModalHeader>
               <ModalCloseButton />
               <ModalBody>
                 <Box p={4}>
                   <Stack spacing={5}>
+                    {/* // TODO - correct fields */}
                     <Field type="text" name="name" autoComplete="off">
                       {({ field, form }) => {
                         const { errors, touched } = form;
@@ -87,7 +93,7 @@ const AddRestaurantModal = ({ isOpen, onClose, onSubmit }) => {
                   Close
                 </Button>
                 <Button variant="ghost" type="submit">
-                  Create restaurant
+                  Create Review
                 </Button>
               </ModalFooter>
             </Form>
@@ -98,4 +104,4 @@ const AddRestaurantModal = ({ isOpen, onClose, onSubmit }) => {
   );
 };
 
-export default AddRestaurantModal;
+export default AddReviewModal;

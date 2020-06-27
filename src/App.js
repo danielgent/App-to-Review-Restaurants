@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Flex, ThemeProvider, CSSReset } from "@chakra-ui/core";
+import { Box, Stack, ThemeProvider, CSSReset } from "@chakra-ui/core";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 import SignUp from "./pages/SignUp";
@@ -17,12 +17,20 @@ function App() {
       <CSSReset />
       <Router>
         <Box p={2}>
-          <Flex>
-            {/* TODO - use that menu component */}
-            <Link to="/sign-up">Sign up</Link>
-            <Link to="/login">Log in</Link>
-            <Link to="/logout">Sign out</Link>
-          </Flex>
+          <Stack isInline spacing={4}>
+            <Link d="block" to="/sign-up">
+              Sign up
+            </Link>
+            <Link d="block" to="/login">
+              Log in
+            </Link>
+            <Link d="block" to="/logout">
+              Sign out
+            </Link>
+            <Link d="block" to="/">
+              View all
+            </Link>
+          </Stack>
         </Box>
         <Box px={30} py={50} backgroundColor="gray.100">
           <Box backgroundColor="white" rounded="md">
