@@ -32,34 +32,39 @@ const Restaurant = () => {
       });
   }, [id]);
 
-  // FAKE BE BIT---------------------------------------------------
-  // const restaurant = restaurants.find((r) => r.id === id);
-
-  // const highReview = reviews.find((r) => r.id === restaurant.highReview);
-  // const lowReview = reviews.find((r) => r.id === restaurant.lowReview);
-
-  // const recentReviews = reviews.filter((r) => r.restaurant === id);
-
-  // ------------------------------------------------------------------
-
   if (isLoading) {
     return <CircularProgress isIndeterminate color="green"></CircularProgress>;
   }
 
-  const { name, averageRating, highReview, lowReview } = restaurant;
-
-  // TODO NEXT...
-  const recentReviews = [];
+  const {
+    name,
+    averageRating,
+    highReview,
+    lowReview,
+    recentReviews,
+  } = restaurant;
 
   return (
     <Box p={4}>
       <Heading as="h1">{name}</Heading>
       <Text>Avg {averageRating}</Text>
-      <Section>
+      <Section
+        backgroundColor="green.100"
+        borderColor="green.400"
+        borderWidth="2px"
+        padding={4}
+        rounded="md"
+      >
         <SectionTitle>Top review</SectionTitle>
         <CommentItem review={highReview} />
       </Section>
-      <Section>
+      <Section
+        backgroundColor="red.100"
+        borderColor="red.400"
+        borderWidth="2px"
+        padding={4}
+        rounded="md"
+      >
         <SectionTitle>Worst review</SectionTitle>
         <CommentItem review={lowReview} />
       </Section>
@@ -67,7 +72,7 @@ const Restaurant = () => {
       <Section>
         <SectionTitle>Recent reviews</SectionTitle>
         {recentReviews.map((review) => (
-          <CommentItem key={review.id} review={review} />
+          <CommentItem key={review._id} review={review} />
         ))}
       </Section>
     </Box>

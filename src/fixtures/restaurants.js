@@ -21,3 +21,13 @@ const restaurants = [
 ];
 
 export default restaurants;
+
+// Future code if use these fixtures for tests
+// const restaurant = restaurants.find((r) => r.id === id);
+
+// const highReview = reviews.find((r) => r.id === restaurant.highReview);
+// const lowReview = reviews.find((r) => r.id === restaurant.lowReview);
+
+// const recentReviews = reviews.filter((r) => r.restaurant === id);
+
+// ------------------------------------------------------------------

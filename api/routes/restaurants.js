@@ -36,6 +36,8 @@ const enrichRestaurant = async (r) => {
     averageRating,
     highReview,
     lowReview,
+    // TODO - need much more fixtures to then be able to return the first few
+    recentReviews: reviews,
   };
 };
 
@@ -55,6 +57,7 @@ router.get("/:id", async (req, res) => {
 
   RestaurantModel.findById(id, function (err, resMongo) {
     enrichRestaurant(resMongo).then((enriched) => {
+      // here get latest reviews
       return res.status(200).json(enriched);
     });
   });
