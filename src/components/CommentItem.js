@@ -13,12 +13,12 @@ import React from "react";
 import AddReplyModal from "components/AddReplyModal";
 
 // TODO - rename ReviewItem
-const CommentItem = ({ review, ...rest }) => {
+const CommentItem = ({ review, refreshData, ...rest }) => {
   const { comment, dateOfVisit, rating, reply } = review;
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleSubmit = () => {
-    // TODO - tell parent to refetch all
+    refreshData();
     onClose();
   };
 

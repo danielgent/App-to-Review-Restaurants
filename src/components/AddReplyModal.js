@@ -18,7 +18,13 @@ import {
 import { Formik, Form, Field } from "formik";
 import axios from "axios";
 
-const AddReplyModal = ({ isOpen, onClose, onSubmit, reviewId }) => {
+const AddReplyModal = ({
+  isOpen,
+  onClose,
+  onSubmit,
+  reviewId,
+  handleSubmitReply,
+}) => {
   const handleSubmit = (values, { setSubmitting, resetForm }) => {
     console.log("handleSubmit");
     axios
