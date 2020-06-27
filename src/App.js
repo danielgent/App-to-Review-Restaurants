@@ -6,6 +6,7 @@ import SignUp from "./pages/SignUp";
 import LogIn from "./pages/LogIn";
 import LogOut from "./pages/LogOut";
 import Home from "./pages/Home";
+import Restaurant from "./pages/Restaurant";
 
 import "./App.css";
 
@@ -27,8 +28,9 @@ function App() {
           <Switch>
             <Route path="/sign-up" component={SignUp} />
             <Route path="/login" component={LogIn} />
-            <Route path="/" component={Home} />
             <Route path="/logout" component={LogOut} />
+            <Route path="/restaurant/:id" component={Restaurant} />
+            <Route path="/" component={Home} />
           </Switch>
         </Box>
       </Router>
