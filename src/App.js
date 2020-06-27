@@ -15,7 +15,7 @@ function App() {
     <ThemeProvider>
       <CSSReset />
       <Router>
-        <Box>
+        <Box p={2}>
           <Flex>
             {/* TODO - use that menu component */}
             <Link to="/sign-up">Sign up</Link>
@@ -23,12 +23,14 @@ function App() {
             <Link to="/logout">Sign out</Link>
           </Flex>
         </Box>
-        <Switch>
-          <Route path="/sign-up" component={SignUp} />
-          <Route path="/login" component={LogIn} />
-          <Route path="/" component={Home} />
-          <Route path="/logout" component={LogOut} />
-        </Switch>
+        <Box px={30} py={50}>
+          <Switch>
+            <Route path="/sign-up" component={SignUp} />
+            <Route path="/login" component={LogIn} />
+            <Route path="/" component={Home} />
+            <Route path="/logout" component={LogOut} />
+          </Switch>
+        </Box>
       </Router>
     </ThemeProvider>
   );
