@@ -11,8 +11,8 @@ const seedDatabases = async () => {
 
   console.log("Adding database test data");
 
-  // TODO - do this but for three restaurants.  Create such structure for looping, store each id
-  const newOwner = UserModel({
+  // create owner 1 + restaurant 1
+  const owner1 = UserModel({
     username: "some-owner",
     password: Bcrypt.hashSync(
       "some-password",
@@ -22,24 +22,99 @@ const seedDatabases = async () => {
     role: "owner",
   });
 
-  console.log("newOwner id", newOwner._id);
+  console.log("owner1 id", owner1._id);
 
-  newOwner.save();
+  owner1.save();
 
-  const newRestaurant = RestaurantModel({
+  const restaurant1 = RestaurantModel({
     name: "Owner's Diner",
-    owner: newOwner._id,
+    owner: owner1._id,
   });
 
-  console.log("newRestaurant id", newRestaurant._id);
-  newRestaurant.save();
+  console.log("restaurant1 id", restaurant1._id);
+  restaurant1.save();
 
+  // create owner 2 + restaurant 2
+  const owner2 = UserModel({
+    username: "another-owner",
+    password: Bcrypt.hashSync(
+      "another-password",
+      Number(process.env.REACT_APP_SALT_ROUNDS)
+    ),
+    email: "another-owner@example.com",
+    role: "owner",
+  });
+
+  console.log("owner2 id", owner2._id);
+
+  owner2.save();
+
+  const restaurant2 = RestaurantModel({
+    name: "Steak House",
+    owner: owner2._id,
+  });
+
+  console.log("restaurant2 id", restaurant2._id);
+  restaurant2.save();
+
+  // create normal users
+  const user1 = UserModel({
+    username: "a-user",
+    password: Bcrypt.hashSync(
+      "password",
+      Number(process.env.REACT_APP_SALT_ROUNDS)
+    ),
+    email: "user1@example.com",
+    role: "user",
+  });
+  user1.save();
+  const user2 = UserModel({
+    username: "a-user",
+    password: Bcrypt.hashSync(
+      "password",
+      Number(process.env.REACT_APP_SALT_ROUNDS)
+    ),
+    email: "user1@example.com",
+    role: "user",
+  });
+  user2.save();
+
+  // create reviews
   ReviewsModel({
     comment: "some comment here",
     // NOTE - owner leaving review here
-    reviewer: newOwner._id,
-    restaurant: newRestaurant._id,
+    reviewer: user1._id,
+    restaurant: restaurant1._id,
     rating: 5,
+    // TODO - decide how to store and then format this. need to think about how to select. calendar input? yikes
+    dateOfVisit: new Date().toDateString(),
+    // NOTE - this should never happen
+    reply: "lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem ",
+  }).save();
+  ReviewsModel({
+    comment: "some comment here",
+    // NOTE - owner leaving review here
+    reviewer: user1._id,
+    restaurant: restaurant2._id,
+    rating: 4,
+    dateOfVisit: new Date().toDateString(),
+    reply: "lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem ",
+  }).save();
+  ReviewsModel({
+    comment: "some comment here",
+    // NOTE - owner leaving review here
+    reviewer: user2._id,
+    restaurant: restaurant1._id,
+    rating: 3,
+    dateOfVisit: new Date().toDateString(),
+    reply: "lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem ",
+  }).save();
+  ReviewsModel({
+    comment: "some comment here",
+    // NOTE - owner leaving review here
+    reviewer: user2._id,
+    restaurant: restaurant2._id,
+    rating: 2,
     dateOfVisit: new Date().toDateString(),
   }).save();
 };
