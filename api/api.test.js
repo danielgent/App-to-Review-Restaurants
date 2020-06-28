@@ -12,6 +12,10 @@ describe("api tests", () => {
   let app;
   let agent;
 
+  let owner1Id;
+  let restaurant1Id;
+  let user3Id;
+
   beforeAll(async () => {
     // TODO - try and split this up BUT would need one database per route
     var mongoDB = "mongodb://127.0.0.1:27017/testdb";
@@ -26,7 +30,7 @@ describe("api tests", () => {
 
     agent = request.agent(app);
 
-    await seedDb();
+    ({ owner1Id, restaurant1Id, user3Id } = await seedDb());
   });
 
   afterAll(async () => {
@@ -257,22 +261,32 @@ describe("api tests", () => {
         expiresIn: "24h",
       });
 
-      const resA = await agent
-        .get("/restaurants")
+      const res = await agent
+        .get(`/restaurants/${restaurant1Id}`)
         .set("Authorization", `Bearer ${token}`);
 
-      // get first restaurant id
-      const firstRestaurantId = resA.body[0]._id;
+      console.log("111111 ", res.body);
 
-      console.log("firstRestaurantId ", firstRestaurantId);
+      expect(res.body).toEqual(
+        expect.objectContaining({
+          name: "Owner's Diner",
+          averageRating: 4,
+        })
+      );
 
-      // TODO - this fetch is crashing db not sure why...
+      expect(res.body.highReview).toEqual(
+        expect.objectContaining({
+          rating: 5,
+        })
+      );
 
-      // const resB = await agent
-      //   .get(`restaurants/${firstRestaurantId}`)
-      //   .set("Authorization", `Bearer ${token}`);
+      expect(res.body.lowReview).toEqual(
+        expect.objectContaining({
+          rating: 3,
+        })
+      );
 
-      // console.log("111111 ", resB);
+      expect(res.body.recentReviews).toHaveLength(2);
     });
 
     it("should create new restaurant", async () => {

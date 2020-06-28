@@ -21,7 +21,6 @@ const seedDatabases = async () => {
   });
 
   console.log("owner1 id", owner1._id);
-
   await owner1.save();
 
   // create restaurant 1
@@ -72,6 +71,13 @@ const seedDatabases = async () => {
     role: "user",
   });
   await user2.save();
+  const user3 = UserModel({
+    username: "user-no-reviews",
+    password: Bcrypt.hashSync("password-3", Number(process.env.SALT_ROUNDS)),
+    email: "user3@example.com",
+    role: "user",
+  });
+  await user3.save();
 
   // create reviews
   await ReviewsModel({
@@ -109,6 +115,12 @@ const seedDatabases = async () => {
     rating: 2,
     visitDate: "2020-04-01",
   }).save();
+
+  return {
+    owner1Id: owner1._id,
+    restaurant1Id: restaurant1._id,
+    user3Id: user3._id,
+  };
 };
 
 module.exports = seedDatabases;

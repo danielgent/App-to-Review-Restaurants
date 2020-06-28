@@ -21,7 +21,7 @@ import axios from "axios";
 import DatePicker from "react-datepicker";
 
 const formatDate = (date) =>
-  `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+  `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
 
 const AddReviewModal = ({ isOpen, onClose, onSubmit, restaurantId }) => {
   const handleSubmit = (values, { setSubmitting, resetForm }) => {
