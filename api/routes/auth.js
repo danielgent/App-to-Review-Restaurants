@@ -9,10 +9,6 @@ router.post("/register", async (req, res) => {
   try {
     const { username, email, role } = req.body;
 
-    // TODO
-    // duplicate username and email check
-    // return error 409
-
     const sameUsername = await UserModel.findOne({ username }).exec();
 
     if (sameUsername) {

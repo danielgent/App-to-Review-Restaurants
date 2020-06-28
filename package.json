@@ -16,6 +16,7 @@
     "cors": "^2.8.5",
     "emotion-theming": "^10.0.27",
     "express": "^4.17.1",
+    "express-jwt": "^5.3.3",
     "formik": "^2.1.4",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.20",

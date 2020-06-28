@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 var RestaurantModel = require("../models/RestaurantModel");
 var ReviewsModel = require("../models/ReviewsModel");
+var jwt = require("express-jwt");
 
 const enrichRestaurant = async (r) => {
   const reviews = await ReviewsModel.find({
@@ -41,16 +42,19 @@ const enrichRestaurant = async (r) => {
   };
 };
 
-router.get("/", async (req, res) => {
-  // TODO - need these fields and this arg?
-  const restaurants = await RestaurantModel.find({}, "name owner").exec();
+router.get(
+  "/",
+  jwt({ secret: process.env.REACT_APP_TOKEN_SECRET }),
+  async (req, res) => {
+    const restaurants = await RestaurantModel.find({}, "name owner").exec();
 
-  const enrichedRestaurants = await Promise.all(
-    restaurants.map(enrichRestaurant)
-  );
+    const enrichedRestaurants = await Promise.all(
+      restaurants.map(enrichRestaurant)
+    );
 
-  res.status(200).send(enrichedRestaurants);
-});
+    res.status(200).send(enrichedRestaurants);
+  }
+);
 
 router.get("/:id", async (req, res) => {
   const id = req.params.id;
