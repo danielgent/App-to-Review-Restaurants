@@ -13,6 +13,11 @@ const createApp = (db) => {
       origin: process.env.APP_ORIGIN,
     })
   );
+  // header logging middleware
+  // app.use(function (req, res, next) {
+  //   console.log("req ", req.headers);
+  //   next();
+  // });
   var users = require("./routes/users");
   var reviews = require("./routes/reviews");
   var restaurants = require("./routes/restaurants");
