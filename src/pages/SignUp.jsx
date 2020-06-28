@@ -24,8 +24,12 @@ const SignUp = (props) => {
     hasSubmittedSuccessfully,
     setHasSubmittedSuccessfully,
   ] = React.useState(false);
+  // new idea for server side errors
+  const [serverErrorMessage, setServerErrorMessage] = React.useState("");
 
   const handleSubmit = (values, { setSubmitting, resetForm }) => {
+    setServerErrorMessage("");
+
     axios
       .post(`${process.env.REACT_APP_API_URL}/auth/register`, {
         username: values.username,
@@ -37,8 +41,7 @@ const SignUp = (props) => {
         setHasSubmittedSuccessfully(true);
       })
       .catch(function (error) {
-        // here output to somewhere!
-        console.log(error);
+        setServerErrorMessage(error.response.data.error);
       });
   };
 
@@ -49,7 +52,6 @@ const SignUp = (props) => {
         <Box p={4}>
           <Alert
             status="success"
-            variant="subtle"
             flexDirection="column"
             justifyContent="center"
             textAlign="center"
@@ -209,6 +211,18 @@ const SignUp = (props) => {
               </Stack>
             </Form>
           </Box>
+          {serverErrorMessage && (
+            <Alert
+              status="error"
+              flexDirection="column"
+              justifyContent="center"
+              textAlign="center"
+              height="200px"
+            >
+              <Icon name="warning" size="32px" color="red.500" />
+              <Text maxWidth="sm">{serverErrorMessage}</Text>
+            </Alert>
+          )}
         </Box>
       )}
     </Formik>

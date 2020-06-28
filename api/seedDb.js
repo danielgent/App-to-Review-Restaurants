@@ -69,12 +69,12 @@ const seedDatabases = async () => {
   });
   user1.save();
   const user2 = UserModel({
-    username: "a-user",
+    username: "b-user",
     password: Bcrypt.hashSync(
       "password",
       Number(process.env.REACT_APP_SALT_ROUNDS)
     ),
-    email: "user1@example.com",
+    email: "user2@example.com",
     role: "user",
   });
   user2.save();

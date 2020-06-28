@@ -6,24 +6,45 @@ var UserModel = require("../models/UserModel");
 
 router.post("/register", async (req, res) => {
   try {
-    req.body.password = Bcrypt.hashSync(
+    const { username, email, role } = req.body;
+
+    // TODO
+    // duplicate username and email check
+    // return error 409
+
+    const sameUsername = await UserModel.findOne({ username }).exec();
+
+    if (sameUsername) {
+      return res.status(409).json({
+        error: "This username is already in use. Please select another",
+      });
+    }
+
+    const sameEmail = await UserModel.findOne({ email }).exec();
+    if (sameEmail) {
+      return res.status(409).json({
+        error: "This email address is already in use",
+      });
+    }
+
+    const password = Bcrypt.hashSync(
       req.body.password,
       Number(process.env.REACT_APP_SALT_ROUNDS)
     );
-    // TODO
-    // duplicate username and email check
-    // return error
+
+    if (!["user", "owner"].includes(role)) {
+      return res.status(401).json({ error: "unauthorized attempt" });
+    }
 
     var user = new UserModel({
-      username: req.body.username,
-      password: req.body.password,
-      email: req.body.email,
-      // TODO - validate to make sure can't create admin here
-      role: req.body.role,
+      username,
+      password,
+      email,
+      role,
     });
-    var result = await user.save();
-    // res.send(result);
-    res.status(200).json({
+    await user.save();
+
+    return res.status(200).json({
       message: "Sign up done",
     });
   } catch (error) {

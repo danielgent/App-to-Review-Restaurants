@@ -20,7 +20,7 @@ router.get(
             role,
           }
         : {},
-      "username role"
+      "username email role"
     ).exec();
 
     res.status(200).send(users);
