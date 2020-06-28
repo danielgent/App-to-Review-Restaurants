@@ -14,8 +14,8 @@ router.get("/", async (req, res) => {
 router.post("/", (req, res) => {
   const review = {
     ...req.body,
-    // TODO - current user: this should come from auth data
-    reviewer: "123123131",
+    // current user
+    reviewer: req.user.id,
   };
 
   var review_instance = new ReviewsModel(review);

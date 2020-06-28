@@ -16,6 +16,9 @@ describe("api tests", () => {
   let restaurant1Id;
   let user3Id;
 
+  let ownerToken;
+  let userToken;
+
   beforeAll(async () => {
     // TODO - try and split this up BUT would need one database per route
     var mongoDB = "mongodb://127.0.0.1:27017/testdb";
@@ -31,6 +34,22 @@ describe("api tests", () => {
     agent = request.agent(app);
 
     ({ owner1Id, restaurant1Id, user3Id } = await seedDb());
+
+    ownerToken = jwt.sign(
+      { role: "user", id: owner1Id },
+      process.env.TOKEN_SECRET,
+      {
+        expiresIn: "24h",
+      }
+    );
+
+    userToken = jwt.sign(
+      { role: "user", id: user3Id },
+      process.env.TOKEN_SECRET,
+      {
+        expiresIn: "24h",
+      }
+    );
   });
 
   afterAll(async () => {
@@ -47,33 +66,24 @@ describe("api tests", () => {
       });
 
       it("should return user info when token supplied", async () => {
-        const token = jwt.sign(
-          { role: "user", id: "foo-bar" },
-          process.env.TOKEN_SECRET,
-          {
-            // TODO - set really low and then test token refresh
-            expiresIn: "24h",
-          }
-        );
-
         const res = await agent
           .get("/me")
-          .set("Authorization", `Bearer ${token}`);
+          .set("Authorization", `Bearer ${userToken}`);
 
         expect(res.statusCode).toBe(200);
         expect(res.body.role).toBe("user");
         // returns back same id that we send
-        expect(res.body.id).toBe("foo-bar");
+        expect(res.body.id).toEqual(user3Id);
       });
 
       it("should not allow bad token", async () => {
-        const token = jwt.sign({ role: "user" }, "NOT KEY USED BY SERVER", {
+        const badToken = jwt.sign({ role: "user", id: user3Id }, "NOT SECRET", {
           expiresIn: "24h",
         });
 
         const res = await agent
           .get("/me")
-          .set("Authorization", `Bearer ${token}`);
+          .set("Authorization", `Bearer ${badToken}`);
 
         expect(res.statusCode).toBe(401);
       });
@@ -199,13 +209,9 @@ describe("api tests", () => {
 
   describe("restaurant tests", () => {
     it("/restaurants/ should give list of restaurants enriched", async () => {
-      const token = jwt.sign({ role: "user" }, process.env.TOKEN_SECRET, {
-        expiresIn: "24h",
-      });
-
       const res = await agent
-        .get("/restaurants")
-        .set("Authorization", `Bearer ${token}`);
+        .get(`/restaurants`)
+        .set("Authorization", `Bearer ${userToken}`);
 
       expect(res.statusCode).toBe(200);
 
@@ -257,15 +263,9 @@ describe("api tests", () => {
     });
 
     it("/restaurants/[id] should give restaurant enriched", async () => {
-      const token = jwt.sign({ role: "user" }, process.env.TOKEN_SECRET, {
-        expiresIn: "24h",
-      });
-
       const res = await agent
         .get(`/restaurants/${restaurant1Id}`)
-        .set("Authorization", `Bearer ${token}`);
-
-      console.log("111111 ", res.body);
+        .set("Authorization", `Bearer ${userToken}`);
 
       expect(res.body).toEqual(
         expect.objectContaining({
@@ -290,30 +290,39 @@ describe("api tests", () => {
     });
 
     it("should create new restaurant", async () => {
-      const token = jwt.sign(
-        { role: "user", id: "1234" },
-        process.env.TOKEN_SECRET,
-        {
-          expiresIn: "24h",
-        }
-      );
-
       const res = await agent
         .post("/restaurants")
         .send({
           name: "A new restaurant",
-          owner: "1234",
         })
-        .set("Authorization", `Bearer ${token}`);
+        .set("Authorization", `Bearer ${ownerToken}`);
 
       expect(res.statusCode).toBe(200);
 
       expect(res.body).toEqual(
         expect.objectContaining({
           name: "A new restaurant",
-          owner: "1234",
+          owner: owner1Id,
         })
       );
     });
   });
+
+  describe("reviews tests", () => {
+    it.skip("/review/ should create new review", async () => {
+      const res = await agent
+        .post("/reviews")
+        .send({
+          comment: "lorem lorem lorem",
+          restaurant: restaurant1Id,
+          rating: 5,
+          visitDate: "2020-04-04",
+        })
+        .set("Authorization", `Bearer ${userToken}`);
+
+      console.log("res ", res.body);
+    });
+  });
 });
+
+// user3Id

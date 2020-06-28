@@ -57,7 +57,7 @@ router.get("/", authLoggedIn, async (req, res) => {
   }
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", authLoggedIn, async (req, res) => {
   try {
     const id = req.params.id;
 
@@ -74,10 +74,11 @@ router.get("/:id", async (req, res) => {
 });
 
 // PERMISSIONS - owner
-router.post("/", (req, res) => {
+router.post("/", authLoggedIn, (req, res) => {
   try {
     const restaurant = {
       ...req.body,
+      owner: req.user.id,
       dateAdded: new Date().toDateString(),
     };
 

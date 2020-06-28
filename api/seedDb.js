@@ -117,9 +117,9 @@ const seedDatabases = async () => {
   }).save();
 
   return {
-    owner1Id: owner1._id,
-    restaurant1Id: restaurant1._id,
-    user3Id: user3._id,
+    owner1Id: owner1._id.toString(),
+    restaurant1Id: restaurant1._id.toString(),
+    user3Id: user3._id.toString(),
   };
 };
 
