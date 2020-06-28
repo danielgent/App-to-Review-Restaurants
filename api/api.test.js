@@ -80,7 +80,7 @@ describe("api tests", () => {
         expect(res.statusCode).toBe(400);
       });
 
-      it.only("should reject bad password", async () => {
+      it("should reject bad password and block user after three attempts", async () => {
         const res = await agent.post("/login").send({
           username: "b-user",
           password: "xxxx",
@@ -89,6 +89,99 @@ describe("api tests", () => {
         expect(res.body.error).toBe("The password is invalid");
 
         expect(res.statusCode).toBe(400);
+      });
+
+      it("should blockreject bad password", async () => {
+        const res = await agent.post("/login").send({
+          username: "another-owner",
+          password: "xxxx",
+        });
+
+        expect(res.body.error).toBe("The password is invalid");
+
+        expect(res.statusCode).toBe(400);
+
+        await agent.post("/login").send({
+          username: "another-owner",
+          password: "xxxx",
+        });
+
+        await agent.post("/login").send({
+          username: "another-owner",
+          password: "xxxx",
+        });
+
+        const blockedRes = await agent.post("/login").send({
+          username: "another-owner",
+          password: "xxxx",
+        });
+
+        expect(blockedRes.body.error).toBe(
+          "Too many failed login attempts. Account blocked. Please contact admin"
+        );
+
+        expect(blockedRes.statusCode).toBe(400);
+      });
+
+      it("should return role and token when login correct", async () => {
+        const res = await agent.post("/login").send({
+          username: "b-user",
+          password: "password-2",
+        });
+
+        expect(res.body.role).toBe("user");
+        expect(res.body.token).toBeTruthy();
+
+        expect(res.statusCode).toBe(200);
+      });
+    });
+
+    describe("/register/", () => {
+      it("should reject duplicate username", async () => {
+        const res = await agent.post("/register").send({
+          username: "b-user",
+          email: "foo@foo.com",
+          password: "xxxx",
+          role: "user",
+        });
+
+        expect(res.body.error).toBe(
+          "This username is already in use. Please select another"
+        );
+        expect(res.statusCode).toBe(409);
+      });
+      it("should reject duplicate email", async () => {
+        const res = await agent.post("/register").send({
+          username: "fooooz",
+          email: "another-owner@example.com",
+          password: "xxxx",
+          role: "user",
+        });
+
+        expect(res.body.error).toBe("This email address is already in use");
+        expect(res.statusCode).toBe(409);
+      });
+      it("should reject hack to grant admin role", async () => {
+        const res = await agent.post("/register").send({
+          username: "fooooz",
+          email: "foooz@example.com",
+          password: "xxxx",
+          role: "admin",
+        });
+
+        expect(res.body.error).toBe("unauthorized attempt");
+        expect(res.statusCode).toBe(401);
+      });
+      it("should accept signup", async () => {
+        const res = await agent.post("/register").send({
+          username: "fooooz",
+          email: "foooz@example.com",
+          password: "xxxx",
+          role: "user",
+        });
+
+        expect(res.body.message).toBe("Sign up done");
+        expect(res.statusCode).toBe(200);
       });
     });
   });
