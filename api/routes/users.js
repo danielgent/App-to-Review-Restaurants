@@ -48,7 +48,7 @@ router.post(
   (req, res) => {
     req.body.password = Bcrypt.hashSync(
       req.body.password,
-      Number(process.env.REACT_APP_SALT_ROUNDS)
+      Number(process.env.SALT_ROUNDS)
     );
 
     var user_instance = new UserModel(req.body);

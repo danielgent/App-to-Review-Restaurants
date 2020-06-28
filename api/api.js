@@ -10,7 +10,7 @@ const createApp = (db) => {
   app.use(bodyparser.urlencoded({ extended: false }));
   app.use(
     cors({
-      origin: process.env.REACT_APP_ORIGIN,
+      origin: process.env.APP_ORIGIN,
     })
   );
   var users = require("./routes/users");

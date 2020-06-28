@@ -14,10 +14,7 @@ const seedDatabases = async () => {
   // create owner 1 + restaurant 1
   const owner1 = UserModel({
     username: "some-owner",
-    password: Bcrypt.hashSync(
-      "some-password",
-      Number(process.env.REACT_APP_SALT_ROUNDS)
-    ),
+    password: Bcrypt.hashSync("some-password", Number(process.env.SALT_ROUNDS)),
     email: "owner@example.com",
     role: "owner",
   });
@@ -39,7 +36,7 @@ const seedDatabases = async () => {
     username: "another-owner",
     password: Bcrypt.hashSync(
       "another-password",
-      Number(process.env.REACT_APP_SALT_ROUNDS)
+      Number(process.env.SALT_ROUNDS)
     ),
     email: "another-owner@example.com",
     role: "owner",
@@ -60,17 +57,14 @@ const seedDatabases = async () => {
   // create normal users
   const user1 = UserModel({
     username: "a-user",
-    password: Bcrypt.hashSync("a", Number(process.env.REACT_APP_SALT_ROUNDS)),
+    password: Bcrypt.hashSync("a", Number(process.env.SALT_ROUNDS)),
     email: "user1@example.com",
     role: "user",
   });
   user1.save();
   const user2 = UserModel({
     username: "b-user",
-    password: Bcrypt.hashSync(
-      "password-2",
-      Number(process.env.REACT_APP_SALT_ROUNDS)
-    ),
+    password: Bcrypt.hashSync("password-2", Number(process.env.SALT_ROUNDS)),
     email: "user2@example.com",
     role: "user",
   });

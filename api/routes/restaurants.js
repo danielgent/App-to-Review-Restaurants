@@ -42,19 +42,15 @@ const enrichRestaurant = async (r) => {
   };
 };
 
-router.get(
-  "/",
-  jwt({ secret: process.env.REACT_APP_TOKEN_SECRET }),
-  async (req, res) => {
-    const restaurants = await RestaurantModel.find({}, "name owner").exec();
+router.get("/", jwt({ secret: process.env.TOKEN_SECRET }), async (req, res) => {
+  const restaurants = await RestaurantModel.find({}, "name owner").exec();
 
-    const enrichedRestaurants = await Promise.all(
-      restaurants.map(enrichRestaurant)
-    );
+  const enrichedRestaurants = await Promise.all(
+    restaurants.map(enrichRestaurant)
+  );
 
-    res.status(200).send(enrichedRestaurants);
-  }
-);
+  res.status(200).send(enrichedRestaurants);
+});
 
 router.get("/:id", async (req, res) => {
   const id = req.params.id;

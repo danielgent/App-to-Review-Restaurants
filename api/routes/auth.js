@@ -26,7 +26,7 @@ router.post("/register", async (req, res) => {
 
     const password = bcrypt.hashSync(
       req.body.password,
-      Number(process.env.REACT_APP_SALT_ROUNDS)
+      Number(process.env.SALT_ROUNDS)
     );
 
     if (!["user", "owner"].includes(role)) {
@@ -83,7 +83,7 @@ router.post("/login", async (req, res) => {
         return res.status(400).send({ error: "The password is invalid" });
       }
 
-      const token = jwt.sign({ user }, process.env.REACT_APP_TOKEN_SECRET, {
+      const token = jwt.sign({ user }, process.env.TOKEN_SECRET, {
         // TODO - set really low and then test token refresh
         expiresIn: "24h",
       });
