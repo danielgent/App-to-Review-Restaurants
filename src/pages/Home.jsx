@@ -4,14 +4,16 @@ import axios from "axios";
 
 import RestaurantListItem from "components/RestaurantListItem";
 import AddRestaurantModal from "components/AddRestaurantModal";
+import UserContext from "contexts/user-context";
 
-// import restaurants from "fixtures/restaurants";
-
-const refetch = ({ setIsLoading, setRestaurants, filters }) => {
+const refetch = ({ setIsLoading, setRestaurants, filters, token }) => {
   setIsLoading(true);
   axios
     .get(`${process.env.REACT_APP_API_URL}/restaurants`, {
       params: filters,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     })
     .then((response) => {
       setRestaurants(response.data);
@@ -22,6 +24,7 @@ const refetch = ({ setIsLoading, setRestaurants, filters }) => {
 };
 
 const Home = (props) => {
+  const { user } = React.useContext(UserContext);
   const [restaurants, setRestaurants] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
   const [
@@ -33,14 +36,16 @@ const Home = (props) => {
 
   React.useEffect(() => {
     refetch({
+      token: user.token,
       setIsLoading,
       setRestaurants,
       filters,
     });
-  }, [filters]);
+  }, [filters, user.token]);
 
   const handleSubmit = () => {
     refetch({
+      token: user.token,
       setIsLoading,
       setRestaurants,
       filters,
