@@ -13,10 +13,15 @@ import {
   FormControl,
   FormLabel,
   Input,
+  Select,
   FormErrorMessage,
 } from "@chakra-ui/core";
 import { Formik, Form, Field } from "formik";
 import axios from "axios";
+import DatePicker from "react-datepicker";
+
+const formatDate = (date) =>
+  `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
 
 const AddReviewModal = ({ isOpen, onClose, onSubmit, restaurantId }) => {
   const handleSubmit = (values, { setSubmitting, resetForm }) => {
@@ -24,14 +29,13 @@ const AddReviewModal = ({ isOpen, onClose, onSubmit, restaurantId }) => {
       .post(`${process.env.REACT_APP_API_URL}/reviews`, {
         comment: values.comment,
         restaurant: restaurantId,
-        // TODO -use NumberInput from Chakra
         rating: Number.parseInt(values.rating, 10),
+        visitDate: formatDate(values.visitDate),
       })
       .then(function (response) {
         onSubmit();
       })
       .catch(function (error) {
-        // here output to somewhere!
         console.log(error);
       });
   };
@@ -41,17 +45,13 @@ const AddReviewModal = ({ isOpen, onClose, onSubmit, restaurantId }) => {
       enableReinitialize
       initialValues={{
         comment: "",
-        rating: "",
+        rating: "5",
+        visitDate: new Date(),
       }}
       validate={(values) => {
         const errors = {};
-        // TODO - correct fields
-
         if (!values.comment) {
           errors.comment = "Please enter a comment";
-        }
-        if (!values.rating) {
-          errors.rating = "Please rate";
         }
         return errors;
       }}
@@ -93,8 +93,39 @@ const AddReviewModal = ({ isOpen, onClose, onSubmit, restaurantId }) => {
                             isInvalid={errors.rating && touched.rating}
                           >
                             <FormLabel htmlFor="rating">Rating</FormLabel>
-                            <Input id="rating" type="text" {...field} />
+                            <Select id="rating" {...field}>
+                              <option value={1}>1</option>
+                              <option value={2}>2</option>
+                              <option value={3}>3</option>
+                              <option value={4}>4</option>
+                              <option value={5}>5</option>
+                            </Select>
                             <FormErrorMessage>{errors.rating}</FormErrorMessage>
+                          </FormControl>
+                        );
+                      }}
+                    </Field>
+                    <Field type="text" name="visitDate" autoComplete="off">
+                      {({ field, form }) => {
+                        const { value, onChange } = field;
+                        const handleChange = (date) => {
+                          onChange({
+                            target: {
+                              name: "visitDate",
+                              value: date,
+                            },
+                          });
+                        };
+                        return (
+                          <FormControl w={{ xs: "100%", sm: "280px" }}>
+                            <FormLabel htmlFor="visitDate">
+                              Date of visit
+                            </FormLabel>
+                            <DatePicker
+                              id="visitDate"
+                              selected={value}
+                              onChange={handleChange}
+                            />
                           </FormControl>
                         );
                       }}

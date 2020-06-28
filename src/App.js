@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, ThemeProvider, CSSReset } from "@chakra-ui/core";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import "react-datepicker/dist/react-datepicker.css";
 
 import SignUp from "./pages/SignUp";
 import LogIn from "./pages/LogIn";

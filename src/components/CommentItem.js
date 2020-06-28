@@ -14,13 +14,15 @@ import AddReplyModal from "components/AddReplyModal";
 
 // TODO - rename ReviewItem
 const CommentItem = ({ review, refreshData, ...rest }) => {
-  const { comment, dateOfVisit, rating, reply } = review;
+  const { comment, visitDate, rating, reply } = review;
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleSubmit = () => {
     refreshData();
     onClose();
   };
+
+  const formattedDate = new Date(visitDate).toDateString();
 
   return (
     <Box {...rest}>
@@ -33,9 +35,8 @@ const CommentItem = ({ review, refreshData, ...rest }) => {
           <Text fontSize="lg" fontWeight="bold">
             {rating}
           </Text>
-          <Text fontSize="sm">
-            {/* TODO - format */}
-            {dateOfVisit}
+          <Text fontSize="xs" fontStyle="italic" color="grey.500">
+            {formattedDate}
           </Text>
         </Box>
       </Stack>
@@ -52,7 +53,7 @@ const CommentItem = ({ review, refreshData, ...rest }) => {
       ) : (
         // TODO - won't be like this. Should only appear on owner's restaurant detail page under a list of unreplied reviews
         <Box>
-          <Button onClick={onOpen}>Leave Review</Button>
+          <Button onClick={onOpen}>Reply</Button>
           <AddReplyModal
             isOpen={isOpen}
             onClose={onClose}

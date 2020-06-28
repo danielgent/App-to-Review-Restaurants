@@ -7,10 +7,9 @@ const ReviewsModel = new Mongoose.model("review", {
   // FK to restaurantId
   restaurant: { type: String, required: true },
   rating: { type: Number, required: true },
-  // actually can't be added straight away
   reply: { type: String },
-  // bah: as is of visit it can't be a timestamp!
-  dateOfVisit: { type: String, required: true },
+  // storing as ISO date
+  visitDate: { type: String, required: true },
 });
 
 module.exports = ReviewsModel;

@@ -85,8 +85,7 @@ const seedDatabases = async () => {
     reviewer: user1._id,
     restaurant: restaurant1._id,
     rating: 5,
-    // TODO - decide how to store and then format this. need to think about how to select. calendar input? yikes
-    dateOfVisit: new Date().toDateString(),
+    visitDate: "2020-01-01",
     reply:
       "Thank you for the 5 Stars. Hope you are enjoying the new frame and getting loads of miles under the belt.",
   }).save();
@@ -95,7 +94,7 @@ const seedDatabases = async () => {
     reviewer: user1._id,
     restaurant: restaurant2._id,
     rating: 4,
-    dateOfVisit: new Date().toDateString(),
+    visitDate: "2020-02-02",
     reply: "Thank you for the review! Hope to see you again soon!",
   }).save();
   ReviewsModel({
@@ -104,7 +103,7 @@ const seedDatabases = async () => {
     reviewer: user2._id,
     restaurant: restaurant1._id,
     rating: 3,
-    dateOfVisit: new Date().toDateString(),
+    visitDate: "2020-03-04",
     reply:
       "Sorry to hear your experience at the store was not the best. The amount that was paid was for the new tube + installation. Apologies for the miss understanding.",
   }).save();
@@ -114,7 +113,7 @@ const seedDatabases = async () => {
     reviewer: user2._id,
     restaurant: restaurant2._id,
     rating: 2,
-    dateOfVisit: new Date().toDateString(),
+    visitDate: "2020-04-01",
   }).save();
 };
 

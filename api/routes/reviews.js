@@ -25,25 +25,10 @@ router.post("/", (req, res) => {
     ...req.body,
     // TODO - current user: this should come from auth data
     reviewer: "123123131",
-    // TODO - calendar input or something
-    dateOfVisit: new Date().toDateString(),
-    // make sure in body
-
-    // text area! think about this
-    // comment
-
-    // send up from Url. should be able to read? or have in state?
-    // restaurant
-
-    // from form. do as select for now
-    // rating
-
-    // dateOfVisit
   };
 
   var review_instance = new ReviewsModel(review);
   review_instance.save(function (err, dbRes) {
-    // no validation here necessary. user can make duplicate names
     // if (err) return handleError(err, res);
 
     res.status(200).json(dbRes);
