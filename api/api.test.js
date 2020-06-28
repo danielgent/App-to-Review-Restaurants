@@ -194,7 +194,7 @@ describe("api tests", () => {
   });
 
   describe("restaurant tests", () => {
-    it("should allow access when token provided", async () => {
+    it("/restaurants/ should give list of restaurants enriched", async () => {
       const token = jwt.sign({ role: "user" }, process.env.TOKEN_SECRET, {
         expiresIn: "24h",
       });
@@ -250,6 +250,56 @@ describe("api tests", () => {
       );
 
       expect(restaurants[1].recentReviews).toHaveLength(2);
+    });
+
+    it("/restaurants/[id] should give restaurant enriched", async () => {
+      const token = jwt.sign({ role: "user" }, process.env.TOKEN_SECRET, {
+        expiresIn: "24h",
+      });
+
+      const resA = await agent
+        .get("/restaurants")
+        .set("Authorization", `Bearer ${token}`);
+
+      // get first restaurant id
+      const firstRestaurantId = resA.body[0]._id;
+
+      console.log("firstRestaurantId ", firstRestaurantId);
+
+      // TODO - this fetch is crashing db not sure why...
+
+      // const resB = await agent
+      //   .get(`restaurants/${firstRestaurantId}`)
+      //   .set("Authorization", `Bearer ${token}`);
+
+      // console.log("111111 ", resB);
+    });
+
+    it("should create new restaurant", async () => {
+      const token = jwt.sign(
+        { role: "user", id: "1234" },
+        process.env.TOKEN_SECRET,
+        {
+          expiresIn: "24h",
+        }
+      );
+
+      const res = await agent
+        .post("/restaurants")
+        .send({
+          name: "A new restaurant",
+          owner: "1234",
+        })
+        .set("Authorization", `Bearer ${token}`);
+
+      expect(res.statusCode).toBe(200);
+
+      expect(res.body).toEqual(
+        expect.objectContaining({
+          name: "A new restaurant",
+          owner: "1234",
+        })
+      );
     });
   });
 });

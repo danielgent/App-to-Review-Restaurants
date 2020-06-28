@@ -76,27 +76,17 @@ router.get("/:id", async (req, res) => {
 // PERMISSIONS - owner
 router.post("/", (req, res) => {
   try {
-    // TODO - load first user
-    // const users = await UserModel.find(
-    //   role
-    //     ? {
-    //         role,
-    //       }
-    //     : {},
-    //   "username role"
-    // ).exec();
-
     const restaurant = {
       ...req.body,
-      // TODO - this should come from auth data
-      owner: "123123131",
       dateAdded: new Date().toDateString(),
     };
 
     var restaurant_instance = new RestaurantModel(restaurant);
     restaurant_instance.save(function (err, dbRes) {
-      // no validation here necessary. user can make duplicate names
-      // if (err) return handleError(err, res);
+      // TODO - need something like this in lots of places or silently failing.
+      if (err) {
+        res.status(500).json({ error: err });
+      }
 
       res.status(200).json(dbRes);
     });

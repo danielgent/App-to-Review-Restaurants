@@ -11,7 +11,7 @@ const seedDatabases = async () => {
 
   console.log("Adding database test data");
 
-  // create owner 1 + restaurant 1
+  // create owner 1
   const owner1 = UserModel({
     // QUICK LOGIN QA
     username: "o",
@@ -24,6 +24,7 @@ const seedDatabases = async () => {
 
   await owner1.save();
 
+  // create restaurant 1
   const restaurant1 = RestaurantModel({
     name: "Owner's Diner",
     owner: owner1._id,
@@ -32,7 +33,7 @@ const seedDatabases = async () => {
   console.log("restaurant1 id", restaurant1._id);
   await restaurant1.save();
 
-  // create owner 2 + restaurant 2
+  // create owner 2
   const owner2 = UserModel({
     username: "another-owner",
     password: Bcrypt.hashSync(
@@ -47,6 +48,7 @@ const seedDatabases = async () => {
 
   await owner2.save();
 
+  // restaurant 2
   const restaurant2 = RestaurantModel({
     name: "Steak House",
     owner: owner2._id,
