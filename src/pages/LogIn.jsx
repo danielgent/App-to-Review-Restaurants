@@ -8,7 +8,6 @@ import {
   FormErrorMessage,
   Input,
   Button,
-  Select,
   Divider,
   Alert,
   Icon,
@@ -16,9 +15,14 @@ import {
 } from "@chakra-ui/core";
 import { Formik, Form, Field } from "formik";
 import axios from "axios";
+import { useHistory } from "react-router-dom";
+
+import UserContext from "contexts/user-context";
 
 const LogIn = (props) => {
   const [serverErrorMessage, setServerErrorMessage] = React.useState("");
+  let history = useHistory();
+  const { updateUser } = React.useContext(UserContext);
 
   const handleSubmit = (values, { setSubmitting, resetForm }) => {
     setServerErrorMessage("");
@@ -30,8 +34,12 @@ const LogIn = (props) => {
         password: values.password,
         role: values.role,
       })
-      .then(function (response) {
-        // redirect here. Need to set state to say logged in
+      .then(({ data }) => {
+        const { token, role } = data;
+        updateUser({ token, role });
+
+        // TODO - add token somewhere global here
+        history.push("/");
       })
       .catch(function (error) {
         setServerErrorMessage(error.response.data.error);
