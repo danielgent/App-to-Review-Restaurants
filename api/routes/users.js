@@ -20,7 +20,7 @@ router.get(
             role,
           }
         : {},
-      "username email role"
+      "username email role loginAttempts"
     ).exec();
 
     res.status(200).send(users);

@@ -70,10 +70,21 @@ router.post("/login", async (req, res) => {
       var user = await UserModel.findOne({
         username,
       }).exec();
+
       if (!user) {
         return res.status(400).send({ error: "The username does not exist" });
       }
+
+      if (user.loginAttempts >= 3) {
+        return res.status(400).send({
+          error:
+            "Too many failed login attempts. Account blocked. Please contact admin",
+        });
+      }
+
       if (!Bcrypt.compareSync(password, user.password)) {
+        user.loginAttempts += 1;
+        user.save();
         return res.status(400).send({ error: "The password is invalid" });
       }
 
