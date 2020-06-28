@@ -16,10 +16,12 @@ const createApp = (db) => {
   var users = require("./routes/users");
   var reviews = require("./routes/reviews");
   var restaurants = require("./routes/restaurants");
+  var auth = require("./routes/auth");
 
   app.use("/users", users);
   app.use("/reviews", reviews);
   app.use("/restaurants", restaurants);
+  app.use("/auth", auth);
 
   return app;
 };

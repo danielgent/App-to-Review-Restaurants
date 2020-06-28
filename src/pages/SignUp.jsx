@@ -1,4 +1,3 @@
-// TODO -change all pages to .js so autoformat save works.
 import React from "react";
 import {
   Box,
@@ -9,6 +8,11 @@ import {
   FormErrorMessage,
   Input,
   Button,
+  Select,
+  Divider,
+  Alert,
+  Icon,
+  Text,
 } from "@chakra-ui/core";
 import { Formik, Form, Field } from "formik";
 import axios from "axios";
@@ -16,23 +20,52 @@ import axios from "axios";
 import { ROLES } from "globalConstants";
 
 const SignUp = (props) => {
+  const [
+    hasSubmittedSuccessfully,
+    setHasSubmittedSuccessfully,
+  ] = React.useState(false);
+
   const handleSubmit = (values, { setSubmitting, resetForm }) => {
-    console.log("handleSubmit");
-    // axios
-    //   .post(`${process.env.REACT_APP_API_URL}/reviews`, {
-    //     comment: values.comment,
-    //     restaurant: restaurantId,
-    //     // TODO -use NumberInput from Chakra
-    //     rating: Number.parseInt(values.rating, 10),
-    //   })
-    //   .then(function (response) {
-    //     onSubmit();
-    //   })
-    //   .catch(function (error) {
-    //     // here output to somewhere!
-    //     console.log(error);
-    //   });
+    axios
+      .post(`${process.env.REACT_APP_API_URL}/auth/register`, {
+        username: values.username,
+        email: values.email,
+        password: values.password,
+        role: values.role,
+      })
+      .then(function (response) {
+        setHasSubmittedSuccessfully(true);
+      })
+      .catch(function (error) {
+        // here output to somewhere!
+        console.log(error);
+      });
   };
+
+  if (hasSubmittedSuccessfully) {
+    return (
+      <Box>
+        <Heading>Next step</Heading>
+        <Box p={4}>
+          <Alert
+            status="success"
+            variant="subtle"
+            flexDirection="column"
+            justifyContent="center"
+            textAlign="center"
+            height="200px"
+          >
+            <Icon name="warning" size="32px" color="red.500" />
+            <Text mt={4} mb={1} fontSize="lg">
+              You have been sent a confirmation email
+            </Text>
+            <Text maxWidth="sm">Please check your email</Text>
+          </Alert>
+          <Divider />
+        </Box>
+      </Box>
+    );
+  }
 
   return (
     <Formik
@@ -46,13 +79,18 @@ const SignUp = (props) => {
       }}
       validate={(values) => {
         const errors = {};
-        // TODO - correct fields
 
-        if (!values.comment) {
-          errors.comment = "Please enter a comment";
+        if (!values.username) {
+          errors.username = "Please enter a username";
         }
-        if (!values.rating) {
-          errors.rating = "Please rate";
+        if (!values.email) {
+          errors.email = "Please enter an email";
+        }
+        if (!values.password) {
+          errors.password = "Please enter a password";
+        }
+        if (values.repeatPassword !== values.password) {
+          errors.repeatPassword = "Passwords must match";
         }
         return errors;
       }}
@@ -153,7 +191,21 @@ const SignUp = (props) => {
                     );
                   }}
                 </Field>
-                <Button>Create account</Button>
+                <Field type="text" name="role">
+                  {({ field, form }) => {
+                    return (
+                      <FormControl w={{ xs: "100%", sm: "280px" }}>
+                        <FormLabel htmlFor="role">Select role</FormLabel>
+                        <Select id="role" {...field}>
+                          <option value={ROLES.user}>User</option>
+                          <option value={ROLES.owner}>Admin</option>
+                        </Select>
+                      </FormControl>
+                    );
+                  }}
+                </Field>
+                <Divider />
+                <Button type="submit">Create account</Button>
               </Stack>
             </Form>
           </Box>
