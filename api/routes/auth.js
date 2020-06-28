@@ -52,4 +52,42 @@ router.post("/register", async (req, res) => {
   }
 });
 
+router.post("/login", async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    // TODO - was warned against doing this! better to seed initial admin right
+    if (
+      username === process.env.REACT_APP_ADMIN_USERNAME &&
+      password === process.env.REACT_APP_ADMIN_PASSWORD
+    ) {
+      // TODO - when do auth ticket
+      // req.session.role = "admin";
+
+      res.send({
+        role: "admin",
+      });
+    } else {
+      var user = await UserModel.findOne({
+        username,
+      }).exec();
+      if (!user) {
+        return res.status(400).send({ error: "The username does not exist" });
+      }
+      if (!Bcrypt.compareSync(password, user.password)) {
+        return res.status(400).send({ error: "The password is invalid" });
+      }
+
+      // TODO - when do auth ticket
+      // req.session.role = user.role;
+
+      res.send({
+        role: user.role,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+});
+
 module.exports = router;

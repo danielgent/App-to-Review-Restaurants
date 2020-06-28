@@ -71,7 +71,7 @@ const seedDatabases = async () => {
   const user2 = UserModel({
     username: "b-user",
     password: Bcrypt.hashSync(
-      "password",
+      "password-2",
       Number(process.env.REACT_APP_SALT_ROUNDS)
     ),
     email: "user2@example.com",

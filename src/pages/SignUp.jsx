@@ -112,7 +112,7 @@ const SignUp = (props) => {
                         w={{ xs: "100%", sm: "280px" }}
                         isInvalid={errors.username && touched.username}
                       >
-                        <FormLabel htmlFor="username">username</FormLabel>
+                        <FormLabel htmlFor="username">Enter a username</FormLabel>
                         <Input
                           id="username"
                           type="text"
@@ -153,8 +153,7 @@ const SignUp = (props) => {
                         w={{ xs: "100%", sm: "280px" }}
                         isInvalid={errors.password && touched.password}
                       >
-                        <FormLabel htmlFor="password">password</FormLabel>
-                        {/* TODO - how to do easy password input? */}
+                        <FormLabel htmlFor="password">Enter password</FormLabel>
                         <Input
                           id="password"
                           type="password"
@@ -177,9 +176,8 @@ const SignUp = (props) => {
                         }
                       >
                         <FormLabel htmlFor="repeatPassword">
-                          repeatPassword
+                          Repeat password
                         </FormLabel>
-                        {/* TODO - how to do easy repeatPassword input? */}
                         <Input
                           id="repeatPassword"
                           type="password"
