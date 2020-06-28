@@ -13,8 +13,9 @@ const seedDatabases = async () => {
 
   // create owner 1 + restaurant 1
   const owner1 = UserModel({
-    username: "some-owner",
-    password: Bcrypt.hashSync("some-password", Number(process.env.SALT_ROUNDS)),
+    // QUICK LOGIN QA
+    username: "o",
+    password: Bcrypt.hashSync("o", Number(process.env.SALT_ROUNDS)),
     email: "owner@example.com",
     role: "owner",
   });
@@ -56,7 +57,7 @@ const seedDatabases = async () => {
 
   // create normal users
   const user1 = UserModel({
-    username: "a-user",
+    username: "a",
     password: Bcrypt.hashSync("a", Number(process.env.SALT_ROUNDS)),
     email: "user1@example.com",
     role: "user",

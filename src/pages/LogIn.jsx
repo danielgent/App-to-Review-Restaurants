@@ -18,6 +18,7 @@ import axios from "axios";
 import { useHistory } from "react-router-dom";
 
 import UserContext from "contexts/user-context";
+import { LOCAL_STORAGE_TOKEN_KEY } from "globalConstants";
 
 const LogIn = (props) => {
   const [serverErrorMessage, setServerErrorMessage] = React.useState("");
@@ -37,8 +38,9 @@ const LogIn = (props) => {
       .then(({ data }) => {
         const { token, role } = data;
         updateUser({ token, role });
+        
+        localStorage.setItem(LOCAL_STORAGE_TOKEN_KEY, token);
 
-        // TODO - add token somewhere global here
         history.push("/");
       })
       .catch(function (error) {
