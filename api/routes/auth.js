@@ -81,6 +81,7 @@ router.post("/login", async (req, res) => {
 
     res.send({
       role: user.role,
+      id: user._id,
       token,
     });
   } catch (error) {
@@ -91,7 +92,9 @@ router.post("/login", async (req, res) => {
 
 router.get("/me", authLoggedIn, async (req, res) => {
   try {
-    res.status(200).json({ role: req.user.role, token: req.body.token });
+    res
+      .status(200)
+      .json({ role: req.user.role, id: req.user.id, token: req.body.token });
   } catch (error) {
     console.log(error);
     res.status(500).send(error);

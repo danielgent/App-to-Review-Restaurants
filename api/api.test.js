@@ -42,11 +42,15 @@ describe("api tests", () => {
         expect(res.statusCode).toBe(401);
       });
 
-      it("should return role when token supplied", async () => {
-        const token = jwt.sign({ role: "user" }, process.env.TOKEN_SECRET, {
-          // TODO - set really low and then test token refresh
-          expiresIn: "24h",
-        });
+      it("should return user info when token supplied", async () => {
+        const token = jwt.sign(
+          { role: "user", id: "foo-bar" },
+          process.env.TOKEN_SECRET,
+          {
+            // TODO - set really low and then test token refresh
+            expiresIn: "24h",
+          }
+        );
 
         const res = await agent
           .get("/me")
@@ -54,6 +58,8 @@ describe("api tests", () => {
 
         expect(res.statusCode).toBe(200);
         expect(res.body.role).toBe("user");
+        // returns back same id that we send
+        expect(res.body.id).toBe("foo-bar");
       });
 
       it("should not allow bad token", async () => {
@@ -130,6 +136,7 @@ describe("api tests", () => {
         });
 
         expect(res.body.role).toBe("user");
+        expect(res.body.id).toBeTruthy();
         expect(res.body.token).toBeTruthy();
 
         expect(res.statusCode).toBe(200);
