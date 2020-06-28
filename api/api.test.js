@@ -33,68 +33,97 @@ describe("api tests", () => {
     await db.close();
   });
 
-  it("should not allow any access when not logged in", async () => {
-    const res = await agent.get("/");
+  describe("auth tests", () => {
+    it("/me/ should not allow any access no token supplied", async () => {
+      const res = await agent.get("/me");
 
-    expect(res.statusCode).toBe(404);
-  });
-
-  it("should allow access when logged in", async () => {
-    const token = jwt.sign({ role: "user" }, process.env.TOKEN_SECRET, {
-      // TODO - set really low and then test token refresh
-      expiresIn: "24h",
+      expect(res.statusCode).toBe(401);
     });
 
-    const res = await agent
-      .get("/restaurants")
-      .set("Authorization", `Bearer ${token}`);
+    it("/me/ should return role when token supplied", async () => {
+      const token = jwt.sign({ role: "user" }, process.env.TOKEN_SECRET, {
+        // TODO - set really low and then test token refresh
+        expiresIn: "24h",
+      });
 
-    expect(res.statusCode).toBe(200);
+      const res = await agent
+        .get("/me")
+        .set("Authorization", `Bearer ${token}`);
 
-    const restaurants = res.body;
+      expect(res.statusCode).toBe(200);
+      expect(res.body.role).toBe("user");
+    });
 
-    expect(restaurants).toHaveLength(2);
+    it("/me/ should not allow bad token", async () => {
+      const token = jwt.sign({ role: "user" }, "NOT KEY USED BY SERVER", {
+        expiresIn: "24h",
+      });
 
-    expect(restaurants[0]).toEqual(
-      expect.objectContaining({
-        name: "Owner's Diner",
-        averageRating: 4,
-      })
-    );
+      const res = await agent
+        .get("/me")
+        .set("Authorization", `Bearer ${token}`);
 
-    expect(restaurants[0].highReview).toEqual(
-      expect.objectContaining({
-        rating: 5,
-      })
-    );
+      expect(res.statusCode).toBe(401);
+    });
+  });
 
-    expect(restaurants[0].lowReview).toEqual(
-      expect.objectContaining({
-        rating: 3,
-      })
-    );
+  describe("restaurant tests", () => {
+    it("should allow access when token provided", async () => {
+      const token = jwt.sign({ role: "user" }, process.env.TOKEN_SECRET, {
+        expiresIn: "24h",
+      });
 
-    expect(restaurants[1].recentReviews).toHaveLength(2);
+      const res = await agent
+        .get("/restaurants")
+        .set("Authorization", `Bearer ${token}`);
 
-    expect(restaurants[1]).toEqual(
-      expect.objectContaining({
-        name: "Steak House",
-        averageRating: 3,
-      })
-    );
+      expect(res.statusCode).toBe(200);
 
-    expect(restaurants[1].highReview).toEqual(
-      expect.objectContaining({
-        rating: 4,
-      })
-    );
+      const restaurants = res.body;
 
-    expect(restaurants[1].lowReview).toEqual(
-      expect.objectContaining({
-        rating: 2,
-      })
-    );
+      expect(restaurants).toHaveLength(2);
 
-    expect(restaurants[1].recentReviews).toHaveLength(2);
+      expect(restaurants[0]).toEqual(
+        expect.objectContaining({
+          name: "Owner's Diner",
+          averageRating: 4,
+        })
+      );
+
+      expect(restaurants[0].highReview).toEqual(
+        expect.objectContaining({
+          rating: 5,
+        })
+      );
+
+      expect(restaurants[0].lowReview).toEqual(
+        expect.objectContaining({
+          rating: 3,
+        })
+      );
+
+      expect(restaurants[1].recentReviews).toHaveLength(2);
+
+      expect(restaurants[1]).toEqual(
+        expect.objectContaining({
+          name: "Steak House",
+          averageRating: 3,
+        })
+      );
+
+      expect(restaurants[1].highReview).toEqual(
+        expect.objectContaining({
+          rating: 4,
+        })
+      );
+
+      expect(restaurants[1].lowReview).toEqual(
+        expect.objectContaining({
+          rating: 2,
+        })
+      );
+
+      expect(restaurants[1].recentReviews).toHaveLength(2);
+    });
   });
 });
