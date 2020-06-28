@@ -60,10 +60,7 @@ const seedDatabases = async () => {
   // create normal users
   const user1 = UserModel({
     username: "a-user",
-    password: Bcrypt.hashSync(
-      "password",
-      Number(process.env.REACT_APP_SALT_ROUNDS)
-    ),
+    password: Bcrypt.hashSync("a", Number(process.env.REACT_APP_SALT_ROUNDS)),
     email: "user1@example.com",
     role: "user",
   });

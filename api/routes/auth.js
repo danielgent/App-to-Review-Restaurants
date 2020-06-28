@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
-const Bcrypt = require("bcryptjs");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 var UserModel = require("../models/UserModel");
 
@@ -27,7 +28,7 @@ router.post("/register", async (req, res) => {
       });
     }
 
-    const password = Bcrypt.hashSync(
+    const password = bcrypt.hashSync(
       req.body.password,
       Number(process.env.REACT_APP_SALT_ROUNDS)
     );
@@ -55,17 +56,15 @@ router.post("/register", async (req, res) => {
 router.post("/login", async (req, res) => {
   try {
     const { username, password } = req.body;
-    // TODO - was warned against doing this! better to seed initial admin right
+    // TODO - was warned against doing this! better to seed initial admin right--------
     if (
       username === process.env.REACT_APP_ADMIN_USERNAME &&
       password === process.env.REACT_APP_ADMIN_PASSWORD
     ) {
-      // TODO - when do auth ticket
-      // req.session.role = "admin";
-
       res.send({
         role: "admin",
       });
+      // ------------------------------------------------------------
     } else {
       var user = await UserModel.findOne({
         username,
@@ -82,17 +81,20 @@ router.post("/login", async (req, res) => {
         });
       }
 
-      if (!Bcrypt.compareSync(password, user.password)) {
+      if (!bcrypt.compareSync(password, user.password)) {
         user.loginAttempts += 1;
         user.save();
         return res.status(400).send({ error: "The password is invalid" });
       }
 
-      // TODO - when do auth ticket
-      // req.session.role = user.role;
+      const token = jwt.sign({ user }, process.env.REACT_APP_TOKEN_SECRET, {
+        // TODO - set really low and then test token refresh
+        expiresIn: "24h",
+      });
 
       res.send({
         role: user.role,
+        token,
       });
     }
   } catch (error) {

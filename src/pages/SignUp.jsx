@@ -198,7 +198,7 @@ const SignUp = (props) => {
                         <FormLabel htmlFor="role">Select role</FormLabel>
                         <Select id="role" {...field}>
                           <option value={ROLES.user}>User</option>
-                          <option value={ROLES.owner}>Admin</option>
+                          <option value={ROLES.owner}>Owner</option>
                         </Select>
                       </FormControl>
                     );
