@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+var { authLoggedIn } = require("../middleware/auth");
 
 var UserModel = require("../models/UserModel");
 
@@ -83,7 +84,7 @@ router.post("/login", async (req, res) => {
         return res.status(400).send({ error: "The password is invalid" });
       }
 
-      const token = jwt.sign({ user }, process.env.TOKEN_SECRET, {
+      const token = jwt.sign({ role: user.role }, process.env.TOKEN_SECRET, {
         // TODO - set really low and then test token refresh
         expiresIn: "24h",
       });
@@ -93,6 +94,15 @@ router.post("/login", async (req, res) => {
         token,
       });
     }
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+});
+
+router.get("/me", authLoggedIn, async (req, res) => {
+  try {
+    res.status(200).json({ role: req.user.role, token: req.body.token });
   } catch (error) {
     console.log(error);
     res.status(500).send(error);

@@ -22,7 +22,7 @@ const refetch = ({ setIsLoading, setRestaurants, filters }) => {
 };
 
 const Home = (props) => {
-  const [restaurants, setRestaurants] = React.useState(null);
+  const [restaurants, setRestaurants] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
   const [
     filters,

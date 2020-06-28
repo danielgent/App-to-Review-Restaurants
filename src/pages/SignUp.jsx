@@ -31,7 +31,7 @@ const SignUp = (props) => {
     setServerErrorMessage("");
 
     axios
-      .post(`${process.env.REACT_APP_API_URL}/auth/register`, {
+      .post(`${process.env.REACT_APP_API_URL}/register`, {
         username: values.username,
         email: values.email,
         password: values.password,

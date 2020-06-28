@@ -9,6 +9,7 @@ import LogOut from "./pages/LogOut";
 import Home from "./pages/Home";
 import Restaurant from "./pages/Restaurant";
 import UserContext from "contexts/user-context";
+import UserMe from "components/UserMe";
 
 import "./App.css";
 
@@ -21,6 +22,7 @@ function App() {
       <ThemeProvider>
         <CSSReset />
         <Router>
+          <UserMe />
           <Box p={2}>
             <Link to="/sign-up">Sign up</Link>
             <Link to="/login">Log in</Link>
@@ -34,7 +36,7 @@ function App() {
                 <Route path="/login" component={LogIn} />
                 <Route path="/logout" component={LogOut} />
                 <Route path="/restaurant/:id" component={Restaurant} />
-                <Route path="/" component={Home} />
+                {user && <Route path="/" component={Home} />}
               </Switch>
             </Box>
           </Box>

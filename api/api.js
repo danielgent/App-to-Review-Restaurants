@@ -21,7 +21,7 @@ const createApp = (db) => {
   app.use("/users", users);
   app.use("/reviews", reviews);
   app.use("/restaurants", restaurants);
-  app.use("/auth", auth);
+  app.use("/", auth);
 
   return app;
 };

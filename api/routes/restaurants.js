@@ -2,7 +2,7 @@ var express = require("express");
 var router = express.Router();
 var RestaurantModel = require("../models/RestaurantModel");
 var ReviewsModel = require("../models/ReviewsModel");
-var jwt = require("express-jwt");
+var { authLoggedIn } = require("../middleware/auth");
 
 const enrichRestaurant = async (r) => {
   const reviews = await ReviewsModel.find({
@@ -42,53 +42,68 @@ const enrichRestaurant = async (r) => {
   };
 };
 
-router.get("/", jwt({ secret: process.env.TOKEN_SECRET }), async (req, res) => {
-  const restaurants = await RestaurantModel.find({}, "name owner").exec();
+router.get("/", authLoggedIn, async (req, res) => {
+  try {
+    const restaurants = await RestaurantModel.find({}, "name owner").exec();
 
-  const enrichedRestaurants = await Promise.all(
-    restaurants.map(enrichRestaurant)
-  );
+    const enrichedRestaurants = await Promise.all(
+      restaurants.map(enrichRestaurant)
+    );
 
-  res.status(200).send(enrichedRestaurants);
+    res.status(200).send(enrichedRestaurants);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
 });
 
 router.get("/:id", async (req, res) => {
-  const id = req.params.id;
+  try {
+    const id = req.params.id;
 
-  RestaurantModel.findById(id, function (err, resMongo) {
-    enrichRestaurant(resMongo).then((enriched) => {
-      // here get latest reviews
-      return res.status(200).json(enriched);
+    RestaurantModel.findById(id, function (err, resMongo) {
+      enrichRestaurant(resMongo).then((enriched) => {
+        // here get latest reviews
+        return res.status(200).json(enriched);
+      });
     });
-  });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
 });
 
 // PERMISSIONS - owner
 router.post("/", (req, res) => {
-  // TODO - load first user
-  // const users = await UserModel.find(
-  //   role
-  //     ? {
-  //         role,
-  //       }
-  //     : {},
-  //   "username role"
-  // ).exec();
+  try {
+    // TODO - load first user
+    // const users = await UserModel.find(
+    //   role
+    //     ? {
+    //         role,
+    //       }
+    //     : {},
+    //   "username role"
+    // ).exec();
 
-  const restaurant = {
-    ...req.body,
-    // TODO - this should come from auth data
-    owner: "123123131",
-    dateAdded: new Date().toDateString(),
-  };
+    const restaurant = {
+      ...req.body,
+      // TODO - this should come from auth data
+      owner: "123123131",
+      dateAdded: new Date().toDateString(),
+    };
 
-  var restaurant_instance = new RestaurantModel(restaurant);
-  restaurant_instance.save(function (err, dbRes) {
-    // no validation here necessary. user can make duplicate names
-    // if (err) return handleError(err, res);
+    var restaurant_instance = new RestaurantModel(restaurant);
+    restaurant_instance.save(function (err, dbRes) {
+      // no validation here necessary. user can make duplicate names
+      // if (err) return handleError(err, res);
 
-    res.status(200).json(dbRes);
-  });
+      res.status(200).json(dbRes);
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
 });
 
 module.exports = router;
