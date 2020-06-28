@@ -31,9 +31,7 @@ const LogIn = (props) => {
     axios
       .post(`${process.env.REACT_APP_API_URL}/login`, {
         username: values.username,
-        email: values.email,
         password: values.password,
-        role: values.role,
       })
       .then(({ data }) => {
         const { token, role } = data;

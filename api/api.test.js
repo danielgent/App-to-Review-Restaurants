@@ -13,6 +13,7 @@ describe("api tests", () => {
   let agent;
 
   beforeAll(async () => {
+    // TODO - try and split this up BUT would need one database per route
     var mongoDB = "mongodb://127.0.0.1:27017/testdb";
 
     mongoose.connect(mongoDB, { useNewUrlParser: true });
@@ -34,36 +35,61 @@ describe("api tests", () => {
   });
 
   describe("auth tests", () => {
-    it("/me/ should not allow any access no token supplied", async () => {
-      const res = await agent.get("/me");
+    describe("/me/", () => {
+      it("should not allow any access no token supplied", async () => {
+        const res = await agent.get("/me");
 
-      expect(res.statusCode).toBe(401);
-    });
-
-    it("/me/ should return role when token supplied", async () => {
-      const token = jwt.sign({ role: "user" }, process.env.TOKEN_SECRET, {
-        // TODO - set really low and then test token refresh
-        expiresIn: "24h",
+        expect(res.statusCode).toBe(401);
       });
 
-      const res = await agent
-        .get("/me")
-        .set("Authorization", `Bearer ${token}`);
+      it("should return role when token supplied", async () => {
+        const token = jwt.sign({ role: "user" }, process.env.TOKEN_SECRET, {
+          // TODO - set really low and then test token refresh
+          expiresIn: "24h",
+        });
 
-      expect(res.statusCode).toBe(200);
-      expect(res.body.role).toBe("user");
-    });
+        const res = await agent
+          .get("/me")
+          .set("Authorization", `Bearer ${token}`);
 
-    it("/me/ should not allow bad token", async () => {
-      const token = jwt.sign({ role: "user" }, "NOT KEY USED BY SERVER", {
-        expiresIn: "24h",
+        expect(res.statusCode).toBe(200);
+        expect(res.body.role).toBe("user");
       });
 
-      const res = await agent
-        .get("/me")
-        .set("Authorization", `Bearer ${token}`);
+      it("should not allow bad token", async () => {
+        const token = jwt.sign({ role: "user" }, "NOT KEY USED BY SERVER", {
+          expiresIn: "24h",
+        });
 
-      expect(res.statusCode).toBe(401);
+        const res = await agent
+          .get("/me")
+          .set("Authorization", `Bearer ${token}`);
+
+        expect(res.statusCode).toBe(401);
+      });
+    });
+    describe("/login/", () => {
+      it("should reject wrong username", async () => {
+        const res = await agent.post("/login").send({
+          username: "not a user",
+          password: "xxxx",
+        });
+
+        expect(res.body.error).toBe("The username does not exist");
+
+        expect(res.statusCode).toBe(400);
+      });
+
+      it.only("should reject bad password", async () => {
+        const res = await agent.post("/login").send({
+          username: "b-user",
+          password: "xxxx",
+        });
+
+        expect(res.body.error).toBe("The password is invalid");
+
+        expect(res.statusCode).toBe(400);
+      });
     });
   });
 

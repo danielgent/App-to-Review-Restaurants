@@ -53,47 +53,36 @@ router.post("/register", async (req, res) => {
 router.post("/login", async (req, res) => {
   try {
     const { username, password } = req.body;
-    // TODO - was warned against doing this! better to seed initial admin right--------
-    if (
-      username === process.env.REACT_APP_ADMIN_USERNAME &&
-      password === process.env.REACT_APP_ADMIN_PASSWORD
-    ) {
-      res.send({
-        role: "admin",
-      });
-      // ------------------------------------------------------------
-    } else {
-      var user = await UserModel.findOne({
-        username,
-      }).exec();
+    var user = await UserModel.findOne({
+      username,
+    }).exec();
 
-      if (!user) {
-        return res.status(400).send({ error: "The username does not exist" });
-      }
+    if (!user) {
+      return res.status(400).send({ error: "The username does not exist" });
+    }
 
-      if (user.loginAttempts >= 3) {
-        return res.status(400).send({
-          error:
-            "Too many failed login attempts. Account blocked. Please contact admin",
-        });
-      }
-
-      if (!bcrypt.compareSync(password, user.password)) {
-        user.loginAttempts += 1;
-        user.save();
-        return res.status(400).send({ error: "The password is invalid" });
-      }
-
-      const token = jwt.sign({ role: user.role }, process.env.TOKEN_SECRET, {
-        // TODO - set really low and then test token refresh
-        expiresIn: "24h",
-      });
-
-      res.send({
-        role: user.role,
-        token,
+    if (user.loginAttempts >= 3) {
+      return res.status(400).send({
+        error:
+          "Too many failed login attempts. Account blocked. Please contact admin",
       });
     }
+
+    if (!bcrypt.compareSync(password, user.password)) {
+      user.loginAttempts += 1;
+      user.save();
+      return res.status(400).send({ error: "The password is invalid" });
+    }
+
+    const token = jwt.sign({ role: user.role }, process.env.TOKEN_SECRET, {
+      // TODO - set really low and then test token refresh
+      expiresIn: "24h",
+    });
+
+    res.send({
+      role: user.role,
+      token,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).send(error);
