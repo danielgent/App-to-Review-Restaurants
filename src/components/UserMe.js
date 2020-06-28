@@ -2,12 +2,14 @@ import React from "react";
 import { withRouter } from "react-router";
 import axios from "axios";
 import { useMount } from "react-use";
+import { useToast } from "@chakra-ui/core";
 
 import UserContext from "contexts/user-context";
 import { LOCAL_STORAGE_TOKEN_KEY } from "globalConstants";
 
 const UserMe = ({ history }) => {
   const { updateUser } = React.useContext(UserContext);
+  const toast = useToast();
 
   useMount(() => {
     const token = localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY);
@@ -22,13 +24,24 @@ const UserMe = ({ history }) => {
             Authorization: `Bearer ${token}`,
           },
         })
-        .then(function (response) {
-          console.log("response");
-          // store role + token
+        .then(function ({ data }) {
+          updateUser({ role: data.role, token });
+          toast({
+            description: "Successfully logged in",
+            status: "success",
+            duration: 9000,
+            isClosable: true,
+          });
         })
         .catch(function (error) {
-          // go to login page. redirect here history.push
           console.log(error);
+          toast({
+            description: "Need to login again",
+            status: "error",
+            duration: 9000,
+            isClosable: true,
+          });
+          history.push("/login");
         });
     }
   });
