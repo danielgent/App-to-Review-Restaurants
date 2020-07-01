@@ -29,10 +29,17 @@ const Profile = (props) => {
   return (
     <Box>
       <Heading as="h1">Profile</Heading>
-      <Stack isInline spacing={8}>
-        <Text>Current Profile picture</Text>
-        <Avatar name={user.username} mr={4} src={user.avatarImageUrl} />
-      </Stack>
+
+      <Flex align="center" justify="center">
+        {user ? (
+          <>
+            <Text mr={8}>Current Profile picture</Text>
+            <Avatar name={user.username} mr={4} src={user.avatarImageUrl} />
+          </>
+        ) : (
+          <Spinner />
+        )}
+      </Flex>
       <Box p={10}>
         <Flex
           align="center"

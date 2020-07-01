@@ -22,7 +22,11 @@ const UserMe = ({ history }) => {
           headers: getAuthHeader(),
         })
         .then(function ({ data }) {
-          updateUser({ role: data.role, token });
+          updateUser({
+            role: data.role,
+            avatarFilename: data.avatarFilename,
+            username: data.username,
+          });
           toast({
             description: "Successfully logged in",
             status: "success",
