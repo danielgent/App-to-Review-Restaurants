@@ -99,15 +99,14 @@ const seedDatabases = async () => {
     reply: "Thank you for the review! Hope to see you again soon!",
     dateCreated: "2020-06-01T10:42:53.397Z",
   }).save();
-  await ReviewsModel({
+  // no reply for this review
+  const review3 = await ReviewsModel({
     comment:
       "I currently don't need any changes, but it's good to know you'll be able to assist, and that later on I'll be able to do it myself.",
     reviewer: user2._id,
     restaurant: restaurant1._id,
     rating: 3,
     visitDate: "2020-03-04",
-    reply:
-      "Sorry to hear your experience at the store was not the best. The amount that was paid was for the new tube + installation. Apologies for the miss understanding.",
     dateCreated: "2020-06-01T10:42:53.397Z",
   }).save();
   await ReviewsModel({
@@ -117,6 +116,8 @@ const seedDatabases = async () => {
     restaurant: restaurant2._id,
     rating: 2,
     visitDate: "2020-04-01",
+    reply:
+      "Sorry to hear your experience at the store was not the best. The amount that was paid was for the new tube + installation. Apologies for the miss understanding.",
     dateCreated: "2020-06-01T10:42:53.397Z",
   }).save();
 
@@ -124,6 +125,7 @@ const seedDatabases = async () => {
     owner1Id: owner1._id.toString(),
     restaurant1Id: restaurant1._id.toString(),
     user3Id: user3._id.toString(),
+    review3Id: review3._id.toString(),
   };
 };
 

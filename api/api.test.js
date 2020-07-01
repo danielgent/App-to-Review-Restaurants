@@ -15,9 +15,10 @@ describe("api tests", () => {
   let owner1Id;
   let restaurant1Id;
   let user3Id;
+  let review3Id;
 
-  let ownerToken;
-  let userToken;
+  let owner1Token;
+  let user3Token;
 
   beforeAll(async () => {
     // TODO - try and split this huge test file up BUT would need one database per route
@@ -33,11 +34,11 @@ describe("api tests", () => {
 
     agent = request.agent(app);
 
-    ({ owner1Id, restaurant1Id, user3Id } = await seedDb());
+    ({ owner1Id, restaurant1Id, user3Id, review3Id } = await seedDb());
 
     console.log("user3Id ", user3Id);
 
-    ownerToken = jwt.sign(
+    owner1Token = jwt.sign(
       { role: "user", id: owner1Id },
       process.env.TOKEN_SECRET,
       {
@@ -45,7 +46,7 @@ describe("api tests", () => {
       }
     );
 
-    userToken = jwt.sign(
+    user3Token = jwt.sign(
       { role: "user", id: user3Id },
       process.env.TOKEN_SECRET,
       {
@@ -70,7 +71,7 @@ describe("api tests", () => {
       it("should return user info when token supplied", async () => {
         const res = await agent
           .get("/me")
-          .set("Authorization", `Bearer ${userToken}`);
+          .set("Authorization", `Bearer ${user3Token}`);
 
         expect(res.statusCode).toBe(200);
         expect(res.body.role).toBe("user");
@@ -215,7 +216,7 @@ describe("api tests", () => {
     it("/restaurants/ should give list of restaurants enriched", async () => {
       const res = await agent
         .get(`/restaurants`)
-        .set("Authorization", `Bearer ${userToken}`);
+        .set("Authorization", `Bearer ${user3Token}`);
 
       expect(res.statusCode).toBe(200);
 
@@ -269,7 +270,7 @@ describe("api tests", () => {
     it("/restaurants/[id] should give restaurant enriched", async () => {
       const res = await agent
         .get(`/restaurants/${restaurant1Id}`)
-        .set("Authorization", `Bearer ${userToken}`);
+        .set("Authorization", `Bearer ${user3Token}`);
 
       expect(res.body).toEqual(
         expect.objectContaining({
@@ -299,7 +300,7 @@ describe("api tests", () => {
         .send({
           name: "A new restaurant",
         })
-        .set("Authorization", `Bearer ${ownerToken}`);
+        .set("Authorization", `Bearer ${owner1Token}`);
 
       expect(res.statusCode).toBe(200);
 
@@ -315,7 +316,7 @@ describe("api tests", () => {
       // now get this restaurant
       const res2 = await agent
         .get(`/restaurants/${newRestaurantId}`)
-        .set("Authorization", `Bearer ${userToken}`);
+        .set("Authorization", `Bearer ${user3Token}`);
 
       expect(res2.body).toEqual(
         expect.objectContaining({
@@ -342,13 +343,13 @@ describe("api tests", () => {
           rating: 5,
           visitDate: "2020-04-04",
         })
-        .set("Authorization", `Bearer ${userToken}`);
+        .set("Authorization", `Bearer ${user3Token}`);
 
       expect(res.statusCode).toBe(200);
 
       const resUpdatedRestaurant = await agent
         .get(`/restaurants/${restaurant1Id}`)
-        .set("Authorization", `Bearer ${userToken}`);
+        .set("Authorization", `Bearer ${user3Token}`);
 
       // should now be latest review for this restaurant
       expect(resUpdatedRestaurant.body.recentReviews[0]).toEqual(
@@ -364,28 +365,31 @@ describe("api tests", () => {
       // * is user, hasn't already left review
     });
 
-    it.skip("/review/[id]/reply/ should reply", async () => {
-      // TODO - send up same owner id? meh. could be checking this if care
-
+    it("/review/[id]/reply/ should reply", async () => {
       const res = await agent
-        .post("/reviews")
+        .post(`/reviews/${review3Id}/reply`)
         .send({
-          comment: "lorem lorem lorem",
-          restaurant: restaurant1Id,
-          rating: 5,
-          visitDate: "2020-04-04",
+          reply: "some new reply from the owner",
         })
-        .set("Authorization", `Bearer ${userToken}`);
+        .set("Authorization", `Bearer ${owner1Token}`);
 
-      console.log("res ", res.body);
+      expect(res.statusCode).toBe(200);
+
+      const resUpdatedRestaurant = await agent
+        .get(`/restaurants/${restaurant1Id}`)
+        .set("Authorization", `Bearer ${user3Token}`);
+
+      const recentReviews = resUpdatedRestaurant.body.recentReviews;
+
+      // should now see this updated reply
+      expect(recentReviews[recentReviews.length - 1]).toEqual(
+        expect.objectContaining({
+          reply: "some new reply from the owner",
+        })
+      );
+
       // TO TEST
       // * is owner of that restaurant. anything else then can't. also that hasn't replied? (not huge problem just overwrite)
     });
   });
 });
-
-// TO TEST
-// * when creating, should also get all again and assert that can see?
-// POST restaurant, then GET that restaurant
-// POST /review/ then assert can see this review in latest reviews for that resturant
-// POST /reply/ same as above
