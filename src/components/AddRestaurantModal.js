@@ -18,12 +18,21 @@ import {
 import { Formik, Form, Field } from "formik";
 import axios from "axios";
 
+import { getAuthHeader } from "utils";
+
 const AddRestaurantModal = ({ isOpen, onClose, onSubmit }) => {
   const handleSubmit = (values, { setSubmitting, resetForm }) => {
     axios
-      .post(`${process.env.REACT_APP_API_URL}/restaurants`, {
-        name: values.name,
-      })
+      .post(
+        `${process.env.REACT_APP_API_URL}/restaurants`,
+        {
+          name: values.name,
+        },
+
+        {
+          headers: getAuthHeader(),
+        }
+      )
       .then(function (response) {
         onSubmit();
       })

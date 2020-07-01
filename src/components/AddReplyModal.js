@@ -18,6 +18,8 @@ import {
 import { Formik, Form, Field } from "formik";
 import axios from "axios";
 
+import { getAuthHeader } from "utils";
+
 const AddReplyModal = ({
   isOpen,
   onClose,
@@ -27,9 +29,15 @@ const AddReplyModal = ({
 }) => {
   const handleSubmit = (values, { setSubmitting, resetForm }) => {
     axios
-      .post(`${process.env.REACT_APP_API_URL}/reviews/${reviewId}/reply`, {
-        reply: values.reply,
-      })
+      .post(
+        `${process.env.REACT_APP_API_URL}/reviews/${reviewId}/reply`,
+        {
+          reply: values.reply,
+        },
+        {
+          headers: getAuthHeader(),
+        }
+      )
       .then(function (response) {
         onSubmit();
       })
