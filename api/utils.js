@@ -2,7 +2,10 @@ var ReviewsModel = require("./models/ReviewsModel");
 var UserModel = require("./models/UserModel");
 
 const enrichReview = async (r) => {
-  const reviewer = await UserModel.findById(r.reviewer).exec();
+  const reviewer = await UserModel.findById(
+    r.reviewer,
+    "avatarFilename username"
+  ).exec();
 
   return {
     ...r,
