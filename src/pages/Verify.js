@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams, useHistory, useLocation } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { Spinner, Flex, Box, Heading, Text } from "@chakra-ui/core";
 import axios from "axios";
 
@@ -18,7 +18,7 @@ const Verify = () => {
         headers: getAuthHeader(),
       })
       .then((response) => {
-        window.setTimeout(push, 5 * 1000, "/login");
+        window.setTimeout(push, 2 * 1000, "/login");
         setIsLoading(false);
       });
 
@@ -39,7 +39,7 @@ const Verify = () => {
     <Box p={16}>
       <Flex alignItems="center" alignContent="center">
         <Heading>Email verified</Heading>
-        <Text>Redirecting to Home page</Text>
+        <Text>Redirecting to Login page</Text>
       </Flex>
     </Box>
   );
