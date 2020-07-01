@@ -7,15 +7,18 @@ var { authLoggedIn } = require("../middleware/auth");
 var UserModel = require("../models/UserModel");
 
 var multer = require("multer");
-var upload = multer({ dest: "uploads/" });
+var upload = multer({
+  dest: "uploads/",
+  limits: {
+    fileSize: 1e6,
+  },
+});
 
 router.post(
   "/profile",
   authLoggedIn,
   upload.single("avatar"),
   async (req, res, next) => {
-    console.log("req.file ", req.file);
-
     const user = await UserModel.findById(req.user.id);
 
     user.avatarFilename = req.file.filename;

@@ -1,3 +1,5 @@
+const jwt = require("jsonwebtoken");
+
 const seedDatabases = async () => {
   var UserModel = require("./models/UserModel");
   var RestaurantModel = require("./models/RestaurantModel");
@@ -125,6 +127,18 @@ const seedDatabases = async () => {
       "Sorry to hear your experience at the store was not the best. The amount that was paid was for the new tube + installation. Apologies for the miss understanding.",
     dateCreated: "2020-06-01T10:42:53.397Z",
   }).save();
+
+  // OUTPUT FOR PASTING INTO POSTMAN
+
+  const user3Token = jwt.sign(
+    { role: "user", id: user3._id },
+    process.env.TOKEN_SECRET,
+    {
+      expiresIn: "24h",
+    }
+  );
+
+  console.log("user3Token ", user3Token);
 
   return {
     owner1Id: owner1._id.toString(),
