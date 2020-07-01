@@ -26,7 +26,6 @@ const AddReplyModal = ({
   handleSubmitReply,
 }) => {
   const handleSubmit = (values, { setSubmitting, resetForm }) => {
-    console.log("handleSubmit");
     axios
       .post(`${process.env.REACT_APP_API_URL}/reviews/${reviewId}/reply`, {
         reply: values.reply,

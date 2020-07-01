@@ -4,7 +4,7 @@ var { authLoggedIn } = require("../middleware/auth");
 
 var ReviewsModel = require("../models/ReviewsModel");
 
-// TO DELETE: endpoint not used
+// TO DELETE: endpoint debugging only
 router.get("/", async (req, res) => {
   const reviews = await ReviewsModel.find({}).exec();
 
@@ -21,7 +21,9 @@ router.post("/", authLoggedIn, (req, res) => {
 
   var review_instance = new ReviewsModel(review);
   review_instance.save(function (err, dbRes) {
-    // if (err) return handleError(err, res);
+    if (err) {
+      res.status(500).json({ error: err });
+    }
 
     res.status(200).json(dbRes);
   });
@@ -35,7 +37,9 @@ router.post("/:id/reply", authLoggedIn, (req, res) => {
   const review_update = { reply: req.body.reply };
 
   ReviewsModel.findByIdAndUpdate(id, review_update, function (err, resMongo) {
-    // if (err) return handleError(err, res);
+    if (err) {
+      res.status(500).json({ error: err });
+    }
 
     return res.status(200).json({ message: "Updated Successfully", data: {} });
   });

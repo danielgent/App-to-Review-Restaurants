@@ -20,18 +20,26 @@ import { Formik, Form, Field } from "formik";
 import axios from "axios";
 import DatePicker from "react-datepicker";
 
+import { getAuthHeader } from "utils";
+
 const formatDate = (date) =>
   `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
 
 const AddReviewModal = ({ isOpen, onClose, onSubmit, restaurantId }) => {
   const handleSubmit = (values, { setSubmitting, resetForm }) => {
     axios
-      .post(`${process.env.REACT_APP_API_URL}/reviews`, {
-        comment: values.comment,
-        restaurant: restaurantId,
-        rating: Number.parseInt(values.rating, 10),
-        visitDate: formatDate(values.visitDate),
-      })
+      .post(
+        `${process.env.REACT_APP_API_URL}/reviews`,
+        {
+          comment: values.comment,
+          restaurant: restaurantId,
+          rating: Number.parseInt(values.rating, 10),
+          visitDate: formatDate(values.visitDate),
+        },
+        {
+          headers: getAuthHeader(),
+        }
+      )
       .then(function (response) {
         onSubmit();
       })

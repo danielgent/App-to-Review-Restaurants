@@ -11,11 +11,9 @@ import {
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
-// import restaurants from "fixtures/restaurants";
-// import reviews from "fixtures/reviews";
-
 import CommentItem from "components/CommentItem";
 import AddReviewModal from "components/AddReviewModal";
+import { getAuthHeader } from "utils";
 
 const SectionTitle = (props) => (
   <Heading as="h2" size="md" mb={6} color="gray.600" {...props} />
@@ -26,7 +24,9 @@ const Section = (props) => <Box padding={2} mb={4} {...props} />;
 const refetch = ({ setIsLoading, setRestaurant, id }) => {
   setIsLoading(true);
   axios
-    .get(`${process.env.REACT_APP_API_URL}/restaurants/${id}`)
+    .get(`${process.env.REACT_APP_API_URL}/restaurants/${id}`, {
+      headers: getAuthHeader(),
+    })
     .then((response) => {
       setRestaurant(response.data);
     })

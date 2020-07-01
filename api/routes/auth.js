@@ -74,10 +74,14 @@ router.post("/login", async (req, res) => {
       return res.status(400).send({ error: "The password is invalid" });
     }
 
-    const token = jwt.sign({ role: user.role }, process.env.TOKEN_SECRET, {
-      // TODO - set really low and then test token refresh
-      expiresIn: "24h",
-    });
+    const token = jwt.sign(
+      { role: user.role, id: user._id },
+      process.env.TOKEN_SECRET,
+      {
+        // TODO - set really low and then test token refresh
+        expiresIn: "24h",
+      }
+    );
 
     res.send({
       role: user.role,

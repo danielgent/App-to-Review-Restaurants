@@ -38,6 +38,7 @@ describe("api tests", () => {
 
     console.log("user3Id ", user3Id);
 
+    // TODO - create these by actually loggin in! safer
     owner1Token = jwt.sign(
       { role: "user", id: owner1Id },
       process.env.TOKEN_SECRET,
