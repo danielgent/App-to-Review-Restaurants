@@ -12,6 +12,8 @@ const UserModel = new Mongoose.model("user", {
   password: { type: String, required: true },
   role: { type: String, required: true, enum: Object.keys(ROLES) },
   loginAttempts: { type: Number, default: 0 },
+  // TODO - should be name right?
+  avatarFilename: { type: String, required: true },
 });
 
 module.exports = UserModel;
