@@ -1,47 +1,8 @@
 var express = require("express");
 var router = express.Router();
 var RestaurantModel = require("../models/RestaurantModel");
-var ReviewsModel = require("../models/ReviewsModel");
 var { authLoggedIn } = require("../middleware/auth");
-
-const enrichRestaurant = async (r) => {
-  const reviews = await ReviewsModel.find({
-    restaurant: r._id,
-  })
-    .sort("-dateCreated")
-    // not sure if this makes a difference
-    .lean()
-    .exec();
-
-  const total = reviews.length;
-
-  let sum = 0;
-  let highReview = null;
-  let lowReview = null;
-
-  for (let i = 0; i < total; i++) {
-    const r = reviews[i];
-    sum += r.rating;
-    if (!lowReview || r.rating <= lowReview.rating) {
-      lowReview = r;
-    }
-    if (!highReview || r.rating >= highReview.rating) {
-      highReview = r;
-    }
-  }
-
-  const averageRating = sum / total;
-
-  return {
-    // mongoose model
-    ...r._doc,
-    averageRating,
-    highReview,
-    lowReview,
-    // TODO - need much more fixtures to then be able to return the first few
-    recentReviews: reviews,
-  };
-};
+var { enrichRestaurant } = require("../utils");
 
 router.get("/", authLoggedIn, async (req, res) => {
   try {
