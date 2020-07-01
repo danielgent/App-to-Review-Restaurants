@@ -105,6 +105,12 @@ router.post("/login", async (req, res) => {
       });
     }
 
+    if (!user.isVerified) {
+      return res.status(400).send({
+        error: "Email not verified. Please check your inbox",
+      });
+    }
+
     if (!bcrypt.compareSync(password, user.password)) {
       user.loginAttempts += 1;
       user.save();

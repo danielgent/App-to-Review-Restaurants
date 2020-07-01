@@ -128,7 +128,7 @@ describe("api tests", () => {
         expect(res.statusCode).toBe(400);
       });
 
-      it("should blockreject bad password", async () => {
+      it("should reject bad password", async () => {
         const res = await agent.post("/login").send({
           username: "another-owner",
           password: "xxxx",
@@ -158,6 +158,19 @@ describe("api tests", () => {
         );
 
         expect(blockedRes.statusCode).toBe(400);
+      });
+
+      it("should reject unverified account", async () => {
+        const res = await agent.post("/login").send({
+          username: "user-no-reviews",
+          password: "password-3",
+        });
+
+        expect(res.body.error).toBe(
+          "Email not verified. Please check your inbox"
+        );
+
+        expect(res.statusCode).toBe(400);
       });
 
       it("should return role and token when login correct", async () => {
@@ -250,14 +263,18 @@ describe("api tests", () => {
     describe("/verify/", () => {
       it.todo("should reject non-existent code");
       it.todo("should reject account already verified");
-      it.only("should verify new account already verified", async () => {
+      it("should verify new account already verified", async () => {
         const res = await agent.get(`/verify/?code=example-verification-token`);
 
         expect(res.statusCode).toBe(200);
 
-        // TODO
-        // - now try and login with this?
-        // should login first with new accoutn and verify that doesn't work
+        // now can login with this account (earlier test shows this failing)
+        const res2 = await agent.post("/login").send({
+          username: "user-no-reviews",
+          password: "password-3",
+        });
+
+        expect(res2.statusCode).toBe(200);
       });
     });
   });
