@@ -74,7 +74,9 @@ router.post("/login", async (req, res) => {
       return res.status(400).send({ error: "The password is invalid" });
     }
 
+    // TODO - haven't actually tested this part of the process!
     const token = jwt.sign(
+      // authentication: just include user id, authorization: also use role from here.  really should look up and add in middleware but meh
       { role: user.role, id: user._id },
       process.env.TOKEN_SECRET,
       {
