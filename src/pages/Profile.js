@@ -9,11 +9,14 @@ import {
   useDisclosure,
 } from "@chakra-ui/core";
 import React from "react";
+import axios from "axios";
+
 import UserContext from "contexts/user-context";
 import UploadProfileModal from "components/UploadProfileModal";
+import { getAuthHeader } from "utils";
 
 const Profile = (props) => {
-  const { user } = React.useContext(UserContext);
+  const { user, updateUser } = React.useContext(UserContext);
   const {
     isOpen: uploadProfileModalIsOpen,
     onOpen: onUploadProfileModalOpen,
@@ -22,6 +25,26 @@ const Profile = (props) => {
 
   const makeAvatarImageUrl = (avatarFilename) =>
     `${process.env.REACT_APP_API_URL}/${avatarFilename}`;
+
+  const refetch = () => {
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/me`, {
+        headers: getAuthHeader(),
+      })
+      .then(function ({ data }) {
+        // TODO this is duplicated from UserMe and Login. Want a hook to refresh userData raelly
+        updateUser({
+          role: data.role,
+          avatarFilename: data.avatarFilename,
+          username: data.username,
+        });
+      });
+  };
+
+  const handleNewLogo = () => {
+    refetch();
+    onUploadProfileModalClose();
+  };
 
   return (
     <Box p={10}>
@@ -48,6 +71,7 @@ const Profile = (props) => {
       <UploadProfileModal
         isOpen={uploadProfileModalIsOpen}
         onClose={onUploadProfileModalClose}
+        onSubmit={handleNewLogo}
       />
     </Box>
   );

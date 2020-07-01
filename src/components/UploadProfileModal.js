@@ -74,7 +74,7 @@ const UploadProfileModal = ({
           duration: 9000,
           isClosable: true,
         });
-        onClose();
+        onSubmit();
       })
       .catch(function (error) {
         // here output to somewhere!
