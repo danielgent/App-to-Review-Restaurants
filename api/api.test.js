@@ -230,6 +230,20 @@ describe("api tests", () => {
     });
   });
 
+  describe("users tests", () => {
+    it("/users/profile should take new image file", async () => {
+      const res = await agent
+        .post(`/users/profile`)
+        .attach("avatar", __dirname + "/fixtures/unicorns.jpg")
+        .set("Authorization", `Bearer ${user3Token}`);
+
+      expect(res.statusCode).toBe(200);
+
+      // TODO
+      // - assert that has new profile pic BUT using random multer name. need to add predictable suffix for testing..
+    });
+  });
+
   describe("restaurant tests", () => {
     it("/restaurants/ should give list of restaurants enriched", async () => {
       const res = await agent
