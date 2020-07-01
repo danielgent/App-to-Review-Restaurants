@@ -14,6 +14,8 @@ import {
   Flex,
   useToast,
   Text,
+  Alert,
+  Icon,
 } from "@chakra-ui/core";
 import axios from "axios";
 import { useDropzone } from "react-dropzone";
@@ -28,12 +30,18 @@ const UploadProfileModal = ({
   handleSubmitReply,
 }) => {
   const [file, setFile] = React.useState(null);
+  const [error, setError] = React.useState(null);
   const toast = useToast();
 
-  const onDrop = React.useCallback((acceptedFiles) => {
+  const onDropAccepted = (acceptedFiles) => {
     const imageBlob = acceptedFiles[0];
     setFile(imageBlob);
-  }, []);
+    setError();
+  };
+
+  const onDropRejected = (rejectedFiles) => {
+    setError("Please check uploaded images and try again");
+  };
 
   const {
     getRootProps,
@@ -41,7 +49,15 @@ const UploadProfileModal = ({
     isDragActive,
     isDragAccept,
     isDragReject,
-  } = useDropzone({ onDrop });
+  } = useDropzone({
+    accept: "image/*",
+    onDropAccepted,
+    onDropRejected,
+    multiple: false,
+    maxSize: 1e6,
+  });
+  // onDropRejected={handleDropRejected}
+  // error={dropError}
 
   const handleUpload = () => {
     const data = new FormData();
@@ -96,12 +112,15 @@ const UploadProfileModal = ({
                         {...getInputProps()}
                       />
                       {isDragActive ? (
-                        <p>Drop the file here ...</p>
+                        <Text>Drop the file here ...</Text>
                       ) : (
-                        <p>
-                          Drag 'n' drop a new profile picture here, or click to
-                          select
-                        </p>
+                        <>
+                          <Text>
+                            Drag 'n' drop a new profile picture here, or click
+                            to select
+                          </Text>
+                          <Text fontSize="xs">Max image size is 1mb</Text>
+                        </>
                       )}
                     </Flex>
                   ) : (
@@ -114,6 +133,18 @@ const UploadProfileModal = ({
                         Clear
                       </Button>
                     </Flex>
+                  )}
+                  {error && (
+                    <Alert
+                      status="error"
+                      flexDirection="column"
+                      justifyContent="center"
+                      textAlign="center"
+                      height="200px"
+                    >
+                      <Icon name="warning" size="32px" color="red.500" />
+                      <Text maxWidth="sm">{error}</Text>
+                    </Alert>
                   )}
                 </Box>
               </FormControl>

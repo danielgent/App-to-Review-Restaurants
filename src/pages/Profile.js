@@ -20,16 +20,6 @@ const Profile = (props) => {
     onClose: onUploadProfileModalClose,
   } = useDisclosure();
 
-  // props to odl style
-  //   helpText="File Type: .png , .jpeg, .gif. Max size: 2 Mb."
-  // accept="image/*"
-  // maxSize={2e6}
-  // onDropAccepted={handleDropAccepted}
-  // onDropRejected={handleDropRejected}
-  // error={dropError}
-  // multiple={false}
-  // styleProps={{ h: { xs: 300, md: 400 } }}
-
   const makeAvatarImageUrl = (avatarFilename) =>
     `${process.env.REACT_APP_API_URL}/${avatarFilename}`;
 
