@@ -1,9 +1,19 @@
-import { Box, Heading, Flex, Spinner } from "@chakra-ui/core";
+import {
+  Box,
+  Heading,
+  Flex,
+  Spinner,
+  Stack,
+  Text,
+  Avatar,
+} from "@chakra-ui/core";
 import React, { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
+import UserContext from "contexts/user-context";
 
 const Profile = (props) => {
   const [isLoading, setIsLoading] = React.useState(false);
+  const { user } = React.useContext(UserContext);
 
   const onDrop = useCallback((acceptedFiles) => {
     // Do something with the files
@@ -19,6 +29,10 @@ const Profile = (props) => {
   return (
     <Box>
       <Heading as="h1">Profile</Heading>
+      <Stack isInline spacing={8}>
+        <Text>Current Profile picture</Text>
+        <Avatar name={user.username} mr={4} src={user.avatarImageUrl} />
+      </Stack>
       <Box p={10}>
         <Flex
           align="center"

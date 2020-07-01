@@ -75,9 +75,15 @@ describe("api tests", () => {
           .set("Authorization", `Bearer ${user3Token}`);
 
         expect(res.statusCode).toBe(200);
-        expect(res.body.role).toBe("user");
-        // returns back same id that we send
-        expect(res.body.id).toEqual(user3Id);
+
+        expect(res.body).toEqual(
+          expect.objectContaining({
+            id: user3Id,
+            role: "user",
+            username: "user-no-reviews",
+            avatarFilename: "kent-c-dodds",
+          })
+        );
       });
 
       it("should not allow bad token", async () => {
@@ -198,20 +204,21 @@ describe("api tests", () => {
         expect(res.body.error).toBe("unauthorized attempt");
         expect(res.statusCode).toBe(401);
       });
-      it.skip("should accept signup", async () => {
+      it("should accept signup", async () => {
         const res = await agent.post("/register").send({
           username: "fooooz",
           email: "foooz@example.com",
           password: "xxxx",
           role: "user",
-          // TODO
-          // file: [file object here]
         });
 
         expect(res.body.message).toBe("Sign up done");
         expect(res.statusCode).toBe(200);
       });
       // TODO - check can login with this new username + pwd (but only after email activiation tests)
+
+      // TO TEST
+      // - file endpoint!
     });
   });
 
@@ -272,13 +279,13 @@ describe("api tests", () => {
       // check reviewers enriched correctly
       expect(restaurants[1].highReview.reviewer).toEqual(
         expect.objectContaining({
-          avatarFilename: "code-beast.jpg",
+          avatarFilename: "code-beast",
           username: "a",
         })
       );
       expect(restaurants[1].lowReview.reviewer).toEqual(
         expect.objectContaining({
-          avatarFilename: "tioluwani-kolawole.jpg",
+          avatarFilename: "sage-adebayo",
           username: "b-user",
         })
       );

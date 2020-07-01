@@ -98,9 +98,18 @@ router.post("/login", async (req, res) => {
 
 router.get("/me", authLoggedIn, async (req, res) => {
   try {
-    res
-      .status(200)
-      .json({ role: req.user.role, id: req.user.id, token: req.body.token });
+    const user = await UserModel.findById(
+      req.user.id,
+      "avatarFilename username"
+    ).exec();
+
+    res.status(200).json({
+      role: req.user.role,
+      id: req.user.id,
+      token: req.body.token,
+      avatarFilename: user.avatarFilename,
+      username: user.username,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).send(error);
