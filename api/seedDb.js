@@ -21,6 +21,8 @@ const seedDatabases = async () => {
     email: "owner@example.com",
     role: "owner",
     avatarFilename: "dan-abramov",
+    isVerified: true,
+    verificationToken: "some-token",
   });
 
   // console.log("owner1 id", owner1._id);
@@ -45,6 +47,8 @@ const seedDatabases = async () => {
     email: "another-owner@example.com",
     role: "owner",
     avatarFilename: "sage-adebayo",
+    isVerified: true,
+    verificationToken: "some-token",
   });
 
   // console.log("owner2 id", owner2._id);
@@ -67,6 +71,8 @@ const seedDatabases = async () => {
     email: "user1@example.com",
     role: "user",
     avatarFilename: "code-beast",
+    isVerified: true,
+    verificationToken: "some-token",
   });
   await user1.save();
   const user2 = UserModel({
@@ -75,6 +81,8 @@ const seedDatabases = async () => {
     email: "user2@example.com",
     role: "user",
     avatarFilename: "sage-adebayo",
+    isVerified: true,
+    verificationToken: "some-token",
   });
   await user2.save();
   const user3 = UserModel({
@@ -83,6 +91,8 @@ const seedDatabases = async () => {
     email: "user3@example.com",
     role: "user",
     avatarFilename: "kent-c-dodds",
+    isVerified: true,
+    verificationToken: "some-token",
   });
   await user3.save();
 

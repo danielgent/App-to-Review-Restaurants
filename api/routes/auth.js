@@ -8,6 +8,35 @@ var UserModel = require("../models/UserModel");
 
 router.post("/register", async (req, res) => {
   try {
+    // // using Twilio SendGrid's v3 Node.js Library
+    // // https://github.com/sendgrid/sendgrid-nodejs
+    // const sgMail = require("@sendgrid/mail");
+    // // sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+    // sgMail.setApiKey(
+    //   "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"
+    // );
+
+    // const msg = {
+    //   to: "dan@danielgent.com",
+    //   // from: "test@example.com",
+    //   from: "dan@danielgent.com",
+    //   subject: "Sending with Twilio SendGrid is Fun",
+    //   text: "and easy to do anywhere, even with Node.js",
+    //   html: "<strong>and easy to do anywhere, even with Node.js</strong>",
+    // };
+    // // sgMail.send(msg);
+
+    // // Error: Forbidden;
+    // try {
+    //   await sgMail.send(msg);
+    // } catch (error) {
+    //   console.error(error);
+
+    //   if (error.response) {
+    //     console.error(error.response.body);
+    //   }
+    // }
+
     const { username, email, role } = req.body;
 
     const sameUsername = await UserModel.findOne({ username }).exec();
@@ -39,6 +68,7 @@ router.post("/register", async (req, res) => {
       password,
       email,
       role,
+      verificationToken: "TO FILL",
     });
     await user.save();
 
