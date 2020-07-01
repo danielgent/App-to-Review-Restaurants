@@ -20,7 +20,7 @@ const seedDatabases = async () => {
     role: "owner",
   });
 
-  console.log("owner1 id", owner1._id);
+  // console.log("owner1 id", owner1._id);
   await owner1.save();
 
   // create restaurant 1
@@ -29,7 +29,7 @@ const seedDatabases = async () => {
     owner: owner1._id,
   });
 
-  console.log("restaurant1 id", restaurant1._id);
+  // console.log("restaurant1 id", restaurant1._id);
   await restaurant1.save();
 
   // create owner 2
@@ -43,7 +43,7 @@ const seedDatabases = async () => {
     role: "owner",
   });
 
-  console.log("owner2 id", owner2._id);
+  // console.log("owner2 id", owner2._id);
 
   await owner2.save();
 
@@ -53,7 +53,7 @@ const seedDatabases = async () => {
     owner: owner2._id,
   });
 
-  console.log("restaurant2 id", restaurant2._id);
+  // console.log("restaurant2 id", restaurant2._id);
   await restaurant2.save();
 
   // create normal users
@@ -88,6 +88,7 @@ const seedDatabases = async () => {
     visitDate: "2020-01-01",
     reply:
       "Thank you for the 5 Stars. Hope you are enjoying the new frame and getting loads of miles under the belt.",
+    dateCreated: "2020-06-01T10:42:53.397Z",
   }).save();
   await ReviewsModel({
     comment: "Thanks for your very fast response and action",
@@ -96,6 +97,7 @@ const seedDatabases = async () => {
     rating: 4,
     visitDate: "2020-02-02",
     reply: "Thank you for the review! Hope to see you again soon!",
+    dateCreated: "2020-06-01T10:42:53.397Z",
   }).save();
   await ReviewsModel({
     comment:
@@ -106,6 +108,7 @@ const seedDatabases = async () => {
     visitDate: "2020-03-04",
     reply:
       "Sorry to hear your experience at the store was not the best. The amount that was paid was for the new tube + installation. Apologies for the miss understanding.",
+    dateCreated: "2020-06-01T10:42:53.397Z",
   }).save();
   await ReviewsModel({
     comment:
@@ -114,6 +117,7 @@ const seedDatabases = async () => {
     restaurant: restaurant2._id,
     rating: 2,
     visitDate: "2020-04-01",
+    dateCreated: "2020-06-01T10:42:53.397Z",
   }).save();
 
   return {

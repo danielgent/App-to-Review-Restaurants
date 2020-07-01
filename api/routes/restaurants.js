@@ -8,6 +8,7 @@ const enrichRestaurant = async (r) => {
   const reviews = await ReviewsModel.find({
     restaurant: r._id,
   })
+    .sort("-dateCreated")
     // not sure if this makes a difference
     .lean()
     .exec();

@@ -10,6 +10,7 @@ const ReviewsModel = new Mongoose.model("review", {
   reply: { type: String },
   // storing as ISO date
   visitDate: { type: String, required: true },
+  dateCreated: { type: Date, default: Date.now() },
 });
 
 module.exports = ReviewsModel;

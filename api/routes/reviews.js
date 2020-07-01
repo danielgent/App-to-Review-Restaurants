@@ -1,5 +1,6 @@
 var express = require("express");
 var router = express.Router();
+var { authLoggedIn } = require("../middleware/auth");
 
 var ReviewsModel = require("../models/ReviewsModel");
 
@@ -11,7 +12,7 @@ router.get("/", async (req, res) => {
 });
 
 // PERMISSIONS - user
-router.post("/", (req, res) => {
+router.post("/", authLoggedIn, (req, res) => {
   const review = {
     ...req.body,
     // current user
@@ -26,7 +27,7 @@ router.post("/", (req, res) => {
   });
 });
 
-router.post("/:id/reply", (req, res) => {
+router.post("/:id/reply", authLoggedIn, (req, res) => {
   const id = req.params.id;
 
   ReviewsModel.findById(id, function (err, resMongo) {});
