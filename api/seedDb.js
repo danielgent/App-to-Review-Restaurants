@@ -91,8 +91,8 @@ const seedDatabases = async () => {
     email: "user3@example.com",
     role: "user",
     avatarFilename: "kent-c-dodds",
-    isVerified: true,
-    verificationToken: "some-token",
+    isVerified: false,
+    verificationToken: "example-verification-token",
   });
   await user3.save();
 

@@ -155,4 +155,45 @@ router.get("/me", authLoggedIn, async (req, res) => {
   }
 });
 
+router.get("/verify", async (req, res) => {
+  try {
+    console.log("req.query ", req.query);
+    const { code } = req.query;
+
+    if (!code) {
+      // TODO - send properly but what code?
+      throw new Error("Code not provided");
+    }
+
+    const filter = {
+      verificationToken: code,
+    };
+
+    const user = await UserModel.findOne(filter);
+
+    if (!user) {
+      // TODO - send properly but what code?
+      throw new Error("Code not provided");
+    }
+
+    console.log("user ", user);
+
+    if (user.isVerified) {
+      // TODO - send properly but what code?
+      throw new Error("User already verified");
+    }
+
+    const update = { isVerified: true };
+
+    await UserModel.findOneAndUpdate(filter, update);
+
+    res.status(200).json({
+      message: "Email verified ok",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ error: error.message });
+  }
+});
+
 module.exports = router;

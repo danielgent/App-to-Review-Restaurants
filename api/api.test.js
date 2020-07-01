@@ -246,6 +246,20 @@ describe("api tests", () => {
       // TODO - check can login with this new username + pwd (but only after email activiation tests)
       // - verify email activation by pulling id from link in email and then visiting that. possible to do whole flow
     });
+
+    describe("/verify/", () => {
+      it.todo("should reject non-existent code");
+      it.todo("should reject account already verified");
+      it.only("should verify new account already verified", async () => {
+        const res = await agent.get(`/verify/?code=example-verification-token`);
+
+        expect(res.statusCode).toBe(200);
+
+        // TODO
+        // - now try and login with this?
+        // should login first with new accoutn and verify that doesn't work
+      });
+    });
   });
 
   describe("users tests", () => {
