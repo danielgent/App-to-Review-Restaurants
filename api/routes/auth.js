@@ -1,41 +1,18 @@
 var express = require("express");
+var crypto = require("crypto");
 var router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const sgMail = require("@sendgrid/mail");
+
 var { authLoggedIn } = require("../middleware/auth");
 
 var UserModel = require("../models/UserModel");
 
 router.post("/register", async (req, res) => {
   try {
-    // // using Twilio SendGrid's v3 Node.js Library
-    // // https://github.com/sendgrid/sendgrid-nodejs
-    // const sgMail = require("@sendgrid/mail");
-    // // sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-    // sgMail.setApiKey(
-    //   "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"
-    // );
-
-    // const msg = {
-    //   to: "dan@danielgent.com",
-    //   // from: "test@example.com",
-    //   from: "dan@danielgent.com",
-    //   subject: "Sending with Twilio SendGrid is Fun",
-    //   text: "and easy to do anywhere, even with Node.js",
-    //   html: "<strong>and easy to do anywhere, even with Node.js</strong>",
-    // };
-    // // sgMail.send(msg);
-
-    // // Error: Forbidden;
-    // try {
-    //   await sgMail.send(msg);
-    // } catch (error) {
-    //   console.error(error);
-
-    //   if (error.response) {
-    //     console.error(error.response.body);
-    //   }
-    // }
+    const verificationToken = crypto.randomBytes(16).toString("hex");
+    console.log("verificationToken ", verificationToken);
 
     const { username, email, role } = req.body;
 
@@ -54,21 +31,51 @@ router.post("/register", async (req, res) => {
       });
     }
 
+    if (!["user", "owner"].includes(role)) {
+      return res.status(401).json({ error: "unauthorized attempt" });
+    }
+
+    // TODO - read from .env once have worked out how works
+    // sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+    sgMail.setApiKey(
+      "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"
+    );
+
+    const msg = {
+      // should be user email
+      to: "dan@danielgent.com",
+      // read from .env as verified email
+      from: "dan@danielgent.com",
+      // TODO - this
+      subject: "Sending with Twilio SendGrid is Fun",
+      // paste in link somehow
+      text: "and easy to do anywhere, even with Node.js",
+      // here have activation link.
+      html: "<strong>and easy to do anywhere, even with Node.js</strong>",
+      // TODO - style this if time but only email
+    };
+
+    try {
+      await sgMail.send(msg);
+    } catch (error) {
+      console.error(error);
+
+      if (error.response) {
+        console.error(error.response.body);
+      }
+    }
+
     const password = bcrypt.hashSync(
       req.body.password,
       Number(process.env.SALT_ROUNDS)
     );
-
-    if (!["user", "owner"].includes(role)) {
-      return res.status(401).json({ error: "unauthorized attempt" });
-    }
 
     var user = new UserModel({
       username,
       password,
       email,
       role,
-      verificationToken: "TO FILL",
+      verificationToken,
     });
     await user.save();
 

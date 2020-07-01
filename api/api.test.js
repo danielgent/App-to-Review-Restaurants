@@ -6,6 +6,12 @@ const jwt = require("jsonwebtoken");
 
 var seedDb = require("./seedDb");
 var createApp = require("./api");
+const sgMail = require("@sendgrid/mail");
+
+jest.mock("@sendgrid/mail", () => ({
+  setApiKey: jest.fn(),
+  send: jest.fn(),
+}));
 
 describe("api tests", () => {
   let db;
@@ -189,6 +195,8 @@ describe("api tests", () => {
           "This username is already in use. Please select another"
         );
         expect(res.statusCode).toBe(409);
+
+        expect(sgMail.send).toHaveBeenCalledTimes(0);
       });
       it("should reject duplicate email", async () => {
         const res = await agent.post("/register").send({
@@ -200,6 +208,8 @@ describe("api tests", () => {
 
         expect(res.body.error).toBe("This email address is already in use");
         expect(res.statusCode).toBe(409);
+
+        expect(sgMail.send).toHaveBeenCalledTimes(0);
       });
       it("should reject hack to grant admin role", async () => {
         const res = await agent.post("/register").send({
@@ -211,8 +221,12 @@ describe("api tests", () => {
 
         expect(res.body.error).toBe("unauthorized attempt");
         expect(res.statusCode).toBe(401);
+
+        expect(sgMail.send).toHaveBeenCalledTimes(0);
       });
       it("should accept signup", async () => {
+        expect(sgMail.send).toHaveBeenCalledTimes(0);
+
         const res = await agent.post("/register").send({
           username: "fooooz",
           email: "foooz@example.com",
@@ -222,11 +236,15 @@ describe("api tests", () => {
 
         expect(res.body.message).toBe("Sign up done");
         expect(res.statusCode).toBe(200);
-      });
-      // TODO - check can login with this new username + pwd (but only after email activiation tests)
 
-      // TO TEST
-      // - file endpoint!
+        expect(sgMail.send).toHaveBeenCalledTimes(1);
+
+        // TODO
+        // - verify that sgMail.send() has been passed object with correct fields
+      });
+
+      // TODO - check can login with this new username + pwd (but only after email activiation tests)
+      // - verify email activation by pulling id from link in email and then visiting that. possible to do whole flow
     });
   });
 
