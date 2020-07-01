@@ -2,11 +2,24 @@ var express = require("express");
 var router = express.Router();
 const Bcrypt = require("bcryptjs");
 
-// TODO - when have auth
-// var { authLoggedIn, authRealtorOrAbove } = require("../middleware/auth");
-// var { handleError } = require("../middleware/error");
+// var { authLoggedIn } = require("../middleware/auth");
 
 var UserModel = require("../models/UserModel");
+
+var multer = require("multer");
+var upload = multer({ dest: "uploads/" });
+
+router.post(
+  "/profile",
+  // TODO later
+  // authLoggedIn,
+  upload.single("avatar"),
+  function (req, res, next) {
+    console.log("req.file ", req.file);
+  }
+);
+
+// UNTESTED AND DEBUG ONLY SO FAR BELOW------------------------------------------------------------------
 
 router.get(
   "/",
