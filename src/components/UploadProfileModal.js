@@ -20,7 +20,7 @@ import axios from "axios";
 
 import { getAuthHeader } from "utils";
 
-const AddReplyModal = ({
+const UploadProfileModal = ({
   isOpen,
   onClose,
   onSubmit,
@@ -28,16 +28,18 @@ const AddReplyModal = ({
   handleSubmitReply,
 }) => {
   const handleSubmit = (values, { setSubmitting, resetForm }) => {
+    const data = new FormData();
+    data.append("avatar", values.file);
+    axios({
+      method: "post",
+      url: "/sample",
+      data: data,
+    });
+
     axios
-      .post(
-        `${process.env.REACT_APP_API_URL}/reviews/${reviewId}/reply`,
-        {
-          reply: values.reply,
-        },
-        {
-          headers: getAuthHeader(),
-        }
-      )
+      .post(`${process.env.REACT_APP_API_URL}/profile`, data, {
+        headers: getAuthHeader(),
+      })
       .then(function (response) {
         onSubmit();
       })
@@ -51,12 +53,12 @@ const AddReplyModal = ({
     <Formik
       enableReinitialize
       initialValues={{
-        reply: "",
+        file: "",
       }}
       validate={(values) => {
         const errors = {};
-        if (!values.reply) {
-          errors.reply = "Please reply";
+        if (!values.file) {
+          errors.file = "Please select a file";
         }
         return errors;
       }}
@@ -66,24 +68,23 @@ const AddReplyModal = ({
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalContent>
             <Form>
-              <ModalHeader>Reply to review</ModalHeader>
+              <ModalHeader>Upload new profile image</ModalHeader>
               <ModalCloseButton />
               <ModalBody>
                 <Box p={4}>
                   <Stack spacing={5}>
-                    {/* TODO - show review here in quote box */}
-                    <Field type="text" name="reply" autoComplete="off">
+                    <Field type="text" name="file" autoComplete="off">
                       {({ field, form }) => {
                         const { errors, touched } = form;
                         return (
                           <FormControl
                             w={{ xs: "100%", sm: "280px" }}
-                            isInvalid={errors.reply && touched.reply}
+                            isInvalid={errors.file && touched.file}
                           >
-                            <FormLabel htmlFor="reply">Reply</FormLabel>
-                            {/* NOTE - text area.  Then need to change display to format new lines */}
-                            <Input id="reply" type="textarea" {...field} />
-                            <FormErrorMessage>{errors.reply}</FormErrorMessage>
+                            <FormLabel htmlFor="file">Upload file</FormLabel>
+                            {/* TODO - replace with file input dnd */}
+                            <Input id="file" type="textarea" {...field} />
+                            <FormErrorMessage>{errors.file}</FormErrorMessage>
                           </FormControl>
                         );
                       }}
@@ -102,7 +103,7 @@ const AddReplyModal = ({
                   Close
                 </Button>
                 <Button variant="ghost" type="submit">
-                  Reply
+                  Upload image
                 </Button>
               </ModalFooter>
             </Form>
@@ -113,4 +114,4 @@ const AddReplyModal = ({
   );
 };
 
-export default AddReplyModal;
+export default UploadProfileModal;

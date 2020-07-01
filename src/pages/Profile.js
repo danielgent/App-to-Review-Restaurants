@@ -1,7 +1,18 @@
-import { Box, Heading, Flex, Spinner, Text, Avatar } from "@chakra-ui/core";
+import {
+  Box,
+  Heading,
+  Flex,
+  Spinner,
+  Text,
+  Avatar,
+  useDisclosure,
+  Button,
+  Stack,
+} from "@chakra-ui/core";
 import React, { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import UserContext from "contexts/user-context";
+import UploadProfileModal from "components/UploadProfileModal";
 
 const Profile = (props) => {
   const { user } = React.useContext(UserContext);
@@ -22,6 +33,22 @@ const Profile = (props) => {
     isDragReject,
   } = useDropzone({ onDrop });
 
+  const {
+    isOpen: uploadProfileModalIsOpen,
+    onOpen: onUploadProfileModalOpen,
+    onClose: onUploadProfileModalClose,
+  } = useDisclosure();
+
+  // const handleSubmit = () => {
+  //   const data = new FormData();
+  //   data.append("document", blob);
+  //   axios({
+  //     method: "post",
+  //     url: "/sample",
+  //     data: data,
+  //   });
+  // };
+
   // props to odl style
   //   helpText="File Type: .png , .jpeg, .gif. Max size: 2 Mb."
   // accept="image/*"
@@ -41,6 +68,9 @@ const Profile = (props) => {
           <>
             <Text mr={8}>Current Profile picture</Text>
             <Avatar name={user.username} mr={4} src={user.avatarImageUrl} />
+            <Button onClick={onUploadProfileModalOpen}>
+              Upload new profile image
+            </Button>
           </>
         ) : (
           <Spinner />
@@ -92,6 +122,10 @@ const Profile = (props) => {
           <Box>FILE UPLOADED</Box>
         )}
       </Box>
+      <UploadProfileModal
+        isOpen={uploadProfileModalIsOpen}
+        onClose={onUploadProfileModalClose}
+      />
     </Box>
   );
 };
