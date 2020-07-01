@@ -11,8 +11,6 @@ import Restaurant from "./pages/Restaurant";
 import UserContext from "contexts/user-context";
 import UserMe from "components/UserMe";
 
-import "./App.css";
-
 function App() {
   const [user, setUser] = React.useState(null);
 
