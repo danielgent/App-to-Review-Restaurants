@@ -1,23 +1,19 @@
-import {
-  Box,
-  Heading,
-  Flex,
-  Spinner,
-  Stack,
-  Text,
-  Avatar,
-} from "@chakra-ui/core";
+import { Box, Heading, Flex, Spinner, Text, Avatar } from "@chakra-ui/core";
 import React, { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import UserContext from "contexts/user-context";
 
 const Profile = (props) => {
-  const [isLoading, setIsLoading] = React.useState(false);
   const { user } = React.useContext(UserContext);
+  const [file, setFile] = React.useState(null);
 
   const onDrop = useCallback((acceptedFiles) => {
     // Do something with the files
+    const imageBlob = acceptedFiles[0];
+    console.log("imageBlob ", imageBlob);
+    setFile(imageBlob);
   }, []);
+
   const {
     getRootProps,
     getInputProps,
@@ -25,6 +21,16 @@ const Profile = (props) => {
     isDragAccept,
     isDragReject,
   } = useDropzone({ onDrop });
+
+  // props to odl style
+  //   helpText="File Type: .png , .jpeg, .gif. Max size: 2 Mb."
+  // accept="image/*"
+  // maxSize={2e6}
+  // onDropAccepted={handleDropAccepted}
+  // onDropRejected={handleDropRejected}
+  // error={dropError}
+  // multiple={false}
+  // styleProps={{ h: { xs: 300, md: 400 } }}
 
   return (
     <Box>
@@ -41,21 +47,22 @@ const Profile = (props) => {
         )}
       </Flex>
       <Box p={10}>
-        <Flex
-          align="center"
-          justify="center"
-          direction="column"
-          h="full"
-          border="1px dashed"
-          borderColor={isDragReject ? "danger.500" : "primary.500"}
-          borderRadius="lg"
-          backgroundColor={isDragAccept || isLoading ? "primary.100" : "#fff"}
-          px={10}
-          py={60}
-          {...getRootProps()}
-        >
-          {/* {error && (
+        {!file ? (
           <Flex
+            align="center"
+            justify="center"
+            direction="column"
+            h="full"
+            border="1px dashed"
+            borderColor={isDragReject ? "danger.500" : "primary.500"}
+            borderRadius="lg"
+            backgroundColor={isDragAccept ? "primary.100" : "#fff"}
+            px={10}
+            py={60}
+            {...getRootProps()}
+          >
+            {/* {error && (
+            <Flex
             color="danger.500"
             direction="column"
             align="center"
@@ -63,24 +70,27 @@ const Profile = (props) => {
             textAlign="center"
             fontSize="sm"
             mb={4}
-          >
+            >
             <Icon name="warning" size="24px" mb={2} />
             {error}
+            </Flex>
+          )} */}
+            <input
+              aria-label="Drag and drop your files here or click to browse files"
+              {...getInputProps()}
+            />
+            {isDragActive ? (
+              <p>Drop the file here ...</p>
+            ) : (
+              <p>
+                Drag 'n' drop a new profile picture here, or click to select
+              </p>
+            )}
           </Flex>
-        )} */}
-          <input
-            disabled={isLoading}
-            aria-label="Drag and drop your files here or click to browse files"
-            {...getInputProps()}
-          />
-          {isLoading ? (
-            <Spinner centered w="24px" h="24px" />
-          ) : isDragActive ? (
-            <p>Drop the file here ...</p>
-          ) : (
-            <p>Drag 'n' drop a new profile picture here, or click to select</p>
-          )}
-        </Flex>
+        ) : (
+          // TODO - style + info
+          <Box>FILE UPLOADED</Box>
+        )}
       </Box>
     </Box>
   );
