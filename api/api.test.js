@@ -164,6 +164,14 @@ describe("api tests", () => {
         expect(res.body.id).toBeTruthy();
         expect(res.body.token).toBeTruthy();
 
+        expect(res.body).toEqual(
+          expect.objectContaining({
+            role: "user",
+            avatarFilename: "sage-adebayo",
+            username: "b-user",
+          })
+        );
+
         expect(res.statusCode).toBe(200);
       });
     });

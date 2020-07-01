@@ -89,6 +89,8 @@ router.post("/login", async (req, res) => {
       role: user.role,
       id: user._id,
       token,
+      avatarFilename: user.avatarFilename,
+      username: user.username,
     });
   } catch (error) {
     console.log(error);
