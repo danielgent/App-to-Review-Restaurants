@@ -34,19 +34,7 @@ router.post("/register", async (req, res) => {
       return res.status(401).json({ error: "unauthorized attempt" });
     }
 
-    // TO INVESTIGATE: this is always returning some old key
-    console.log("process.env.SENDGRID_API_KEY ", process.env.SENDGRID_API_KEY);
-    console.log(
-      "process.env.REACT_APP_API_URL ",
-      process.env.REACT_APP_API_URL
-    );
-
-    // sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-
-    // TODO - work out why sendgrid isn't picking up above key and then use that
-    sgMail.setApiKey(
-      "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"
-    );
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
     const verifyLink = `${process.env.APP_ORIGIN}/verify/${verificationToken}`;
 
