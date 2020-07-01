@@ -161,10 +161,9 @@ router.get("/me", authLoggedIn, async (req, res) => {
   }
 });
 
-router.get("/verify", async (req, res) => {
+router.get("/verify/:code", async (req, res) => {
   try {
-    console.log("req.query ", req.query);
-    const { code } = req.query;
+    const { code } = req.params;
 
     if (!code) {
       // TODO - send properly but what code?

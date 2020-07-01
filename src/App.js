@@ -3,12 +3,13 @@ import { Box, ThemeProvider, CSSReset } from "@chakra-ui/core";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "react-datepicker/dist/react-datepicker.css";
 
-import SignUp from "./pages/SignUp";
-import LogIn from "./pages/LogIn";
-import LogOut from "./pages/LogOut";
-import Home from "./pages/Home";
-import Restaurant from "./pages/Restaurant";
-import Profile from "./pages/Profile";
+import SignUp from "pages/SignUp";
+import LogIn from "pages/LogIn";
+import LogOut from "pages/LogOut";
+import Home from "pages/Home";
+import Restaurant from "pages/Restaurant";
+import Profile from "pages/Profile";
+import Verify from "pages/Verify";
 import UserContext from "contexts/user-context";
 import UserMe from "components/UserMe";
 import Menu from "components/Menu";
@@ -34,6 +35,7 @@ function App() {
                 <Route path="/logout" component={LogOut} />
                 <Route path="/restaurant/:id" component={Restaurant} />
                 <Route path="/profile" component={Profile} />
+                <Route path="/verify/:code" component={Verify} />
                 {user && <Route path="/" component={Home} />}
               </Switch>
             </Box>
