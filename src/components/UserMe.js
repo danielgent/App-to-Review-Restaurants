@@ -6,6 +6,7 @@ import { useToast } from "@chakra-ui/core";
 
 import UserContext from "contexts/user-context";
 import { LOCAL_STORAGE_TOKEN_KEY } from "globalConstants";
+import { getAuthHeader } from "utils";
 
 const UserMe = ({ history }) => {
   const { updateUser } = React.useContext(UserContext);
@@ -16,13 +17,9 @@ const UserMe = ({ history }) => {
     if (!token) {
       history.push("/login");
     } else {
-      console.log("token ", token);
-
       axios
         .get(`${process.env.REACT_APP_API_URL}/me`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: getAuthHeader(),
         })
         .then(function ({ data }) {
           updateUser({ role: data.role, token });
@@ -49,6 +46,5 @@ const UserMe = ({ history }) => {
   return null;
 };
 
-UserMe.propTypes = {};
-
+// TODO - useHistory hook
 export default withRouter(UserMe);

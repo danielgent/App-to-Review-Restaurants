@@ -5,15 +5,14 @@ import axios from "axios";
 import RestaurantListItem from "components/RestaurantListItem";
 import AddRestaurantModal from "components/AddRestaurantModal";
 import UserContext from "contexts/user-context";
+import { getAuthHeader } from "utils";
 
 const refetch = ({ setIsLoading, setRestaurants, filters, token }) => {
   setIsLoading(true);
   axios
     .get(`${process.env.REACT_APP_API_URL}/restaurants`, {
       params: filters,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: getAuthHeader(),
     })
     .then((response) => {
       setRestaurants(response.data);
