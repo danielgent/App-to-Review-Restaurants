@@ -12,7 +12,6 @@ var UserModel = require("../models/UserModel");
 router.post("/register", async (req, res) => {
   try {
     const verificationToken = crypto.randomBytes(16).toString("hex");
-    console.log("verificationToken ", verificationToken);
 
     const { username, email, role } = req.body;
 
@@ -35,24 +34,28 @@ router.post("/register", async (req, res) => {
       return res.status(401).json({ error: "unauthorized attempt" });
     }
 
-    // TODO - read from .env once have worked out how works
-    // sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-    sgMail.setApiKey(
-      "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"
+    // TO INVESTIGATE: this is always returning some old key
+    console.log("process.env.SENDGRID_API_KEY ", process.env.SENDGRID_API_KEY);
+    console.log(
+      "process.env.REACT_APP_API_URL ",
+      process.env.REACT_APP_API_URL
     );
 
+    // sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+    // TODO - work out why sendgrid isn't picking up above key and then use that
+    sgMail.setApiKey(
+      "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"
+    );
+
+    const verifyLink = `${process.env.APP_ORIGIN}/verify/${verificationToken}`;
+
     const msg = {
-      // should be user email
-      to: "dan@danielgent.com",
-      // read from .env as verified email
-      from: "dan@danielgent.com",
-      // TODO - this
-      subject: "Sending with Twilio SendGrid is Fun",
-      // paste in link somehow
-      text: "and easy to do anywhere, even with Node.js",
-      // here have activation link.
-      html: "<strong>and easy to do anywhere, even with Node.js</strong>",
-      // TODO - style this if time but only email
+      to: email,
+      from: process.env.SENDGRID_FROM_EMAIL,
+      subject: "Please verify your email",
+      text: `Please visit this link in your browser ${verifyLink}`,
+      html: `Please visit <a href=${verifyLink}>this link</a>`,
     };
 
     try {
