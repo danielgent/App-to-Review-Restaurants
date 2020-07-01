@@ -14,7 +14,9 @@ import AddReplyModal from "components/AddReplyModal";
 
 // TODO - rename ReviewItem
 const CommentItem = ({ review, refreshData, ...rest }) => {
-  const { comment, visitDate, rating, reply } = review;
+  const { reviewer, comment, visitDate, rating, reply } = review;
+  const { avatarFilename, username } = reviewer;
+
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleSubmit = () => {
@@ -24,11 +26,13 @@ const CommentItem = ({ review, refreshData, ...rest }) => {
 
   const formattedDate = new Date(visitDate).toDateString();
 
+  // TODO - load image from express
+  const avatarImageUrl = `https://bit.ly/${avatarFilename}`;
+
   return (
     <Box {...rest}>
       <Stack direction="row" spacing="10">
-        {/* TODO - from where to get this Url? Etc. */}
-        <Avatar name="Dan Abrahmov" mr={4} src="https://bit.ly/dan-abramov" />
+        <Avatar name={username} mr={4} src={avatarImageUrl} />
         <Box>
           <Text>{comment}</Text>
           {/* TODO - review star component ASAP */}

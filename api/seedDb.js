@@ -18,7 +18,7 @@ const seedDatabases = async () => {
     password: Bcrypt.hashSync("o", Number(process.env.SALT_ROUNDS)),
     email: "owner@example.com",
     role: "owner",
-    avatarFilename: "dan-abramov.jpg",
+    avatarFilename: "dan-abramov",
   });
 
   // console.log("owner1 id", owner1._id);
@@ -42,7 +42,7 @@ const seedDatabases = async () => {
     ),
     email: "another-owner@example.com",
     role: "owner",
-    avatarFilename: "sage-adebayo.jpg",
+    avatarFilename: "sage-adebayo",
   });
 
   // console.log("owner2 id", owner2._id);
@@ -64,7 +64,7 @@ const seedDatabases = async () => {
     password: Bcrypt.hashSync("a", Number(process.env.SALT_ROUNDS)),
     email: "user1@example.com",
     role: "user",
-    avatarFilename: "code-beast.jpg",
+    avatarFilename: "code-beast",
   });
   await user1.save();
   const user2 = UserModel({
@@ -72,7 +72,7 @@ const seedDatabases = async () => {
     password: Bcrypt.hashSync("password-2", Number(process.env.SALT_ROUNDS)),
     email: "user2@example.com",
     role: "user",
-    avatarFilename: "tioluwani-kolawole.jpg",
+    avatarFilename: "sage-adebayo",
   });
   await user2.save();
   const user3 = UserModel({
@@ -80,7 +80,7 @@ const seedDatabases = async () => {
     password: Bcrypt.hashSync("password-3", Number(process.env.SALT_ROUNDS)),
     email: "user3@example.com",
     role: "user",
-    avatarFilename: "kent-c-dodds.jpg",
+    avatarFilename: "kent-c-dodds",
   });
   await user3.save();
 
