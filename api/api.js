@@ -13,7 +13,7 @@ const createApp = (db) => {
       origin: process.env.APP_ORIGIN,
     })
   );
-
+  app.use(express.static("uploads"));
   app.use(morgan("combined"));
   var users = require("./routes/users");
   var reviews = require("./routes/reviews");

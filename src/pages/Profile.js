@@ -30,6 +30,9 @@ const Profile = (props) => {
   // multiple={false}
   // styleProps={{ h: { xs: 300, md: 400 } }}
 
+  const makeAvatarImageUrl = (avatarFilename) =>
+    `${process.env.REACT_APP_API_URL}/${avatarFilename}`;
+
   return (
     <Box p={10}>
       <Heading as="h1">Profile</Heading>
@@ -38,7 +41,11 @@ const Profile = (props) => {
         {user ? (
           <>
             <Text mr={8}>Current Profile picture</Text>
-            <Avatar name={user.username} mr={4} src={user.avatarImageUrl} />
+            <Avatar
+              name={user.username}
+              mr={4}
+              src={makeAvatarImageUrl(user.avatarFilename)}
+            />
             <Button onClick={onUploadProfileModalOpen}>
               Upload new profile image
             </Button>

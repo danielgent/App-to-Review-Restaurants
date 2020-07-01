@@ -26,8 +26,7 @@ const CommentItem = ({ review, refreshData, ...rest }) => {
 
   const formattedDate = new Date(visitDate).toDateString();
 
-  // TODO - load image from express
-  const avatarImageUrl = `https://bit.ly/${avatarFilename}`;
+  const avatarImageUrl = `${process.env.REACT_APP_API_URL}/${avatarFilename}`;
 
   return (
     <Box {...rest}>
