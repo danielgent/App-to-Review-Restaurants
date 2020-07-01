@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Stack, Link as Clink } from "@chakra-ui/core";
+import { Box, Stack, Link as Clink, Flex } from "@chakra-ui/core";
 import { Link, useHistory } from "react-router-dom";
 
 import { LOCAL_STORAGE_TOKEN_KEY } from "globalConstants";
@@ -16,20 +16,24 @@ const Menu = () => {
   };
 
   return (
-    <Stack isInline spacing={2}>
-      <Box>
-        <Link to="/sign-up">Sign up</Link>
-      </Box>
-      <Box>
-        <Link to="/login">Log in</Link>
-      </Box>
-      <Box>
-        <Clink onClick={logout}>Log out</Clink>
-      </Box>
-      <Box>
-        <Link to="/">View all</Link>
-      </Box>
-    </Stack>
+    <Flex p={4}>
+      <Stack isInline spacing={2} flexGrow={1}>
+        <Box>
+          <Link to="/sign-up">Sign up</Link>
+        </Box>
+        <Box>
+          <Link to="/login">Log in</Link>
+        </Box>
+        <Box>
+          <Clink onClick={logout}>Log out</Clink>
+        </Box>
+        <Box>
+          <Link to="/">View all</Link>
+        </Box>
+      </Stack>
+      {/* show profile image here. that should be in context then, and returned from /me endpoint */}
+      <Link to="/profile">Profile</Link>
+    </Flex>
   );
 };
 

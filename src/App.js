@@ -8,6 +8,7 @@ import LogIn from "./pages/LogIn";
 import LogOut from "./pages/LogOut";
 import Home from "./pages/Home";
 import Restaurant from "./pages/Restaurant";
+import Profile from "./pages/Profile";
 import UserContext from "contexts/user-context";
 import UserMe from "components/UserMe";
 import Menu from "components/Menu";
@@ -32,6 +33,7 @@ function App() {
                 <Route path="/login" component={LogIn} />
                 <Route path="/logout" component={LogOut} />
                 <Route path="/restaurant/:id" component={Restaurant} />
+                <Route path="/profile" component={Profile} />
                 {user && <Route path="/" component={Home} />}
               </Switch>
             </Box>
