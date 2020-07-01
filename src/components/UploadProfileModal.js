@@ -12,13 +12,14 @@ import {
   FormControl,
   FormLabel,
   Flex,
+  useToast,
   // Input,
   // FormErrorMessage,
 } from "@chakra-ui/core";
-// import axios from "axios";
+import axios from "axios";
 import { useDropzone } from "react-dropzone";
 
-// import { getAuthHeader } from "utils";
+import { getAuthHeader } from "utils";
 
 const UploadProfileModal = ({
   isOpen,
@@ -28,11 +29,10 @@ const UploadProfileModal = ({
   handleSubmitReply,
 }) => {
   const [file, setFile] = React.useState(null);
+  const toast = useToast();
 
   const onDrop = React.useCallback((acceptedFiles) => {
-    // Do something with the files
     const imageBlob = acceptedFiles[0];
-    console.log("imageBlob ", imageBlob);
     setFile(imageBlob);
   }, []);
 
@@ -44,27 +44,28 @@ const UploadProfileModal = ({
     isDragReject,
   } = useDropzone({ onDrop });
 
-  // const handleSubmit = (values, { setSubmitting, resetForm }) => {
-  //   const data = new FormData();
-  //   data.append("avatar", values.file);
-  //   axios({
-  //     method: "post",
-  //     url: "/sample",
-  //     data: data,
-  //   });
-
-  //   axios
-  //     .post(`${process.env.REACT_APP_API_URL}/profile`, data, {
-  //       headers: getAuthHeader(),
-  //     })
-  //     .then(function (response) {
-  //       onSubmit();
-  //     })
-  //     .catch(function (error) {
-  //       // here output to somewhere!
-  //       console.log(error);
-  //     });
-  // };
+  const handleUpload = () => {
+    const data = new FormData();
+    data.append("avatar", file);
+    axios
+      .post(`${process.env.REACT_APP_API_URL}/users/profile`, data, {
+        headers: getAuthHeader(),
+      })
+      .then(function (response) {
+        setFile();
+        toast({
+          description: "New profile pic uploaded",
+          status: "success",
+          duration: 9000,
+          isClosable: true,
+        });
+        onClose();
+      })
+      .catch(function (error) {
+        // here output to somewhere!
+        console.log(error);
+      });
+  };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -79,9 +80,6 @@ const UploadProfileModal = ({
                 // isInvalid={errors.file && touched.file}
               >
                 <FormLabel htmlFor="file">Upload file</FormLabel>
-                {/* TODO - replace with file input dnd */}
-
-                {/* <Input id="file" type="textarea" {...field} /> */}
                 <Box p={10}>
                   {!file ? (
                     <Flex
@@ -97,20 +95,6 @@ const UploadProfileModal = ({
                       py={60}
                       {...getRootProps()}
                     >
-                      {/* {error && (
-            <Flex
-            color="danger.500"
-            direction="column"
-            align="center"
-            justify="center"
-            textAlign="center"
-            fontSize="sm"
-            mb={4}
-            >
-            <Icon name="warning" size="24px" mb={2} />
-            {error}
-            </Flex>
-          )} */}
                       <input
                         aria-label="Drag and drop your files here or click to browse files"
                         {...getInputProps()}
@@ -136,12 +120,14 @@ const UploadProfileModal = ({
         </ModalBody>
 
         <ModalFooter>
-          <Button variantColor="blue" type="button" mr={3} onClick={onClose}>
+          <Button variantColor="blue" mr={3} onClick={onClose}>
             Close
           </Button>
-          <Button variant="ghost" type="submit">
-            Upload image
-          </Button>
+          {file && (
+            <Button variant="ghost" onClick={handleUpload}>
+              Upload image
+            </Button>
+          )}
         </ModalFooter>
       </ModalContent>
     </Modal>

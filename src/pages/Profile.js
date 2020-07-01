@@ -20,16 +20,6 @@ const Profile = (props) => {
     onClose: onUploadProfileModalClose,
   } = useDisclosure();
 
-  // const handleSubmit = () => {
-  //   const data = new FormData();
-  //   data.append("document", blob);
-  //   axios({
-  //     method: "post",
-  //     url: "/sample",
-  //     data: data,
-  //   });
-  // };
-
   // props to odl style
   //   helpText="File Type: .png , .jpeg, .gif. Max size: 2 Mb."
   // accept="image/*"
