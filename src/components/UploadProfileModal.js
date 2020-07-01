@@ -13,8 +13,7 @@ import {
   FormLabel,
   Flex,
   useToast,
-  // Input,
-  // FormErrorMessage,
+  Text,
 } from "@chakra-ui/core";
 import axios from "axios";
 import { useDropzone } from "react-dropzone";
@@ -75,10 +74,7 @@ const UploadProfileModal = ({
         <ModalBody>
           <Box p={4}>
             <Stack spacing={5}>
-              <FormControl
-                w={{ xs: "100%", sm: "280px" }}
-                // isInvalid={errors.file && touched.file}
-              >
+              <FormControl>
                 <FormLabel htmlFor="file">Upload file</FormLabel>
                 <Box p={10}>
                   {!file ? (
@@ -109,11 +105,17 @@ const UploadProfileModal = ({
                       )}
                     </Flex>
                   ) : (
-                    // TODO - style + info
-                    <Box>FILE UPLOADED</Box>
+                    <Flex align="center" justify="center" direction="column">
+                      <Text fontSize="lg" mb={6}>
+                        File Uploaded
+                      </Text>
+                      <Text fontStyle="italic">{file.name}</Text>
+                      <Button variant="ghost" onClick={() => setFile()}>
+                        Clear
+                      </Button>
+                    </Flex>
                   )}
                 </Box>
-                {/* <FormErrorMessage>{errors.file}</FormErrorMessage> */}
               </FormControl>
             </Stack>
           </Box>

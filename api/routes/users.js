@@ -2,7 +2,7 @@ var express = require("express");
 var router = express.Router();
 const Bcrypt = require("bcryptjs");
 
-// var { authLoggedIn } = require("../middleware/auth");
+var { authLoggedIn } = require("../middleware/auth");
 
 var UserModel = require("../models/UserModel");
 
@@ -11,11 +11,18 @@ var upload = multer({ dest: "uploads/" });
 
 router.post(
   "/profile",
-  // TODO later
-  // authLoggedIn,
+  authLoggedIn,
   upload.single("avatar"),
-  function (req, res, next) {
+  async (req, res, next) => {
     console.log("req.file ", req.file);
+
+    const user = await UserModel.findById(req.user.id);
+
+    user.avatarFilename = req.file.filename;
+
+    await user.save();
+
+    res.status(200).send({ message: "Profile pic updated" });
   }
 );
 

@@ -32,8 +32,6 @@ router.post("/", authLoggedIn, (req, res) => {
 router.post("/:id/reply", authLoggedIn, (req, res) => {
   const id = req.params.id;
 
-  ReviewsModel.findById(id, function (err, resMongo) {});
-
   const review_update = { reply: req.body.reply };
 
   ReviewsModel.findByIdAndUpdate(id, review_update, function (err, resMongo) {
