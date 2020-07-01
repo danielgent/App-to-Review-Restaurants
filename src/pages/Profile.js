@@ -5,34 +5,15 @@ import {
   Spinner,
   Text,
   Avatar,
-  useDisclosure,
   Button,
-  Stack,
+  useDisclosure,
 } from "@chakra-ui/core";
-import React, { useCallback } from "react";
-import { useDropzone } from "react-dropzone";
+import React from "react";
 import UserContext from "contexts/user-context";
 import UploadProfileModal from "components/UploadProfileModal";
 
 const Profile = (props) => {
   const { user } = React.useContext(UserContext);
-  const [file, setFile] = React.useState(null);
-
-  const onDrop = useCallback((acceptedFiles) => {
-    // Do something with the files
-    const imageBlob = acceptedFiles[0];
-    console.log("imageBlob ", imageBlob);
-    setFile(imageBlob);
-  }, []);
-
-  const {
-    getRootProps,
-    getInputProps,
-    isDragActive,
-    isDragAccept,
-    isDragReject,
-  } = useDropzone({ onDrop });
-
   const {
     isOpen: uploadProfileModalIsOpen,
     onOpen: onUploadProfileModalOpen,
@@ -60,7 +41,7 @@ const Profile = (props) => {
   // styleProps={{ h: { xs: 300, md: 400 } }}
 
   return (
-    <Box>
+    <Box p={10}>
       <Heading as="h1">Profile</Heading>
 
       <Flex align="center" justify="center">
@@ -76,52 +57,7 @@ const Profile = (props) => {
           <Spinner />
         )}
       </Flex>
-      <Box p={10}>
-        {!file ? (
-          <Flex
-            align="center"
-            justify="center"
-            direction="column"
-            h="full"
-            border="1px dashed"
-            borderColor={isDragReject ? "danger.500" : "primary.500"}
-            borderRadius="lg"
-            backgroundColor={isDragAccept ? "primary.100" : "#fff"}
-            px={10}
-            py={60}
-            {...getRootProps()}
-          >
-            {/* {error && (
-            <Flex
-            color="danger.500"
-            direction="column"
-            align="center"
-            justify="center"
-            textAlign="center"
-            fontSize="sm"
-            mb={4}
-            >
-            <Icon name="warning" size="24px" mb={2} />
-            {error}
-            </Flex>
-          )} */}
-            <input
-              aria-label="Drag and drop your files here or click to browse files"
-              {...getInputProps()}
-            />
-            {isDragActive ? (
-              <p>Drop the file here ...</p>
-            ) : (
-              <p>
-                Drag 'n' drop a new profile picture here, or click to select
-              </p>
-            )}
-          </Flex>
-        ) : (
-          // TODO - style + info
-          <Box>FILE UPLOADED</Box>
-        )}
-      </Box>
+
       <UploadProfileModal
         isOpen={uploadProfileModalIsOpen}
         onClose={onUploadProfileModalClose}
