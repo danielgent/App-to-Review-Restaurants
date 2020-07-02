@@ -10,6 +10,7 @@ import Home from "pages/Home";
 import Restaurant from "pages/Restaurant";
 import Profile from "pages/Profile";
 import Verify from "pages/Verify";
+import ViewUsers from "pages/admin/ViewUsers";
 import UserContext from "contexts/user-context";
 import UserMe from "components/UserMe";
 import Menu from "components/Menu";
@@ -36,6 +37,8 @@ function App() {
                 <Route path="/restaurant/:id" component={Restaurant} />
                 <Route path="/profile" component={Profile} />
                 <Route path="/verify/:code" component={Verify} />
+                {/* TODO - test what happens when visit this Url and user */}
+                <Route path="/admin/users" component={ViewUsers} />
                 {user && <Route path="/" component={Home} />}
               </Switch>
             </Box>

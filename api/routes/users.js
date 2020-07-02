@@ -1,6 +1,5 @@
 var express = require("express");
 var router = express.Router();
-const Bcrypt = require("bcryptjs");
 
 var { authLoggedIn } = require("../middleware/auth");
 
@@ -43,53 +42,10 @@ router.get(
             role,
           }
         : {},
-      "username email role loginAttempts"
+      "username email role loginAttempts avatarFilename"
     ).exec();
 
     res.status(200).send(users);
-  }
-);
-
-router.get(
-  "/:id",
-  // authLoggedIn,
-  async (req, res) => {
-    const id = req.params.id;
-
-    UserModel.findById(id, function (err, resMongo) {
-      // if (err) return handleError(err, res);
-
-      return res.status(200).json(resMongo);
-    });
-  }
-);
-
-router.post(
-  "/",
-  // authLoggedIn,
-  // authRealtorOrAbove,
-  (req, res) => {
-    req.body.password = Bcrypt.hashSync(
-      req.body.password,
-      Number(process.env.SALT_ROUNDS)
-    );
-
-    var user_instance = new UserModel(req.body);
-
-    user_instance.save(function (err) {
-      // if (err) return handleError(err, res);
-
-      // TODO - checks here for:
-      // * user name already exists
-      // * email already exists
-      // res.status(?statusCode?).json({
-      //   error: ?errorMessage?,
-      // });
-
-      res.status(200).json({
-        message: "User created successfully",
-      });
-    });
   }
 );
 

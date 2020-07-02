@@ -138,6 +138,18 @@ const seedDatabases = async () => {
     dateCreated: "2020-06-01T10:42:53.397Z",
   }).save();
 
+  // create admin
+  const admin = UserModel({
+    username: "admin",
+    password: Bcrypt.hashSync("admin", Number(process.env.SALT_ROUNDS)),
+    email: "admin@example.com",
+    role: "admin",
+    avatarFilename: "foo",
+    isVerified: true,
+    verificationToken: "some-token",
+  });
+  await admin.save();
+
   // OUTPUT FOR PASTING INTO POSTMAN
 
   const user3Token = jwt.sign(
