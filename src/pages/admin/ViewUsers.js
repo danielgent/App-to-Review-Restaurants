@@ -6,6 +6,7 @@ import {
   Heading,
   SimpleGrid,
   Text,
+  useToast,
   Button,
 } from "@chakra-ui/core";
 
@@ -27,10 +28,10 @@ const HeaderText = (props) => <Text fontWeight="bold" {...props} />;
 
 const ViewUsers = () => {
   const [isLoading, setIsLoading] = React.useState(true);
-
   const [users, setUsers] = React.useState([]);
+  const toast = useToast();
 
-  React.useEffect(() => {
+  const fetchUsers = () => {
     setIsLoading(true);
     axios
       .get(`${process.env.REACT_APP_API_URL}/users`, {
@@ -42,7 +43,35 @@ const ViewUsers = () => {
       .finally(() => {
         setIsLoading(false);
       });
+  };
+
+  React.useEffect(() => {
+    fetchUsers();
   }, []);
+
+  const handleUnlockUser = async (userId) => {
+    axios
+      .post(
+        `${process.env.REACT_APP_API_URL}/users/unlock/${userId}`,
+        {},
+        {
+          headers: getAuthHeader(),
+        }
+      )
+      .then(function (response) {
+        toast({
+          description: "User unlocked",
+          status: "success",
+          duration: 9000,
+          isClosable: true,
+        });
+        fetchUsers();
+      })
+      .catch(function (error) {
+        // here output to somewhere!
+        console.log(error);
+      });
+  };
 
   if (isLoading) {
     return <CircularProgress isIndeterminate color="green"></CircularProgress>;
@@ -84,7 +113,9 @@ const ViewUsers = () => {
               <TableCell>{user.loginAttempts}</TableCell>
             ) : (
               <TableCell p={2}>
-                <Button>Unlock user</Button>
+                <Button onClick={() => handleUnlockUser(user._id)}>
+                  Unlock user
+                </Button>
               </TableCell>
             )}
           </React.Fragment>
