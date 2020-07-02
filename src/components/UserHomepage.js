@@ -20,7 +20,10 @@ const UserHomepage = (props) => {
     setIsLoading(true);
     axios
       .get(`${process.env.REACT_APP_API_URL}/restaurants`, {
-        params: filters,
+        params: {
+          ratingMin: filters.min,
+          ratingMax: filters.max,
+        },
         headers: getAuthHeader(),
       })
       .then((response) => {
