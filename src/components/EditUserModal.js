@@ -14,23 +14,24 @@ import {
   FormLabel,
   Input,
   FormErrorMessage,
+  Select,
 } from "@chakra-ui/core";
 import { Formik, Form, Field } from "formik";
 import axios from "axios";
+import isEmail from "validator/es/lib/isEmail";
 
 import { getAuthHeader } from "utils";
+import { ROLES } from "globalConstants";
 
-const EditUserModal = ({ isOpen, onClose, onSubmit, userId }) => {
+const EditUserModal = ({ isOpen, onClose, onSubmit, user = {} }) => {
   const handleSubmit = (values, { setSubmitting, resetForm }) => {
     axios
-      .post(
-        `${process.env.REACT_APP_API_URL}/users/${userId}`,
+      .patch(
+        `${process.env.REACT_APP_API_URL}/users/${user._id}`,
         {
-          // get these fields
-          // comment: values.comment,
-          // restaurant: restaurantId,
-          // rating: Number.parseInt(values.rating, 10),
-          // visitDate: formatDate(values.visitDate),
+          username: values.username,
+          email: values.email,
+          role: values.role,
         },
         {
           headers: getAuthHeader(),
@@ -47,21 +48,22 @@ const EditUserModal = ({ isOpen, onClose, onSubmit, userId }) => {
   return (
     <Formik
       enableReinitialize
-      initialValues={
-        {
-          // comment: "",
-          // rating: "5",
-          // visitDate: new Date(),
-          // COPY FROM SIGN UP
-        }
-      }
+      initialValues={{
+        username: user?.username || "",
+        email: user?.email || "",
+        role: user?.role || ROLES.user,
+      }}
       validate={(values) => {
-        // COPY FROM SIGN UP
-        // const errors = {};
-        // if (!values.comment) {
-        //   errors.comment = "Please enter a comment";
-        // }
-        // return errors;
+        const errors = {};
+
+        if (!values.username) {
+          errors.username = "Please enter a username";
+        }
+        if (!values.email || !isEmail(values.email)) {
+          errors.email = "Please enter a valid email";
+        }
+
+        return errors;
       }}
       onSubmit={handleSubmit}
     >
@@ -75,20 +77,59 @@ const EditUserModal = ({ isOpen, onClose, onSubmit, userId }) => {
               <ModalBody>
                 <Box p={4}>
                   <Stack spacing={5}>
-                    {/* TODO - rest of fields */}
-                    <Field type="text" name="comment" autoComplete="off">
+                    <Field type="text" name="username">
                       {({ field, form }) => {
                         const { errors, touched } = form;
                         return (
                           <FormControl
                             w={{ xs: "100%", sm: "280px" }}
-                            isInvalid={errors.comment && touched.comment}
+                            isInvalid={errors.username && touched.username}
                           >
-                            <FormLabel htmlFor="comment">Comment</FormLabel>
-                            <Input id="comment" type="text" {...field} />
+                            <FormLabel htmlFor="username">
+                              Enter a username
+                            </FormLabel>
+                            <Input
+                              id="username"
+                              type="text"
+                              autoComplete="off"
+                              {...field}
+                            />
                             <FormErrorMessage>
-                              {errors.comment}
+                              {errors.username}
                             </FormErrorMessage>
+                          </FormControl>
+                        );
+                      }}
+                    </Field>
+                    <Field type="text" name="email">
+                      {({ field, form }) => {
+                        const { errors, touched } = form;
+                        return (
+                          <FormControl
+                            w={{ xs: "100%", sm: "280px" }}
+                            isInvalid={errors.email && touched.email}
+                          >
+                            <FormLabel htmlFor="email">email</FormLabel>
+                            <Input
+                              id="email"
+                              type="text"
+                              autoComplete="off"
+                              {...field}
+                            />
+                            <FormErrorMessage>{errors.email}</FormErrorMessage>
+                          </FormControl>
+                        );
+                      }}
+                    </Field>
+                    <Field type="text" name="role">
+                      {({ field, form }) => {
+                        return (
+                          <FormControl w={{ xs: "100%", sm: "280px" }}>
+                            <FormLabel htmlFor="role">Select role</FormLabel>
+                            <Select id="role" {...field}>
+                              <option value={ROLES.user}>User</option>
+                              <option value={ROLES.owner}>Owner</option>
+                            </Select>
                           </FormControl>
                         );
                       }}
@@ -107,7 +148,7 @@ const EditUserModal = ({ isOpen, onClose, onSubmit, userId }) => {
                   Close
                 </Button>
                 <Button variant="ghost" type="submit">
-                  Create Review
+                  Update User
                 </Button>
               </ModalFooter>
             </Form>

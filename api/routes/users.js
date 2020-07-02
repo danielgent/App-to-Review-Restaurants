@@ -53,27 +53,30 @@ router.get("/", authLoggedIn, authIsAdmin, async (req, res) => {
   res.status(200).send(users);
 });
 
+// TO TEST
+router.patch("/:id", authLoggedIn, authIsAdmin, async (req, res) => {
+  const id = req.params.id;
+
+  const { username, email, role } = req.body;
+
+  // NO! take out fields and parse them to be safer
+  const user_update = {
+    username,
+    email,
+    role,
+  };
+
+  // TODO => use promise way and return 500 on failure in try-catch
+  UserModel.findByIdAndUpdate(id, user_update, function (err, resMongo) {
+    // if (err) return handleError(err, res);
+
+    return res.status(200).json({ message: "Updated Successfully", data: {} });
+  });
+});
+
 // UNTESTED AND DEBUG ONLY SO FAR BELOW------------------------------------------------------------------
 // TODO - edit later. requires another round of validation? disallow changing username or email address? hmmmm
 // or ignore validation a bit here as only admin can edit!
-// router.patch(
-//   "/:id",
-//   // authLoggedIn,
-//   // authRealtorOrAbove,
-//   async (req, res) => {
-//     const id = req.params.id;
-
-//     const user_update = req.body;
-
-//     UserModel.findByIdAndUpdate(id, user_update, function (err, resMongo) {
-//       // if (err) return handleError(err, res);
-
-//       return res
-//         .status(200)
-//         .json({ message: "Updated Successfully", data: {} });
-//     });
-//   }
-// );
 
 // router.delete(
 //   "/:id",

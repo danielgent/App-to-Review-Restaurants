@@ -30,7 +30,7 @@ const HeaderText = (props) => <Text fontWeight="bold" {...props} />;
 const ViewUsers = () => {
   const [isLoading, setIsLoading] = React.useState(true);
   const [users, setUsers] = React.useState([]);
-  const [userIdToEdit, setUserIdToEdit] = React.useState(null);
+  const [userToEdit, setUserToEdit] = React.useState(null);
 
   const toast = useToast();
 
@@ -78,6 +78,7 @@ const ViewUsers = () => {
 
   const handleUpdateUser = () => {
     fetchUsers();
+    setUserToEdit(null);
   };
 
   if (isLoading) {
@@ -129,18 +130,16 @@ const ViewUsers = () => {
               </TableCell>
             )}
             <TableCell p={2}>
-              <Button onClick={() => setUserIdToEdit(user._id)}>
-                Edit user
-              </Button>
+              <Button onClick={() => setUserToEdit(user)}>Edit user</Button>
             </TableCell>
           </React.Fragment>
         ))}
       </SimpleGrid>
       <EditUserModal
-        isOpen={!!userIdToEdit}
-        onClose={() => setUserIdToEdit(null)}
+        isOpen={!!userToEdit}
+        onClose={() => setUserToEdit(null)}
         onSubmit={handleUpdateUser}
-        reviewId={userIdToEdit}
+        user={userToEdit}
       />
     </Box>
   );

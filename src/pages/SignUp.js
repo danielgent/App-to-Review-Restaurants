@@ -137,7 +137,6 @@ const SignUp = (props) => {
                         isInvalid={errors.email && touched.email}
                       >
                         <FormLabel htmlFor="email">email</FormLabel>
-                        {/* TODO - how to do easy email input? */}
                         <Input
                           id="email"
                           type="text"
