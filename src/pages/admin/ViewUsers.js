@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/core";
 
 import { getAuthHeader } from "utils";
+import EditUserModal from "components/EditUserModal";
 
 const TableCell = (props) => (
   <Box
@@ -29,6 +30,8 @@ const HeaderText = (props) => <Text fontWeight="bold" {...props} />;
 const ViewUsers = () => {
   const [isLoading, setIsLoading] = React.useState(true);
   const [users, setUsers] = React.useState([]);
+  const [userIdToEdit, setUserIdToEdit] = React.useState(null);
+
   const toast = useToast();
 
   const fetchUsers = () => {
@@ -73,6 +76,10 @@ const ViewUsers = () => {
       });
   };
 
+  const handleUpdateUser = () => {
+    fetchUsers();
+  };
+
   if (isLoading) {
     return <CircularProgress isIndeterminate color="green"></CircularProgress>;
   }
@@ -81,7 +88,7 @@ const ViewUsers = () => {
     <Box p={4}>
       <Heading>View users</Heading>
       <SimpleGrid
-        columns={5}
+        columns={6}
         borderColor="gray.600"
         borderWidth="1px"
         borderStyle="solid"
@@ -103,6 +110,9 @@ const ViewUsers = () => {
         <TableCell>
           <HeaderText>Login Attempts</HeaderText>
         </TableCell>
+        <TableCell>
+          <HeaderText>Edit</HeaderText>
+        </TableCell>
         {users.map((user) => (
           <React.Fragment key={user.username}>
             <TableCell>{user.username}</TableCell>
@@ -118,9 +128,20 @@ const ViewUsers = () => {
                 </Button>
               </TableCell>
             )}
+            <TableCell p={2}>
+              <Button onClick={() => setUserIdToEdit(user._id)}>
+                Edit user
+              </Button>
+            </TableCell>
           </React.Fragment>
         ))}
       </SimpleGrid>
+      <EditUserModal
+        isOpen={!!userIdToEdit}
+        onClose={() => setUserIdToEdit(null)}
+        onSubmit={handleUpdateUser}
+        reviewId={userIdToEdit}
+      />
     </Box>
   );
 };
