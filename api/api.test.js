@@ -46,7 +46,7 @@ describe("api tests", () => {
 
     // TODO - create these by actually loggin in! safer
     owner1Token = jwt.sign(
-      { role: "user", id: owner1Id },
+      { role: "owner", id: owner1Id },
       process.env.TOKEN_SECRET,
       {
         expiresIn: "24h",
@@ -264,7 +264,7 @@ describe("api tests", () => {
       it.todo("should reject non-existent code");
       it.todo("should reject account already verified");
       it("should verify new account already verified", async () => {
-        const res = await agent.get(`/verify/?code=example-verification-token`);
+        const res = await agent.get(`/verify/example-verification-token`);
 
         expect(res.statusCode).toBe(200);
 
@@ -294,7 +294,7 @@ describe("api tests", () => {
   });
 
   describe("restaurant tests", () => {
-    it("/restaurants/ should give list of restaurants enriched", async () => {
+    it("/restaurants/ should give list of all restaurants enriched", async () => {
       const res = await agent
         .get(`/restaurants`)
         .set("Authorization", `Bearer ${user3Token}`);
@@ -360,6 +360,20 @@ describe("api tests", () => {
           username: "b-user",
         })
       );
+    });
+
+    it("/restaurants/ should give of own restaurants if owner", async () => {
+      const res = await agent
+        .get(`/restaurants`)
+        .set("Authorization", `Bearer ${owner1Token}`);
+
+      expect(res.statusCode).toBe(200);
+
+      const restaurants = res.body;
+
+      expect(restaurants).toHaveLength(1);
+
+      expect(restaurants[0].name).toBe("Owner's Diner");
     });
 
     it("/restaurants/[id] should give restaurant enriched", async () => {

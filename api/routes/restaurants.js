@@ -6,7 +6,14 @@ var { enrichRestaurant } = require("../utils");
 
 router.get("/", authLoggedIn, async (req, res) => {
   try {
-    const restaurants = await RestaurantModel.find({}, "name owner").exec();
+    const { role, id } = req.user;
+
+    console.log("role ", role);
+
+    // only show own restaurants if owner
+    const query = role === "owner" ? { owner: id } : {};
+
+    const restaurants = await RestaurantModel.find(query, "name owner").exec();
 
     const enrichedRestaurants = await Promise.all(
       restaurants.map(enrichRestaurant)
