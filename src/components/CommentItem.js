@@ -1,28 +1,11 @@
-import {
-  Box,
-  Stack,
-  Avatar,
-  Divider,
-  Text,
-  Button,
-  useDisclosure,
-} from "@chakra-ui/core";
+import { Box, Stack, Avatar, Divider, Text } from "@chakra-ui/core";
 
 import React from "react";
-
-import AddReplyModal from "components/AddReplyModal";
 
 // TODO - rename ReviewItem
 const CommentItem = ({ review, refreshData, ...rest }) => {
   const { reviewer, comment, visitDate, rating, reply } = review;
   const { avatarFilename, username } = reviewer;
-
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const handleSubmit = () => {
-    refreshData();
-    onClose();
-  };
 
   const formattedDate = new Date(visitDate).toDateString();
 
@@ -43,7 +26,7 @@ const CommentItem = ({ review, refreshData, ...rest }) => {
           </Text>
         </Box>
       </Stack>
-      {reply ? (
+      {reply && (
         <>
           <Divider my={4} />
           <Box textAlign="right">
@@ -53,17 +36,6 @@ const CommentItem = ({ review, refreshData, ...rest }) => {
             </Text>
           </Box>
         </>
-      ) : (
-        // TODO - won't be like this. Should only appear on owner's restaurant detail page under a list of unreplied reviews
-        <Box>
-          <Button onClick={onOpen}>Reply</Button>
-          <AddReplyModal
-            isOpen={isOpen}
-            onClose={onClose}
-            onSubmit={handleSubmit}
-            reviewId={review._id}
-          />
-        </Box>
       )}
     </Box>
   );

@@ -72,4 +72,4 @@ const enrichRestaurant = async (r) => {
   };
 };
 
-module.exports = { enrichRestaurant };
+module.exports = { enrichRestaurant, enrichReview };

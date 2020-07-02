@@ -11,6 +11,7 @@ import axios from "axios";
 
 import RestaurantListItem from "components/RestaurantListItem";
 import AddRestaurantModal from "components/AddRestaurantModal";
+import AddReplyModal from "components/AddReplyModal";
 import CommentItem from "components/CommentItem";
 import { getAuthHeader } from "utils";
 
@@ -32,6 +33,7 @@ const OwnerHomepage = () => {
   const [restaurants, setRestaurants] = React.useState([]);
   const [reviews, setReviews] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
+  const [reviewIdToReply, setReviewIdToReply] = React.useState(null);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -58,6 +60,12 @@ const OwnerHomepage = () => {
     onClose();
   };
 
+  const handleReplyToReview = async () => {
+    const reviews = await fetchReviews();
+    setReviews(reviews);
+    setReviewIdToReply();
+  };
+
   if (isLoading) {
     return <CircularProgress isIndeterminate color="green"></CircularProgress>;
   }
@@ -73,9 +81,22 @@ const OwnerHomepage = () => {
         {reviews.length === 0 ? (
           <Text>All your reviews are replied to</Text>
         ) : (
-          reviews.map((review) => <CommentItem review={review} />)
+          reviews.map((review) => (
+            <Box key={review._id}>
+              <CommentItem review={review} />
+              <Button onClick={() => setReviewIdToReply(review._id)}>
+                Reply to review
+              </Button>
+            </Box>
+          ))
         )}
       </Box>
+      <AddReplyModal
+        isOpen={!!reviewIdToReply}
+        onClose={() => setReviewIdToReply(null)}
+        onSubmit={handleReplyToReview}
+        reviewId={reviewIdToReply}
+      />
       <Button onClick={onOpen}>Create new restaurant</Button>
       <AddRestaurantModal
         isOpen={isOpen}

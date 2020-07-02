@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 var { authLoggedIn } = require("../middleware/auth");
+var { enrichReview } = require("../utils");
 
 var ReviewsModel = require("../models/ReviewsModel");
 var RestaurantModel = require("../models/RestaurantModel");
@@ -37,7 +38,12 @@ router.get("/me/unreplied", authLoggedIn, async (req, res) => {
     // 4. and return only ones that do not have replies
     const unrepliedReviews = reviews.filter(({ reply }) => !reply);
 
-    res.status(200).send(unrepliedReviews);
+    // 5. and enrich
+    const enrichedReviews = await Promise.all(
+      unrepliedReviews.map((r) => enrichReview(r._doc))
+    );
+
+    res.status(200).send(enrichedReviews);
   } catch (error) {
     console.log(error);
     res.status(500).send(error);
