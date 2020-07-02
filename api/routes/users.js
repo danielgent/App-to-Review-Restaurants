@@ -55,7 +55,7 @@ router.get("/", authLoggedIn, authIsAdmin, async (req, res) => {
   res.status(200).send(users);
 });
 
-// TO TEST
+// TO TEST: new untested admin only CRUD routes
 router.patch("/:id", authLoggedIn, authIsAdmin, async (req, res) => {
   const id = req.params.id;
 

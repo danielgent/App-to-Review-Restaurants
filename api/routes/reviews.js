@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-var { authLoggedIn } = require("../middleware/auth");
+var { authLoggedIn, authIsAdmin } = require("../middleware/auth");
 var { enrichReview } = require("../utils");
 
 var ReviewsModel = require("../models/ReviewsModel");
@@ -79,6 +79,40 @@ router.post("/:id/reply", authLoggedIn, (req, res) => {
     }
 
     return res.status(200).json({ message: "Updated Successfully", data: {} });
+  });
+});
+
+// TO TEST: new untested admin only CRUD routes
+router.patch("/:id", authLoggedIn, authIsAdmin, async (req, res) => {
+  const id = req.params.id;
+
+  const { comment, rating, visitDate, reply } = req.body;
+
+  const restaurant_update = {
+    comment,
+    rating,
+    visitDate,
+    reply,
+  };
+
+  // TODO => use promise way and return 500 on failure in try-catch
+  ReviewsModel.findByIdAndUpdate(id, restaurant_update, function (
+    err,
+    resMongo
+  ) {
+    // if (err) return handleError(err, res);
+
+    return res.status(200).json({ message: "Updated Successfully", data: {} });
+  });
+});
+
+router.delete("/:id", authLoggedIn, authIsAdmin, async (req, res) => {
+  const id = req.params.id;
+
+  await ReviewsModel.findByIdAndDelete(id);
+
+  return res.status(200).json({
+    message: "Review deleted Successfully",
   });
 });
 

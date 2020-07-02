@@ -38,6 +38,9 @@ const Menu = () => {
             <Box>
               <Link to="/admin/restaurants">View all restaurants</Link>
             </Box>
+            <Box>
+              <Link to="/admin/reviews">View all reviews</Link>
+            </Box>
           </>
         )}
       </Stack>
