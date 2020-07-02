@@ -95,6 +95,17 @@ const seedDatabases = async () => {
     verificationToken: "example-verification-token",
   });
   await user3.save();
+  const user4 = UserModel({
+    username: "user-locked-out",
+    password: Bcrypt.hashSync("password", Number(process.env.SALT_ROUNDS)),
+    email: "user4@example.com",
+    role: "user",
+    avatarFilename: "TODO",
+    isVerified: true,
+    verificationToken: "example-verification-token",
+    loginAttempts: 3,
+  });
+  await user4.save();
 
   // create reviews
   await ReviewsModel({
