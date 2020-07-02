@@ -61,7 +61,6 @@ router.patch("/:id", authLoggedIn, authIsAdmin, async (req, res) => {
 
   const { username, email, role } = req.body;
 
-  // NO! take out fields and parse them to be safer
   const user_update = {
     username,
     email,
@@ -84,8 +83,6 @@ router.delete("/:id", authLoggedIn, authIsAdmin, async (req, res) => {
   }
 
   const { role } = await UserModel.findByIdAndDelete(id);
-
-  console.log("user role deleting: ", role);
 
   if (role === "owner") {
     // Delete restaurants if owner

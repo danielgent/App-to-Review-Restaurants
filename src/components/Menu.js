@@ -31,9 +31,14 @@ const Menu = () => {
           <Link to="/">View all</Link>
         </Box>
         {user && user.role === ROLES.admin && (
-          <Box>
-            <Link to="/admin/users">View all users</Link>
-          </Box>
+          <>
+            <Box>
+              <Link to="/admin/users">View all users</Link>
+            </Box>
+            <Box>
+              <Link to="/admin/restaurants">View all restaurants</Link>
+            </Box>
+          </>
         )}
       </Stack>
       {/* show profile image here. that should be in context then, and returned from /me endpoint */}
