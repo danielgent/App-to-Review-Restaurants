@@ -6,16 +6,31 @@ var { enrichRestaurant } = require("../utils");
 
 router.get("/", authLoggedIn, async (req, res) => {
   try {
+    const ratingMin = req.query.ratingMin || 1;
+    const ratingMax = req.query.ratingMax || 5;
+
+    if (ratingMin < 1 || ratingMax > 5 || ratingMin > ratingMax) {
+      return res.status(400).send({ error: "Bad parameters" });
+    }
+
     const restaurants = await RestaurantModel.find({}, "name owner").exec();
 
     const enrichedRestaurants = await Promise.all(
       restaurants.map(enrichRestaurant)
     );
 
-    res.status(200).send(enrichedRestaurants);
+    // TODO - do in Db if cache this step
+    const filteredRestaurants = enrichedRestaurants.filter(
+      ({ averageRating }) =>
+        averageRating >= ratingMin && averageRating <= ratingMax
+    );
+
+    // TODO - needs sorting by average rating as per specs (doesn't say asc/desc)
+
+    return res.status(200).send(filteredRestaurants);
   } catch (error) {
     console.log(error);
-    res.status(500).send(error);
+    return res.status(500).send(error);
   }
 });
 

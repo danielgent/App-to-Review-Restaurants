@@ -362,6 +362,46 @@ describe("api tests", () => {
       );
     });
 
+    it("/restaurants/ should filter based on query strings", async () => {
+      const res = await agent
+        .get(`/restaurants?ratingMin=4`)
+        .set("Authorization", `Bearer ${user3Token}`);
+
+      expect(res.statusCode).toBe(200);
+
+      expect(res.body).toHaveLength(1);
+
+      expect(res.body[0]).toEqual(
+        expect.objectContaining({
+          name: "Owner's Diner",
+          averageRating: 4,
+        })
+      );
+
+      const res2 = await agent
+        .get(`/restaurants?ratingMax=3`)
+        .set("Authorization", `Bearer ${user3Token}`);
+
+      expect(res2.statusCode).toBe(200);
+
+      expect(res2.body).toHaveLength(1);
+
+      expect(res2.body[0]).toEqual(
+        expect.objectContaining({
+          name: "Steak House",
+          averageRating: 3,
+        })
+      );
+    });
+
+    it("/restaurants/ should reject bad query parameters", async () => {
+      const res = await agent
+        .get(`/restaurants?ratingMin=4&ratingMax=3`)
+        .set("Authorization", `Bearer ${user3Token}`);
+
+      expect(res.statusCode).toBe(400);
+    });
+
     it("/restaurants/me should give of own restaurants if owner", async () => {
       const res = await agent
         .get(`/restaurants/me`)
