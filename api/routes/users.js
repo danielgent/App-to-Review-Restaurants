@@ -28,27 +28,27 @@ router.post(
   }
 );
 
-// UNTESTED AND DEBUG ONLY SO FAR BELOW------------------------------------------------------------------
+// TO TEST => should only be viewable by admin
+router.get("/", authLoggedIn, async (req, res) => {
+  const role = req.query.role;
 
-router.get(
-  "/",
-  // authLoggedIn,
-  async (req, res) => {
-    const role = req.query.role;
-
-    const users = await UserModel.find(
-      role
-        ? {
-            role,
-          }
-        : {},
-      "username email role loginAttempts avatarFilename"
-    ).exec();
-
-    res.status(200).send(users);
+  if (role !== "admin") {
+    return res.status(401).send({ error: "Unauthorized route" });
   }
-);
 
+  const users = await UserModel.find(
+    role
+      ? {
+          role,
+        }
+      : {},
+    "username email role loginAttempts avatarFilename"
+  ).exec();
+
+  res.status(200).send(users);
+});
+
+// UNTESTED AND DEBUG ONLY SO FAR BELOW------------------------------------------------------------------
 // TODO - edit later. requires another round of validation? disallow changing username or email address? hmmmm
 // or ignore validation a bit here as only admin can edit!
 // router.patch(
