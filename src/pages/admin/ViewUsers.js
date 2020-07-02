@@ -12,6 +12,7 @@ import {
 
 import { getAuthHeader } from "utils";
 import EditUserModal from "components/EditUserModal";
+import ConfirmationModal from "components/ConfirmationModal";
 
 const TableCell = (props) => (
   <Box
@@ -31,6 +32,7 @@ const ViewUsers = () => {
   const [isLoading, setIsLoading] = React.useState(true);
   const [users, setUsers] = React.useState([]);
   const [userToEdit, setUserToEdit] = React.useState(null);
+  const [userToDelete, setUserToDelete] = React.useState(null);
 
   const toast = useToast();
 
@@ -80,6 +82,25 @@ const ViewUsers = () => {
     fetchUsers();
     setUserToEdit(null);
   };
+  const handleDeleteUser = () => {
+    axios
+      .delete(`${process.env.REACT_APP_API_URL}/users/${userToDelete._id}`, {
+        headers: getAuthHeader(),
+      })
+      .then(function (response) {
+        toast({
+          description: "User succesfully deleted",
+          status: "success",
+          duration: 9000,
+          isClosable: true,
+        });
+        setUserToDelete();
+        fetchUsers();
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
 
   if (isLoading) {
     return <CircularProgress isIndeterminate color="green"></CircularProgress>;
@@ -89,7 +110,7 @@ const ViewUsers = () => {
     <Box p={4}>
       <Heading>View users</Heading>
       <SimpleGrid
-        columns={6}
+        columns={7}
         borderColor="gray.600"
         borderWidth="1px"
         borderStyle="solid"
@@ -111,9 +132,8 @@ const ViewUsers = () => {
         <TableCell>
           <HeaderText>Login Attempts</HeaderText>
         </TableCell>
-        <TableCell>
-          <HeaderText>Edit</HeaderText>
-        </TableCell>
+        <TableCell></TableCell>
+        <TableCell></TableCell>
         {users.map((user) => (
           <React.Fragment key={user.username}>
             <TableCell>{user.username}</TableCell>
@@ -132,6 +152,9 @@ const ViewUsers = () => {
             <TableCell p={2}>
               <Button onClick={() => setUserToEdit(user)}>Edit user</Button>
             </TableCell>
+            <TableCell p={2}>
+              <Button onClick={() => setUserToDelete(user)}>Delete user</Button>
+            </TableCell>
           </React.Fragment>
         ))}
       </SimpleGrid>
@@ -141,6 +164,14 @@ const ViewUsers = () => {
         onSubmit={handleUpdateUser}
         user={userToEdit}
       />
+      <ConfirmationModal
+        isOpen={!!userToDelete}
+        onClose={() => setUserToDelete(null)}
+        onConfirm={handleDeleteUser}
+      >
+        Are you sure you want to delete this user {userToDelete?.username}? Will
+        also delete all user's restaurants and reviews
+      </ConfirmationModal>
     </Box>
   );
 };

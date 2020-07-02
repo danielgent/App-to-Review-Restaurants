@@ -139,6 +139,10 @@ router.get("/me", authLoggedIn, async (req, res) => {
       "avatarFilename username"
     ).exec();
 
+    if (!user) {
+      return res.status(401).send({ error: "invalid token" });
+    }
+
     res.status(200).json({
       role: req.user.role,
       id: req.user.id,

@@ -4,6 +4,8 @@ var router = express.Router();
 var { authLoggedIn, authIsAdmin } = require("../middleware/auth");
 
 var UserModel = require("../models/UserModel");
+var RestaurantModel = require("../models/RestaurantModel");
+var ReviewsModel = require("../models/ReviewsModel");
 
 var multer = require("multer");
 var upload = multer({
@@ -74,25 +76,28 @@ router.patch("/:id", authLoggedIn, authIsAdmin, async (req, res) => {
   });
 });
 
-// UNTESTED AND DEBUG ONLY SO FAR BELOW------------------------------------------------------------------
-// TODO - edit later. requires another round of validation? disallow changing username or email address? hmmmm
-// or ignore validation a bit here as only admin can edit!
+router.delete("/:id", authLoggedIn, authIsAdmin, async (req, res) => {
+  const id = req.params.id;
 
-// router.delete(
-//   "/:id",
-//   // authLoggedIn,
-//   // authRealtorOrAbove,
-//   (req, res) => {
-//     const id = req.params.id;
+  if (id === req.user.id) {
+    res.status(400).send({ error: "Cannot delete own user" });
+  }
 
-//     UserModel.findByIdAndDelete(id, function (err, resMongo) {
-//       // if (err) return handleError(err, res);
+  const { role } = await UserModel.findByIdAndDelete(id);
 
-//       return res.status(200).json({
-//         message: "Deleted Successfully",
-//       });
-//     });
-//   }
-// );
+  console.log("user role deleting: ", role);
+
+  if (role === "owner") {
+    // Delete restaurants if owner
+    await RestaurantModel.deleteMany({ owner: id });
+  } else {
+    // Delete comments by this user
+    await ReviewsModel.deleteMany({ reviewer: id });
+  }
+
+  return res.status(200).json({
+    message: "User deleted Successfully",
+  });
+});
 
 module.exports = router;
