@@ -172,8 +172,6 @@ router.get("/verify/:code", async (req, res) => {
       throw new Error("Code not provided");
     }
 
-    console.log("user ", user);
-
     if (user.isVerified) {
       // TODO - send properly but what code?
       throw new Error("User already verified");

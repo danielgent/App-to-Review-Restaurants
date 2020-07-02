@@ -362,9 +362,9 @@ describe("api tests", () => {
       );
     });
 
-    it("/restaurants/ should give of own restaurants if owner", async () => {
+    it("/restaurants/me should give of own restaurants if owner", async () => {
       const res = await agent
-        .get(`/restaurants`)
+        .get(`/restaurants/me`)
         .set("Authorization", `Bearer ${owner1Token}`);
 
       expect(res.statusCode).toBe(200);
@@ -443,7 +443,7 @@ describe("api tests", () => {
   });
 
   describe("reviews tests", () => {
-    it("/review/ should create new review", async () => {
+    it("/reviews/ should create new review", async () => {
       const res = await agent
         .post("/reviews")
         .send({
@@ -472,6 +472,25 @@ describe("api tests", () => {
 
       // TO TEST
       // * is user, hasn't already left review
+    });
+
+    it("/reviews/me/unreplied should give list of all unreplied reviews of owner's restaurants", async () => {
+      const res = await agent
+        .get(`/reviews/me/unreplied`)
+        .set("Authorization", `Bearer ${owner1Token}`);
+
+      expect(res.statusCode).toBe(200);
+
+      const reviews = res.body;
+
+      expect(reviews).toHaveLength(2);
+
+      expect(reviews[0].comment).toBe(
+        "I currently don't need any changes, but it's good to know you'll be able to assist, and that later on I'll be able to do it myself."
+      );
+
+      // note this was created by an earlier test
+      expect(reviews[1].comment).toBe("lorem lorem lorem");
     });
 
     it("/review/[id]/reply/ should reply", async () => {
