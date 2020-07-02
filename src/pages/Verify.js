@@ -37,7 +37,7 @@ const Verify = () => {
 
   return (
     <Box p={16}>
-      <Flex alignItems="center" alignContent="center">
+      <Flex alignItems="center" alignContent="center" flexDirection="column">
         <Heading>Email verified</Heading>
         <Text>Redirecting to Login page</Text>
       </Flex>

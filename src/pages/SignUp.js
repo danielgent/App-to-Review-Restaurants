@@ -16,6 +16,7 @@ import {
 } from "@chakra-ui/core";
 import { Formik, Form, Field } from "formik";
 import axios from "axios";
+import isEmail from "validator/es/lib/isEmail";
 
 import { ROLES } from "globalConstants";
 
@@ -85,9 +86,10 @@ const SignUp = (props) => {
         if (!values.username) {
           errors.username = "Please enter a username";
         }
-        if (!values.email) {
-          errors.email = "Please enter an email";
+        if (!values.email || !isEmail(values.email)) {
+          errors.email = "Please enter a valid email";
         }
+
         if (!values.password) {
           errors.password = "Please enter a password";
         }
@@ -112,7 +114,9 @@ const SignUp = (props) => {
                         w={{ xs: "100%", sm: "280px" }}
                         isInvalid={errors.username && touched.username}
                       >
-                        <FormLabel htmlFor="username">Enter a username</FormLabel>
+                        <FormLabel htmlFor="username">
+                          Enter a username
+                        </FormLabel>
                         <Input
                           id="username"
                           type="text"
