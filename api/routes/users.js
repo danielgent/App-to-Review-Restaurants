@@ -1,7 +1,7 @@
 var express = require("express");
 var router = express.Router();
 
-var { authLoggedIn } = require("../middleware/auth");
+var { authLoggedIn, authIsAdmin } = require("../middleware/auth");
 
 var UserModel = require("../models/UserModel");
 
@@ -29,19 +29,9 @@ router.post(
 );
 
 // TO TEST => should only be viewable by admin
-router.get("/", authLoggedIn, async (req, res) => {
-  const role = req.query.role;
-
-  if (role !== "admin") {
-    return res.status(401).send({ error: "Unauthorized route" });
-  }
-
+router.get("/", authLoggedIn, authIsAdmin, async (req, res) => {
   const users = await UserModel.find(
-    role
-      ? {
-          role,
-        }
-      : {},
+    {},
     "username email role loginAttempts avatarFilename"
   ).exec();
 

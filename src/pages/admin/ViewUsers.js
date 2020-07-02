@@ -6,6 +6,7 @@ import {
   Heading,
   SimpleGrid,
   Text,
+  Button,
 } from "@chakra-ui/core";
 
 import { getAuthHeader } from "utils";
@@ -74,13 +75,19 @@ const ViewUsers = () => {
           <HeaderText>Login Attempts</HeaderText>
         </TableCell>
         {users.map((user) => (
-          <>
+          <React.Fragment key={user.username}>
             <TableCell>{user.username}</TableCell>
             <TableCell>{user.email}</TableCell>
             <TableCell>{user.role}</TableCell>
             <TableCell>{user.avatarFilename}</TableCell>
-            <TableCell>{user.loginAttempts}</TableCell>
-          </>
+            {user.loginAttempts < 3 ? (
+              <TableCell>{user.loginAttempts}</TableCell>
+            ) : (
+              <TableCell p={2}>
+                <Button>Unlock user</Button>
+              </TableCell>
+            )}
+          </React.Fragment>
         ))}
       </SimpleGrid>
     </Box>
