@@ -5,6 +5,7 @@ import {
   Button,
   Text,
   useDisclosure,
+  Heading,
 } from "@chakra-ui/core";
 import axios from "axios";
 
@@ -19,49 +20,57 @@ const OwnerHomepage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   React.useEffect(() => {
-    refetch({
+    setIsLoading(true);
+
+    fetchRestaurants({
       setIsLoading,
       setRestaurants,
-    });
+    }).then(() => setIsLoading(false));
   }, []);
 
-  const handleSubmit = () => {
-    refetch({
+  const handleCreateRestaurant = async () => {
+    setIsLoading(true);
+    await fetchRestaurants({
       setIsLoading,
       setRestaurants,
     });
+    setIsLoading(false);
     onClose();
   };
 
-  const refetch = ({ setIsLoading, setRestaurants }) => {
-    setIsLoading(true);
-    axios
+  const fetchRestaurants = async ({ setIsLoading, setRestaurants }) => {
+    return axios
       .get(`${process.env.REACT_APP_API_URL}/restaurants/me`, {
         headers: getAuthHeader(),
       })
       .then((response) => {
         setRestaurants(response.data);
       })
-      .finally(() => {
-        setIsLoading(false);
-      });
+      .finally(() => {});
   };
 
   if (isLoading) {
     return <CircularProgress isIndeterminate color="green"></CircularProgress>;
   }
+  const reviews = ["TODO"];
 
   return (
     <Box p={4}>
+      <Heading>Your Restaurants</Heading>
       {restaurants.map((restaurant) => (
         <RestaurantListItem key={restaurant._id} restaurant={restaurant} />
       ))}
-      <Text fontSize="xl">TODO - put list of unreplied reviews here</Text>
+      <Heading>Unreplied Reviews</Heading>
+      <Box>
+        {reviews.map((review) => (
+          <div>w000t</div>
+        ))}
+      </Box>
       <Button onClick={onOpen}>Create new restaurant</Button>
       <AddRestaurantModal
         isOpen={isOpen}
         onClose={onClose}
-        onSubmit={handleSubmit}
+        onSubmit={handleCreateRestaurant}
       />
     </Box>
   );

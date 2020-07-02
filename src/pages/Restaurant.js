@@ -21,7 +21,7 @@ const SectionTitle = (props) => (
 
 const Section = (props) => <Box padding={2} mb={4} {...props} />;
 
-const refetch = ({ setIsLoading, setRestaurant, id }) => {
+const fetchRestaurant = ({ setIsLoading, setRestaurant, id }) => {
   setIsLoading(true);
   axios
     .get(`${process.env.REACT_APP_API_URL}/restaurants/${id}`, {
@@ -43,7 +43,7 @@ const Restaurant = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   React.useEffect(() => {
-    refetch({
+    fetchRestaurant({
       setIsLoading,
       setRestaurant,
       id,
@@ -51,7 +51,7 @@ const Restaurant = () => {
   }, [id]);
 
   const handleSubmit = () => {
-    refetch({
+    fetchRestaurant({
       setIsLoading,
       setRestaurant,
       id,
@@ -85,17 +85,7 @@ const Restaurant = () => {
           rounded="md"
         >
           <SectionTitle>Top review</SectionTitle>
-          <CommentItem
-            review={highReview}
-            // TODO - remove in future when showing correct list of unreplied reviews
-            refreshData={() => {
-              refetch({
-                setIsLoading,
-                setRestaurant,
-                id,
-              });
-            }}
-          />
+          <CommentItem review={highReview} />
         </Section>
         <Section
           backgroundColor="red.100"
@@ -105,34 +95,13 @@ const Restaurant = () => {
           rounded="md"
         >
           <SectionTitle>Worst review</SectionTitle>
-          <CommentItem
-            review={lowReview}
-            // TODO - remove in future when showing correct list of unreplied reviews
-            refreshData={() => {
-              refetch({
-                setIsLoading,
-                setRestaurant,
-                id,
-              });
-            }}
-          />
+          <CommentItem review={lowReview} />
         </Section>
         <Section>
           <SectionTitle>Recent reviews</SectionTitle>
           <Stack spacing="8">
             {recentReviews.map((review) => (
-              <CommentItem
-                key={review._id}
-                review={review}
-                // TODO - remove in future when showing correct list of unreplied reviews
-                refreshData={() => {
-                  refetch({
-                    setIsLoading,
-                    setRestaurant,
-                    id,
-                  });
-                }}
-              />
+              <CommentItem key={review._id} review={review} />
             ))}
           </Stack>
         </Section>
