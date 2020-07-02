@@ -178,6 +178,8 @@ const seedDatabases = async () => {
     restaurant1Id: restaurant1._id.toString(),
     user3Id: user3._id.toString(),
     review3Id: review3._id.toString(),
+    adminId: admin._id.toString(),
+    user4Id: user4._id.toString(),
   };
 };
 

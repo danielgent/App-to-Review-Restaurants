@@ -22,9 +22,12 @@ describe("api tests", () => {
   let restaurant1Id;
   let user3Id;
   let review3Id;
+  let adminId;
+  let user4Id;
 
   let owner1Token;
   let user3Token;
+  let adminToken;
 
   beforeAll(async () => {
     // TODO - try and split this huge test file up BUT would need one database per route
@@ -40,7 +43,14 @@ describe("api tests", () => {
 
     agent = request.agent(app);
 
-    ({ owner1Id, restaurant1Id, user3Id, review3Id } = await seedDb());
+    ({
+      owner1Id,
+      restaurant1Id,
+      user3Id,
+      review3Id,
+      adminId,
+      user4Id,
+    } = await seedDb());
 
     console.log("user3Id ", user3Id);
 
@@ -52,9 +62,15 @@ describe("api tests", () => {
         expiresIn: "24h",
       }
     );
-
     user3Token = jwt.sign(
       { role: "user", id: user3Id },
+      process.env.TOKEN_SECRET,
+      {
+        expiresIn: "24h",
+      }
+    );
+    adminToken = jwt.sign(
+      { role: "admin", id: adminId },
       process.env.TOKEN_SECRET,
       {
         expiresIn: "24h",
@@ -290,6 +306,36 @@ describe("api tests", () => {
 
       // TODO
       // - assert that has new profile pic BUT using random multer name. need to add predictable suffix for testing..
+    });
+
+    it("/users/unlock/ should unlock user", async () => {
+      // user 4 is currently locked
+      const blockedRes = await agent.post("/login").send({
+        username: "user-locked-out",
+        password: "password",
+      });
+
+      expect(blockedRes.body.error).toBe(
+        "Too many failed login attempts. Account blocked. Please contact admin"
+      );
+
+      expect(blockedRes.statusCode).toBe(400);
+
+      // now unlock user as admin
+      const unlockRes = await agent
+        .post(`/users/unlock/${user4Id}`)
+        .set("Authorization", `Bearer ${adminToken}`);
+
+      expect(unlockRes.statusCode).toBe(200);
+      expect(unlockRes.body.message).toBe("User unlocked");
+
+      // should now be unlocked
+      const loginSuccessRes = await agent.post("/login").send({
+        username: "user-locked-out",
+        password: "password",
+      });
+
+      expect(loginSuccessRes.statusCode).toBe(200);
     });
   });
 

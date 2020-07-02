@@ -28,6 +28,21 @@ router.post(
   }
 );
 
+router.post(
+  "/unlock/:id",
+  authLoggedIn,
+  authIsAdmin,
+  async (req, res, next) => {
+    const user = await UserModel.findById(req.params.id);
+
+    user.loginAttempts = 0;
+
+    await user.save();
+
+    res.status(200).send({ message: "User unlocked" });
+  }
+);
+
 // TO TEST => should only be viewable by admin
 router.get("/", authLoggedIn, authIsAdmin, async (req, res) => {
   const users = await UserModel.find(
