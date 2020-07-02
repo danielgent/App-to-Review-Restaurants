@@ -3,18 +3,34 @@ import {
   Box,
   CircularProgress,
   Button,
-  Text,
   useDisclosure,
   Heading,
+  Text,
 } from "@chakra-ui/core";
 import axios from "axios";
 
 import RestaurantListItem from "components/RestaurantListItem";
 import AddRestaurantModal from "components/AddRestaurantModal";
+import CommentItem from "components/CommentItem";
 import { getAuthHeader } from "utils";
+
+const fetchRestaurants = async () =>
+  axios
+    .get(`${process.env.REACT_APP_API_URL}/restaurants/me`, {
+      headers: getAuthHeader(),
+    })
+    .then((response) => response.data);
+
+const fetchReviews = async () =>
+  axios
+    .get(`${process.env.REACT_APP_API_URL}/reviews/me/unreplied`, {
+      headers: getAuthHeader(),
+    })
+    .then((response) => response.data);
 
 const OwnerHomepage = () => {
   const [restaurants, setRestaurants] = React.useState([]);
+  const [reviews, setReviews] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -22,37 +38,29 @@ const OwnerHomepage = () => {
   React.useEffect(() => {
     setIsLoading(true);
 
-    fetchRestaurants({
-      setIsLoading,
-      setRestaurants,
-    }).then(() => setIsLoading(false));
+    fetchRestaurants()
+      .then((restaurants) => {
+        setRestaurants(restaurants);
+        return fetchReviews();
+      })
+      .then((reviews) => {
+        setReviews(reviews);
+        setIsLoading(false);
+      });
   }, []);
 
   const handleCreateRestaurant = async () => {
     setIsLoading(true);
-    await fetchRestaurants({
-      setIsLoading,
-      setRestaurants,
-    });
+    const restaurants = await fetchRestaurants();
+    setRestaurants(restaurants);
+
     setIsLoading(false);
     onClose();
-  };
-
-  const fetchRestaurants = async ({ setIsLoading, setRestaurants }) => {
-    return axios
-      .get(`${process.env.REACT_APP_API_URL}/restaurants/me`, {
-        headers: getAuthHeader(),
-      })
-      .then((response) => {
-        setRestaurants(response.data);
-      })
-      .finally(() => {});
   };
 
   if (isLoading) {
     return <CircularProgress isIndeterminate color="green"></CircularProgress>;
   }
-  const reviews = ["TODO"];
 
   return (
     <Box p={4}>
@@ -62,9 +70,11 @@ const OwnerHomepage = () => {
       ))}
       <Heading>Unreplied Reviews</Heading>
       <Box>
-        {reviews.map((review) => (
-          <div>w000t</div>
-        ))}
+        {reviews.length === 0 ? (
+          <Text>All your reviews are replied to</Text>
+        ) : (
+          reviews.map((review) => <CommentItem review={review} />)
+        )}
       </Box>
       <Button onClick={onOpen}>Create new restaurant</Button>
       <AddRestaurantModal
