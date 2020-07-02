@@ -1,74 +1,18 @@
 import React from "react";
-import { Box, CircularProgress, Button, useDisclosure } from "@chakra-ui/core";
-import axios from "axios";
 
-import RestaurantListItem from "components/RestaurantListItem";
-import AddRestaurantModal from "components/AddRestaurantModal";
+import OwnerHomepage from "components/OwnerHomepage";
+import UserHomepage from "components/UserHomepage";
 import UserContext from "contexts/user-context";
-import { getAuthHeader } from "utils";
-
-const refetch = ({ setIsLoading, setRestaurants, filters, token }) => {
-  setIsLoading(true);
-  axios
-    .get(`${process.env.REACT_APP_API_URL}/restaurants`, {
-      params: filters,
-      headers: getAuthHeader(),
-    })
-    .then((response) => {
-      setRestaurants(response.data);
-    })
-    .finally(() => {
-      setIsLoading(false);
-    });
-};
+import { ROLES } from "globalConstants";
 
 const Home = (props) => {
   const { user } = React.useContext(UserContext);
-  const [restaurants, setRestaurants] = React.useState([]);
-  const [isLoading, setIsLoading] = React.useState(true);
-  const [
-    filters,
-    // setFilters
-  ] = React.useState({});
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
-  React.useEffect(() => {
-    refetch({
-      token: user.token,
-      setIsLoading,
-      setRestaurants,
-      filters,
-    });
-  }, [filters, user.token]);
-
-  const handleSubmit = () => {
-    refetch({
-      token: user.token,
-      setIsLoading,
-      setRestaurants,
-      filters,
-    });
-    onClose();
-  };
-
-  if (isLoading) {
-    return <CircularProgress isIndeterminate color="green"></CircularProgress>;
+  if (user.role === ROLES.owner) {
+    return <OwnerHomepage />;
   }
 
-  return (
-    <Box p={4}>
-      {restaurants.map((restaurant) => (
-        <RestaurantListItem key={restaurant._id} restaurant={restaurant} />
-      ))}
-      <Button onClick={onOpen}>Create new restaurant</Button>
-      <AddRestaurantModal
-        isOpen={isOpen}
-        onClose={onClose}
-        onSubmit={handleSubmit}
-      />
-    </Box>
-  );
+  return <UserHomepage />;
 };
 
 Home.propTypes = {};
