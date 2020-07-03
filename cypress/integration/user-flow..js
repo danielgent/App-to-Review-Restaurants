@@ -1,5 +1,5 @@
 describe("User flow", function () {
-  it("creates account and logs in", function () {
+  it("logs in, filters, adds review", function () {
     cy.visit(Cypress.env("app_host"));
 
     // redirected to login page as no token

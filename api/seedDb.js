@@ -158,6 +158,14 @@ const seedDatabases = async () => {
       "Sorry to hear your experience at the store was not the best. The amount that was paid was for the new tube + installation. Apologies for the miss understanding.",
     dateCreated: "2020-06-01T10:42:53.397Z",
   }).save();
+  await ReviewsModel({
+    comment: "More or less",
+    reviewer: user4._id,
+    restaurant: restaurant2._id,
+    rating: 2,
+    visitDate: "2020-01-01",
+    dateCreated: "2020-06-01T10:42:53.397Z",
+  }).save();
 
   // create admin
   const admin = UserModel({

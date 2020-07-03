@@ -4,7 +4,6 @@ import {
   CircularProgress,
   Button,
   useDisclosure,
-  Heading,
   Text,
 } from "@chakra-ui/core";
 import axios from "axios";
@@ -14,6 +13,7 @@ import AddRestaurantModal from "components/AddRestaurantModal";
 import AddReplyModal from "components/AddReplyModal";
 import CommentItem from "components/CommentItem";
 import { getAuthHeader } from "utils";
+import { Container, Divider, Heading } from "components/Styled";
 
 const fetchRestaurants = async () =>
   axios
@@ -71,7 +71,7 @@ const OwnerHomepage = () => {
   }
 
   return (
-    <Box p={4}>
+    <Container maxWidth={700}>
       <Heading>Your Restaurants</Heading>
       {restaurants.map((restaurant) => (
         <RestaurantListItem key={restaurant._id} restaurant={restaurant} />
@@ -103,7 +103,7 @@ const OwnerHomepage = () => {
         onClose={onClose}
         onSubmit={handleCreateRestaurant}
       />
-    </Box>
+    </Container>
   );
 };
 
