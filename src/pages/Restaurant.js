@@ -4,8 +4,8 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 
 import CommentItem from "components/CommentItem";
-import StarRating from "components/StarRating";
 import CreateReviewButton from "components/CreateReviewButton";
+import StaticRating from "components/StaticRating";
 
 import { getAuthHeader } from "utils";
 import { Container } from "components/Styled";
@@ -73,7 +73,7 @@ const Restaurant = () => {
     ) : (
       <>
         <Text>Avg {averageRating}</Text>
-        <StarRating rating={averageRating} />
+        <StaticRating value={averageRating} size="large" />
 
         <Section
           backgroundColor="green.100"

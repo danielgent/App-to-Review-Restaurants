@@ -1,6 +1,7 @@
 import { Box, Stack, Avatar, Divider, Text } from "@chakra-ui/core";
-
 import React from "react";
+
+import StaticRating from "components/StaticRating";
 
 // TODO - rename ReviewItem
 const CommentItem = ({ review, refreshData, ...rest }) => {
@@ -17,10 +18,7 @@ const CommentItem = ({ review, refreshData, ...rest }) => {
         <Avatar name={username} mr={4} src={avatarImageUrl} />
         <Box>
           <Text>{comment}</Text>
-          {/* TODO - review star component ASAP */}
-          <Text fontSize="lg" fontWeight="bold">
-            {rating}
-          </Text>
+          <StaticRating value={rating} />
           <Text fontSize="xs" fontStyle="italic" color="grey.500">
             {formattedDate}
           </Text>

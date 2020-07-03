@@ -1,3 +1,5 @@
+// my idea of a custom rating component
+
 // candidate for unit test
 import React from "react";
 import PropTypes from "prop-types";
