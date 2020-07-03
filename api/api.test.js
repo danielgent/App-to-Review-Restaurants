@@ -370,12 +370,12 @@ describe("api tests", () => {
         })
       );
 
-      expect(restaurants[1].recentReviews).toHaveLength(2);
+      expect(restaurants[1].recentReviews).toHaveLength(3);
 
       expect(restaurants[1]).toEqual(
         expect.objectContaining({
           name: "Steak House",
-          averageRating: 3,
+          averageRating: 2.6666666666666665,
         })
       );
 
@@ -391,7 +391,7 @@ describe("api tests", () => {
         })
       );
 
-      expect(restaurants[1].recentReviews).toHaveLength(2);
+      expect(restaurants[1].recentReviews).toHaveLength(3);
 
       // check reviewers enriched correctly
       expect(restaurants[1].highReview.reviewer).toEqual(
@@ -402,8 +402,8 @@ describe("api tests", () => {
       );
       expect(restaurants[1].lowReview.reviewer).toEqual(
         expect.objectContaining({
-          avatarFilename: "sage-adebayo",
-          username: "b-user",
+          avatarFilename: "TODO",
+          username: "user-locked-out",
         })
       );
     });
@@ -435,7 +435,7 @@ describe("api tests", () => {
       expect(res2.body[0]).toEqual(
         expect.objectContaining({
           name: "Steak House",
-          averageRating: 3,
+          averageRating: 2.6666666666666665,
         })
       );
     });
