@@ -13,8 +13,8 @@ import { Formik, Form, Field } from "formik";
 import axios from "axios";
 import isEmail from "validator/es/lib/isEmail";
 import {
-  FormContainer,
-  FormHeader,
+  Container,
+  Heading,
   FormControl,
   FormLabel,
   SubmitButton,
@@ -51,8 +51,8 @@ const SignUp = (props) => {
 
   if (hasSubmittedSuccessfully) {
     return (
-      <FormContainer>
-        <FormHeader>Next step</FormHeader>
+      <Container maxWidth={380}>
+        <Heading>Next step</Heading>
         <Box p={4}>
           <Alert
             status="success"
@@ -69,7 +69,7 @@ const SignUp = (props) => {
           </Alert>
           <Divider />
         </Box>
-      </FormContainer>
+      </Container>
     );
   }
 
@@ -104,8 +104,8 @@ const SignUp = (props) => {
       onSubmit={handleSubmit}
     >
       {({ isSubmitting }) => (
-        <FormContainer maxWidth={480}>
-          <FormHeader>Sign up create account</FormHeader>
+        <Container maxWidth={480}>
+          <Heading>Create an account</Heading>
           <Box p={4}>
             <Form>
               <Stack spacing={5}>
@@ -221,7 +221,7 @@ const SignUp = (props) => {
               <Text maxWidth="sm">{serverErrorMessage}</Text>
             </Alert>
           )}
-        </FormContainer>
+        </Container>
       )}
     </Formik>
   );

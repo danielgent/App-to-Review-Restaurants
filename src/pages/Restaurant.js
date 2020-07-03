@@ -14,6 +14,7 @@ import axios from "axios";
 import CommentItem from "components/CommentItem";
 import AddReviewModal from "components/AddReviewModal";
 import { getAuthHeader } from "utils";
+import { Container } from "components/Styled";
 
 const SectionTitle = (props) => (
   <Heading as="h2" size="md" mb={6} color="gray.600" {...props} />
@@ -109,17 +110,19 @@ const Restaurant = () => {
     );
 
   return (
-    <Box p={4}>
-      <Heading as="h1">{name}</Heading>
-      <Box p={8}>{innerContent}</Box>
-      <Button onClick={onOpen}>Rate this restaurant</Button>
-      <AddReviewModal
-        isOpen={isOpen}
-        onClose={onClose}
-        onSubmit={handleSubmit}
-        restaurantId={id}
-      />
-    </Box>
+    <Container maxWidth={1200}>
+      <Box p={4}>
+        <Heading as="h1">{name}</Heading>
+        <Box p={8}>{innerContent}</Box>
+        <Button onClick={onOpen}>Rate this restaurant</Button>
+        <AddReviewModal
+          isOpen={isOpen}
+          onClose={onClose}
+          onSubmit={handleSubmit}
+          restaurantId={id}
+        />
+      </Box>
+    </Container>
   );
 };
 

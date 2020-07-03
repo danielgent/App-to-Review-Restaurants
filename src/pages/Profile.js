@@ -1,6 +1,4 @@
 import {
-  Box,
-  Heading,
   Flex,
   Spinner,
   Text,
@@ -14,6 +12,7 @@ import axios from "axios";
 import UserContext from "contexts/user-context";
 import UploadProfileModal from "components/UploadProfileModal";
 import { getAuthHeader } from "utils";
+import { Container, Heading } from "components/Styled";
 
 const Profile = (props) => {
   const { user, updateUser } = React.useContext(UserContext);
@@ -47,7 +46,7 @@ const Profile = (props) => {
   };
 
   return (
-    <Box p={10}>
+    <Container maxWidth={600}>
       <Heading as="h1">Profile</Heading>
 
       <Flex align="center" justify="center">
@@ -73,7 +72,7 @@ const Profile = (props) => {
         onClose={onUploadProfileModalClose}
         onSubmit={handleNewLogo}
       />
-    </Box>
+    </Container>
   );
 };
 

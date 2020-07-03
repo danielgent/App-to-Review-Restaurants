@@ -10,6 +10,7 @@ import {
 
 import { getAuthHeader } from "utils";
 import RestaurantListItem from "components/RestaurantListItem";
+import { Container, Divider, Heading } from "components/Styled";
 
 const UserHomepage = (props) => {
   const [isLoading, setIsLoading] = React.useState(true);
@@ -58,7 +59,9 @@ const UserHomepage = (props) => {
   }
 
   return (
-    <Box p={4}>
+    <Container maxWidth={700}>
+      <Heading as="h1">View all restaurants</Heading>
+
       <Box p={4}>
         <FormControl>
           <FormLabel htmlFor="username">
@@ -84,11 +87,12 @@ const UserHomepage = (props) => {
             <option value={5}>5</option>
           </Select>
         </FormControl>
+        <Divider />
       </Box>
       {restaurants.map((restaurant) => (
         <RestaurantListItem key={restaurant._id} restaurant={restaurant} />
       ))}
-    </Box>
+    </Container>
   );
 };
 

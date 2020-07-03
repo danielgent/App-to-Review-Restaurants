@@ -1,7 +1,7 @@
 import React from "react";
 import {
   Box,
-  Heading,
+  Heading as RHeading,
   FormControl as RFormControl,
   FormLabel as RFormLabel,
   Button,
@@ -9,11 +9,11 @@ import {
   Text,
 } from "@chakra-ui/core";
 
-export const FormContainer = (props) => (
+export const Container = (props) => (
   <Box backgroundColor="white" rounded="md" w="100%" py={8} px={4} {...props} />
 );
 
-export const FormHeader = (props) => <Heading mb={10} {...props} />;
+export const Heading = (props) => <RHeading mb={10} {...props} />;
 
 export const FormControl = (props) => <RFormControl mb={4} {...props} />;
 
@@ -28,4 +28,16 @@ export const SubmitButton = (props) => (
 export const Divider = (props) => <RDivider mb={8} {...props} />;
 export const StyledLink = (props) => (
   <Text textDecoration="underline" {...props} />
+);
+
+export const TableCell = (props) => (
+  <Box
+    borderColor="gray.600"
+    borderWidth="1px"
+    borderStyle="solid"
+    borderTop="none"
+    borderLeft="none"
+    p={4}
+    {...props}
+  />
 );

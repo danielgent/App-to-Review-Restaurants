@@ -16,8 +16,8 @@ import { Link, useHistory } from "react-router-dom";
 import UserContext from "contexts/user-context";
 import { LOCAL_STORAGE_TOKEN_KEY } from "globalConstants";
 import {
-  FormContainer,
-  FormHeader,
+  Container,
+  Heading,
   FormControl,
   FormLabel,
   SubmitButton,
@@ -52,7 +52,7 @@ const LogIn = (props) => {
   };
 
   return (
-    <FormContainer maxWidth={380}>
+    <Container maxWidth={380}>
       <Formik
         enableReinitialize
         initialValues={{
@@ -74,7 +74,7 @@ const LogIn = (props) => {
       >
         {({ isSubmitting }) => (
           <Box>
-            <FormHeader>Login</FormHeader>
+            <Heading>Login</Heading>
             <Divider />
             <Form>
               <Stack spacing={5}>
@@ -141,7 +141,7 @@ const LogIn = (props) => {
           </Box>
         )}
       </Formik>
-    </FormContainer>
+    </Container>
   );
 };
 

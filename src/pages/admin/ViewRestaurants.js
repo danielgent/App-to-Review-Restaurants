@@ -3,7 +3,6 @@ import axios from "axios";
 import {
   Box,
   CircularProgress,
-  Heading,
   SimpleGrid,
   Text,
   useToast,
@@ -13,18 +12,7 @@ import {
 import { getAuthHeader } from "utils";
 import EditRestaurantModal from "components/EditRestaurantModal";
 import ConfirmationModal from "components/ConfirmationModal";
-
-const TableCell = (props) => (
-  <Box
-    borderColor="gray.600"
-    borderWidth="1px"
-    borderStyle="solid"
-    borderTop="none"
-    borderLeft="none"
-    p={4}
-    {...props}
-  />
-);
+import { Container, Heading, TableCell } from "components/Styled";
 
 const HeaderText = (props) => <Text fontWeight="bold" {...props} />;
 
@@ -86,7 +74,7 @@ const ViewRestaurants = () => {
   }
 
   return (
-    <Box p={4}>
+    <Container maxWidth={1200}>
       <Heading>View restaurants</Heading>
       <SimpleGrid
         columns={3}
@@ -131,7 +119,7 @@ const ViewRestaurants = () => {
         Are you sure you want to delete this restaurant
         {restaurantToDelete?.restaurantname}? All reviews will also be deleted
       </ConfirmationModal>
-    </Box>
+    </Container>
   );
 };
 
