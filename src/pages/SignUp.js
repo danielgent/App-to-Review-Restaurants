@@ -1,15 +1,10 @@
 import React from "react";
 import {
   Box,
-  Heading,
   Stack,
-  FormControl,
-  FormLabel,
   FormErrorMessage,
   Input,
-  Button,
   Select,
-  Divider,
   Alert,
   Icon,
   Text,
@@ -17,6 +12,14 @@ import {
 import { Formik, Form, Field } from "formik";
 import axios from "axios";
 import isEmail from "validator/es/lib/isEmail";
+import {
+  FormContainer,
+  FormHeader,
+  FormControl,
+  FormLabel,
+  SubmitButton,
+  Divider,
+} from "components/Styled";
 
 import { ROLES } from "globalConstants";
 
@@ -48,8 +51,8 @@ const SignUp = (props) => {
 
   if (hasSubmittedSuccessfully) {
     return (
-      <Box>
-        <Heading>Next step</Heading>
+      <FormContainer>
+        <FormHeader>Next step</FormHeader>
         <Box p={4}>
           <Alert
             status="success"
@@ -66,7 +69,7 @@ const SignUp = (props) => {
           </Alert>
           <Divider />
         </Box>
-      </Box>
+      </FormContainer>
     );
   }
 
@@ -101,8 +104,8 @@ const SignUp = (props) => {
       onSubmit={handleSubmit}
     >
       {({ isSubmitting }) => (
-        <Box>
-          <Heading>Sign up create account</Heading>
+        <FormContainer maxWidth={480}>
+          <FormHeader>Sign up create account</FormHeader>
           <Box p={4}>
             <Form>
               <Stack spacing={5}>
@@ -111,7 +114,6 @@ const SignUp = (props) => {
                     const { errors, touched } = form;
                     return (
                       <FormControl
-                        w={{ xs: "100%", sm: "280px" }}
                         isInvalid={errors.username && touched.username}
                       >
                         <FormLabel htmlFor="username">
@@ -132,10 +134,7 @@ const SignUp = (props) => {
                   {({ field, form }) => {
                     const { errors, touched } = form;
                     return (
-                      <FormControl
-                        w={{ xs: "100%", sm: "280px" }}
-                        isInvalid={errors.email && touched.email}
-                      >
+                      <FormControl isInvalid={errors.email && touched.email}>
                         <FormLabel htmlFor="email">email</FormLabel>
                         <Input
                           id="email"
@@ -153,7 +152,6 @@ const SignUp = (props) => {
                     const { errors, touched } = form;
                     return (
                       <FormControl
-                        w={{ xs: "100%", sm: "280px" }}
                         isInvalid={errors.password && touched.password}
                       >
                         <FormLabel htmlFor="password">Enter password</FormLabel>
@@ -173,7 +171,6 @@ const SignUp = (props) => {
                     const { errors, touched } = form;
                     return (
                       <FormControl
-                        w={{ xs: "100%", sm: "280px" }}
                         isInvalid={
                           errors.repeatPassword && touched.repeatPassword
                         }
@@ -197,7 +194,7 @@ const SignUp = (props) => {
                 <Field type="text" name="role">
                   {({ field, form }) => {
                     return (
-                      <FormControl w={{ xs: "100%", sm: "280px" }}>
+                      <FormControl>
                         <FormLabel htmlFor="role">Select role</FormLabel>
                         <Select id="role" {...field}>
                           <option value={ROLES.user}>User</option>
@@ -208,7 +205,7 @@ const SignUp = (props) => {
                   }}
                 </Field>
                 <Divider />
-                <Button type="submit">Create account</Button>
+                <SubmitButton type="submit">Create account</SubmitButton>
               </Stack>
             </Form>
           </Box>
@@ -224,7 +221,7 @@ const SignUp = (props) => {
               <Text maxWidth="sm">{serverErrorMessage}</Text>
             </Alert>
           )}
-        </Box>
+        </FormContainer>
       )}
     </Formik>
   );

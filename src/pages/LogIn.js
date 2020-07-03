@@ -1,14 +1,9 @@
 import React from "react";
 import {
   Box,
-  Heading,
   Stack,
-  FormControl as RFormControl,
-  FormLabel as RFormLabel,
   FormErrorMessage,
   Input,
-  Button,
-  Divider as RDivider,
   Alert,
   Icon,
   Text,
@@ -20,31 +15,15 @@ import { Link, useHistory } from "react-router-dom";
 
 import UserContext from "contexts/user-context";
 import { LOCAL_STORAGE_TOKEN_KEY } from "globalConstants";
-
-const FormContainer = (props) => (
-  <Box
-    backgroundColor="white"
-    rounded="md"
-    maxWidth={380}
-    w="100%"
-    py={8}
-    px={4}
-    {...props}
-  />
-);
-
-const FormHeader = (props) => <Heading mb={10} {...props} />;
-
-const FormControl = (props) => <RFormControl mb={4} {...props} />;
-
-const FormLabel = (props) => <RFormLabel mb={4} fontWeight="bold" {...props} />;
-
-const SubmitButton = (props) => (
-  <Button type="submit" textTransform="uppercase" {...props} py={6} px={4} />
-);
-
-const Divider = (props) => <RDivider mb={8} {...props} />;
-const StyledLink = (props) => <Text textDecoration="underline" {...props} />;
+import {
+  FormContainer,
+  FormHeader,
+  FormControl,
+  FormLabel,
+  SubmitButton,
+  Divider,
+  StyledLink,
+} from "components/Styled";
 
 const LogIn = (props) => {
   const [serverErrorMessage, setServerErrorMessage] = React.useState("");
@@ -72,11 +51,8 @@ const LogIn = (props) => {
       });
   };
 
-  // TODO
-  // * my first design page
-  // * extract these out into layout components to use on other pages
   return (
-    <FormContainer>
+    <FormContainer maxWidth={380}>
       <Formik
         enableReinitialize
         initialValues={{
