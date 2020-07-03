@@ -1,18 +1,12 @@
 import React from "react";
-import {
-  Box,
-  Heading,
-  Text,
-  CircularProgress,
-  useDisclosure,
-  Button,
-  Stack,
-} from "@chakra-ui/core";
+import { Box, Heading, Text, CircularProgress, Stack } from "@chakra-ui/core";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
 import CommentItem from "components/CommentItem";
-import AddReviewModal from "components/AddReviewModal";
+
+import CreateReviewButton from "components/CreateReviewButton";
+
 import { getAuthHeader } from "utils";
 import { Container } from "components/Styled";
 import UserContext from "contexts/user-context";
@@ -44,7 +38,6 @@ const Restaurant = () => {
 
   const [restaurant, setRestaurant] = React.useState(null);
   const [isLoading, setIsLoading] = React.useState(true);
-  const { isOpen, onOpen, onClose } = useDisclosure();
 
   React.useEffect(() => {
     fetchRestaurant({
@@ -54,13 +47,12 @@ const Restaurant = () => {
     });
   }, [id]);
 
-  const handleSubmit = () => {
+  const handleCreateReview = () => {
     fetchRestaurant({
       setIsLoading,
       setRestaurant,
       id,
     });
-    onClose();
   };
 
   if (isLoading) {
@@ -118,15 +110,11 @@ const Restaurant = () => {
         <Heading as="h1">{name}</Heading>
         <Box p={8}>{innerContent}</Box>
         {user.role === ROLES.user && (
-          <>
-            <Button onClick={onOpen}>Rate this restaurant</Button>
-            <AddReviewModal
-              isOpen={isOpen}
-              onClose={onClose}
-              onSubmit={handleSubmit}
-              restaurantId={id}
-            />
-          </>
+          <CreateReviewButton
+            user={user}
+            restaurantId={id}
+            onCreateReview={handleCreateReview}
+          />
         )}
       </Box>
     </Container>
