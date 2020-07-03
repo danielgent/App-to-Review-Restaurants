@@ -8,6 +8,19 @@ const sgMail = require("@sendgrid/mail");
 var { authLoggedIn } = require("../middleware/auth");
 
 var UserModel = require("../models/UserModel");
+var seedDb = require("../seedDb");
+
+// TODO - serious security hole. Need Cypress only auth key or dunno. Not ideal to use real server lol
+router.post("/reloadDB", async (req, res) => {
+  console.log("REQUEST RECEIVED");
+  if (process.env.SEED_DATABASE) {
+    await seedDb();
+    return res.status(200).json({
+      message: "Database reset",
+    });
+  }
+  return res.status(404);
+});
 
 router.post("/register", async (req, res) => {
   try {

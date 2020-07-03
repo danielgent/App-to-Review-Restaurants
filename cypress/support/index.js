@@ -14,7 +14,15 @@
 // ***********************************************************
 
 // Import commands.js using ES2015 syntax:
-import './commands'
+import "./commands";
+
+before(() => {
+  cy.request("POST", `${Cypress.env("api_host")}/reloadDB`);
+});
+
+beforeEach(() => {
+  cy.request("POST", `${Cypress.env("api_host")}/reloadDB`);
+});
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')

@@ -1,8 +1,6 @@
-import { localURL } from "../CYPRESS_CONFIG";
-
 describe("User flow", function () {
   it("creates account and logs in", function () {
-    cy.visit(localURL);
+    cy.visit(Cypress.env("app_host"));
 
     // redirected to login page as no token
     cy.findAllByText("Login");
@@ -35,10 +33,31 @@ describe("User flow", function () {
 
     cy.findByRole("button", { name: "Clear filters" }).click();
 
-    // now go to detail page
+    // now go to detail page which is correctly populated
     cy.findByText("Owner's Diner").click();
 
-    cy.findByText("Top review");
-    cy.findByText("Owner's Diner");
+    // TODO - ugly. better component and style and then assert
+    cy.findByText("Avg 4");
+
+    cy.findByText("Top review")
+      .closest("div")
+      .contains(/Super website for people like us/);
+    cy.findByText("Worst review")
+      .closest("div")
+      .contains(/I currently don't need any changes, /);
+
+    cy.findByRole("button", { name: "Rate this restaurant" }).click();
+
+    cy.findByLabelText("Comment").type("new cypress review");
+    cy.findByLabelText("Rating").select("1");
+    cy.findByRole("button", { name: "Create Review" }).click();
+
+    // page should now be updated
+    cy.findAllByText(/new cypress review/);
+
+    cy.findByText("Avg 3");
+    cy.findByText("Worst review")
+      .closest("div")
+      .contains(/new cypress review/);
   });
 });
