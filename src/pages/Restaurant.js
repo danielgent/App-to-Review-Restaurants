@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 
 import CommentItem from "components/CommentItem";
-
+import StarRating from "components/StarRating";
 import CreateReviewButton from "components/CreateReviewButton";
 
 import { getAuthHeader } from "utils";
@@ -73,6 +73,8 @@ const Restaurant = () => {
     ) : (
       <>
         <Text>Avg {averageRating}</Text>
+        <StarRating rating={averageRating} />
+
         <Section
           backgroundColor="green.100"
           borderColor="green.400"

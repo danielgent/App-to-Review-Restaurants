@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Text, Flex } from "@chakra-ui/core";
 
+import StarRating from "components/StarRating";
+
 const RestaurantListItem = ({ restaurant }) => {
   const { name, _id, averageRating } = restaurant;
   return (
@@ -16,6 +18,7 @@ const RestaurantListItem = ({ restaurant }) => {
       >
         <Text>{name}</Text>
         <Text>{averageRating}</Text>
+        <StarRating rating={averageRating} />
       </Flex>
     </Link>
   );
