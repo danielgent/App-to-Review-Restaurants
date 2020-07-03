@@ -24,6 +24,7 @@ import {
   Divider,
   StyledLink,
 } from "components/Styled";
+import { disallowWhitespaceChangeHandler } from "utils";
 
 const LogIn = (props) => {
   const [serverErrorMessage, setServerErrorMessage] = React.useState("");
@@ -81,6 +82,7 @@ const LogIn = (props) => {
                 <Field type="text" name="username">
                   {({ field, form }) => {
                     const { errors, touched } = form;
+                    const { onChange, ...restOfField } = field;
                     return (
                       <FormControl
                         isInvalid={errors.username && touched.username}
@@ -90,7 +92,8 @@ const LogIn = (props) => {
                           id="username"
                           type="text"
                           autoComplete="off"
-                          {...field}
+                          onChange={disallowWhitespaceChangeHandler(onChange)}
+                          {...restOfField}
                         />
                         <FormErrorMessage>{errors.username}</FormErrorMessage>
                       </FormControl>

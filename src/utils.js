@@ -11,3 +11,11 @@ export const getAuthHeader = () => {
 
   return {};
 };
+
+export const disallowWhitespaceChangeHandler = (onChange) => (e) =>
+  onChange({
+    target: {
+      name: e.target.name,
+      value: e.target.value.trim(),
+    },
+  });

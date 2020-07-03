@@ -20,6 +20,7 @@ import {
   SubmitButton,
   Divider,
 } from "components/Styled";
+import { disallowWhitespaceChangeHandler } from "utils";
 
 import { ROLES } from "globalConstants";
 
@@ -112,6 +113,7 @@ const SignUp = (props) => {
                 <Field type="text" name="username">
                   {({ field, form }) => {
                     const { errors, touched } = form;
+                    const { onChange, ...restOfField } = field;
                     return (
                       <FormControl
                         isInvalid={errors.username && touched.username}
@@ -123,7 +125,8 @@ const SignUp = (props) => {
                           id="username"
                           type="text"
                           autoComplete="off"
-                          {...field}
+                          onChange={disallowWhitespaceChangeHandler(onChange)}
+                          {...restOfField}
                         />
                         <FormErrorMessage>{errors.username}</FormErrorMessage>
                       </FormControl>
