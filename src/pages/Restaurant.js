@@ -114,6 +114,7 @@ const Restaurant = () => {
       <Box p={4}>
         <Heading as="h1">{name}</Heading>
         <Box p={8}>{innerContent}</Box>
+        {/* TODO - need something from BE to say that user cannot rate */}
         <Button onClick={onOpen}>Rate this restaurant</Button>
         <AddReviewModal
           isOpen={isOpen}

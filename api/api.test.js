@@ -178,8 +178,8 @@ describe("api tests", () => {
 
       it("should reject unverified account", async () => {
         const res = await agent.post("/login").send({
-          username: "user-no-reviews",
-          password: "password-3",
+          username: "user-email-not-verified",
+          password: "password",
         });
 
         expect(res.body.error).toBe(

@@ -6,16 +6,19 @@ import {
   Select,
   FormControl,
   FormLabel,
+  Button,
 } from "@chakra-ui/core";
 
 import { getAuthHeader } from "utils";
 import RestaurantListItem from "components/RestaurantListItem";
 import { Container, Divider, Heading } from "components/Styled";
 
+const DEFAULT_FILTERS = { min: 1, max: 5 };
+
 const UserHomepage = (props) => {
   const [isLoading, setIsLoading] = React.useState(true);
   const [restaurants, setRestaurants] = React.useState([]);
-  const [filters, setFilters] = React.useState({ min: 1, max: 5 });
+  const [filters, setFilters] = React.useState(DEFAULT_FILTERS);
 
   React.useEffect(() => {
     setIsLoading(true);
@@ -34,6 +37,10 @@ const UserHomepage = (props) => {
         setIsLoading(false);
       });
   }, [filters]);
+
+  const handleClearFilters = () => {
+    setFilters(DEFAULT_FILTERS);
+  };
 
   const handleMinRatingChange = (e) => {
     const min = e.target.value;
@@ -64,10 +71,14 @@ const UserHomepage = (props) => {
 
       <Box p={4}>
         <FormControl>
-          <FormLabel htmlFor="username">
+          <FormLabel htmlFor="minRating">
             Select minimum average rating
           </FormLabel>
-          <Select value={filters.min} onChange={handleMinRatingChange}>
+          <Select
+            id="minRating"
+            value={filters.min}
+            onChange={handleMinRatingChange}
+          >
             <option value={1}>1</option>
             <option value={2}>2</option>
             <option value={3}>3</option>
@@ -76,16 +87,21 @@ const UserHomepage = (props) => {
           </Select>
         </FormControl>
         <FormControl>
-          <FormLabel htmlFor="username">
+          <FormLabel htmlFor="maxRating">
             Select maximum average rating
           </FormLabel>
-          <Select value={filters.max} onChange={handleMaxRatingChange}>
+          <Select
+            id="maxRating"
+            value={filters.max}
+            onChange={handleMaxRatingChange}
+          >
             <option value={1}>1</option>
             <option value={2}>2</option>
             <option value={3}>3</option>
             <option value={4}>4</option>
             <option value={5}>5</option>
           </Select>
+          <Button onClick={handleClearFilters}>Clear filters</Button>
         </FormControl>
         <Divider />
       </Box>

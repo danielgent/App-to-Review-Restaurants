@@ -91,8 +91,8 @@ const seedDatabases = async () => {
     email: "user3@example.com",
     role: "user",
     avatarFilename: "kent-c-dodds",
-    isVerified: false,
-    verificationToken: "example-verification-token",
+    isVerified: true,
+    verificationToken: "some-token",
   });
   await user3.save();
   const user4 = UserModel({
@@ -102,10 +102,20 @@ const seedDatabases = async () => {
     role: "user",
     avatarFilename: "TODO",
     isVerified: true,
-    verificationToken: "example-verification-token",
+    verificationToken: "some-token",
     loginAttempts: 3,
   });
   await user4.save();
+  const user5 = UserModel({
+    username: "user-email-not-verified",
+    password: Bcrypt.hashSync("password", Number(process.env.SALT_ROUNDS)),
+    email: "user5@example.com",
+    role: "user",
+    avatarFilename: "foo",
+    isVerified: false,
+    verificationToken: "example-verification-token",
+  });
+  await user5.save();
 
   // create reviews
   await ReviewsModel({
