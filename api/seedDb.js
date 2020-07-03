@@ -194,6 +194,7 @@ const seedDatabases = async () => {
   return {
     owner1Id: owner1._id.toString(),
     restaurant1Id: restaurant1._id.toString(),
+    restaurant2Id: restaurant2._id.toString(),
     user3Id: user3._id.toString(),
     review3Id: review3._id.toString(),
     adminId: admin._id.toString(),

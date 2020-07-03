@@ -20,6 +20,7 @@ describe("api tests", () => {
 
   let owner1Id;
   let restaurant1Id;
+  let restaurant2Id;
   let user3Id;
   let review3Id;
   let adminId;
@@ -27,6 +28,7 @@ describe("api tests", () => {
 
   let owner1Token;
   let user3Token;
+  let user1Token;
   let adminToken;
 
   beforeAll(async () => {
@@ -46,6 +48,7 @@ describe("api tests", () => {
     ({
       owner1Id,
       restaurant1Id,
+      restaurant2Id,
       user3Id,
       review3Id,
       adminId,
@@ -69,6 +72,13 @@ describe("api tests", () => {
         expiresIn: "24h",
       }
     );
+    user4Token = jwt.sign(
+      { role: "user", id: user4Id },
+      process.env.TOKEN_SECRET,
+      {
+        expiresIn: "24h",
+      }
+    );
     adminToken = jwt.sign(
       { role: "admin", id: adminId },
       process.env.TOKEN_SECRET,
@@ -76,6 +86,10 @@ describe("api tests", () => {
         expiresIn: "24h",
       }
     );
+  });
+
+  beforeEach(async () => {
+    const res = await agent.get("/reloadDB");
   });
 
   afterAll(async () => {
@@ -579,7 +593,7 @@ describe("api tests", () => {
       expect(reviews[1].comment).toBe("lorem lorem lorem");
     });
 
-    it("/review/[id]/reply/ should reply", async () => {
+    it("/review/[id]/reply/ should create owner's reply", async () => {
       const res = await agent
         .post(`/reviews/${review3Id}/reply`)
         .send({
@@ -604,6 +618,24 @@ describe("api tests", () => {
 
       // TO TEST
       // * is owner of that restaurant. anything else then can't. also that hasn't replied? (not huge problem just overwrite)
+    });
+
+    it("/reviews/me/restaurant/[id] should reply true if current user has left a review", async () => {
+      // const res = await agent
+      //   .get(`/reviews/me/restaurant/${restaurant1Id}`)
+      //   .set("Authorization", `Bearer ${user3Token}`);
+
+      // expect(res.statusCode).toBe(200);
+
+      // expect(res.body).toBe(false);
+
+      const res2 = await agent
+        .get(`/reviews/me/restaurant/${restaurant2Id}`)
+        .set("Authorization", `Bearer ${user4Token}`);
+
+      expect(res2.statusCode).toBe(200);
+
+      expect(res2.body).toBe(true);
     });
   });
 });

@@ -18,7 +18,7 @@ router.get("/me/unreplied", authLoggedIn, async (req, res) => {
     const { role, id } = req.user;
 
     if (role !== "owner") {
-      res.status(200).send([]);
+      res.status(400).send({ error: "Incorrect role" });
     }
 
     // 1. get all restaurants filtered by owner
@@ -44,6 +44,33 @@ router.get("/me/unreplied", authLoggedIn, async (req, res) => {
     );
 
     res.status(200).send(enrichedReviews);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+});
+
+router.get("/me/restaurant/:id", authLoggedIn, async (req, res) => {
+  try {
+    const { role, id } = req.user;
+    const restaurantId = req.params.id;
+
+    console.log("restaurantId ", restaurantId);
+
+    if (role !== "user") {
+      res.status(400).send({ error: "Incorrect role" });
+    }
+
+    const reviews = await ReviewsModel.find({
+      restaurant: restaurantId,
+      reviewer: id,
+    }).exec();
+
+    if (reviews && reviews.length >= 1) {
+      return res.status(200).send(true);
+    }
+
+    return res.status(200).send(false);
   } catch (error) {
     console.log(error);
     res.status(500).send(error);

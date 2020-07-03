@@ -13,7 +13,7 @@ import AddRestaurantModal from "components/AddRestaurantModal";
 import AddReplyModal from "components/AddReplyModal";
 import CommentItem from "components/CommentItem";
 import { getAuthHeader } from "utils";
-import { Container, Divider, Heading } from "components/Styled";
+import { Container, Heading } from "components/Styled";
 
 const fetchRestaurants = async () =>
   axios
