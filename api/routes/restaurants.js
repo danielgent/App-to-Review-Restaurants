@@ -5,12 +5,17 @@ var ReviewsModel = require("../models/ReviewsModel");
 var { authLoggedIn, authIsAdmin } = require("../middleware/auth");
 var { enrichRestaurant } = require("../utils");
 
+// TODO - bad endpoint! need to return restaurants with no reviews when  no query
 router.get("/", authLoggedIn, async (req, res) => {
   try {
-    const ratingMin = req.query.ratingMin || 1;
-    const ratingMax = req.query.ratingMax || 5;
+    const ratingMin = req.query.ratingMin;
+    const ratingMax = req.query.ratingMax;
 
-    if (ratingMin < 1 || ratingMax > 5 || ratingMin > ratingMax) {
+    if (
+      (ratingMin && ratingMin < 1) ||
+      (ratingMax && ratingMax > 5) ||
+      ratingMin > ratingMax
+    ) {
       return res.status(400).send({ error: "Bad parameters" });
     }
 
@@ -21,10 +26,13 @@ router.get("/", authLoggedIn, async (req, res) => {
     );
 
     // TODO - do in Db if cache this step
-    const filteredRestaurants = enrichedRestaurants.filter(
-      ({ averageRating }) =>
-        averageRating >= ratingMin && averageRating <= ratingMax
-    );
+    const filteredRestaurants = enrichedRestaurants
+      .filter(({ averageRating }) =>
+        ratingMin ? averageRating >= ratingMin : true
+      )
+      .filter(({ averageRating }) =>
+        ratingMax ? averageRating <= ratingMax : true
+      );
 
     // TODO - needs sorting by average rating as per specs (doesn't say asc/desc)
 

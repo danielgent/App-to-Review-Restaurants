@@ -363,7 +363,7 @@ describe("api tests", () => {
 
       const restaurants = res.body;
 
-      expect(restaurants).toHaveLength(2);
+      expect(restaurants).toHaveLength(3);
 
       expect(restaurants[0]).toEqual(
         expect.objectContaining({
@@ -418,6 +418,14 @@ describe("api tests", () => {
         expect.objectContaining({
           avatarFilename: "TODO",
           username: "user-locked-out",
+        })
+      );
+
+      // restaurant without ratings
+      expect(restaurants[2]).toEqual(
+        expect.objectContaining({
+          name: "Pasta Pasta",
+          averageRating: null,
         })
       );
     });

@@ -64,6 +64,15 @@ const seedDatabases = async () => {
   // console.log("restaurant2 id", restaurant2._id);
   await restaurant2.save();
 
+  // restaurant 2
+  const restaurant3 = RestaurantModel({
+    name: "Pasta Pasta",
+    owner: owner2._id,
+  });
+
+  // console.log("restaurant2 id", restaurant2._id);
+  await restaurant3.save();
+
   // create normal users
   const user1 = UserModel({
     username: "a",
