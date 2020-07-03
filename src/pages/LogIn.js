@@ -3,8 +3,8 @@ import {
   Box,
   Heading,
   Stack,
-  FormControl,
-  FormLabel,
+  FormControl as RFormControl,
+  FormLabel as RFormLabel,
   FormErrorMessage,
   Input,
   Button,
@@ -19,6 +19,24 @@ import { useHistory } from "react-router-dom";
 
 import UserContext from "contexts/user-context";
 import { LOCAL_STORAGE_TOKEN_KEY } from "globalConstants";
+
+const FormContainer = (props) => (
+  <Box
+    backgroundColor="white"
+    rounded="md"
+    maxWidth={380}
+    w="100%"
+    py={8}
+    px={4}
+    {...props}
+  />
+);
+
+const FormHeader = (props) => <Heading mb={10} {...props} />;
+
+const FormControl = (props) => <RFormControl mb={4} {...props} />;
+
+const FormLabel = (props) => <RFormLabel mb={4} fontWeight="bold" {...props} />;
 
 const LogIn = (props) => {
   const [serverErrorMessage, setServerErrorMessage] = React.useState("");
@@ -36,7 +54,7 @@ const LogIn = (props) => {
       .then(({ data }) => {
         const { token, role } = data;
         updateUser({ token, role });
-        
+
         localStorage.setItem(LOCAL_STORAGE_TOKEN_KEY, token);
 
         history.push("/");
@@ -46,30 +64,34 @@ const LogIn = (props) => {
       });
   };
 
+  // TODO
+  // * my first design page
+  // * extract these out into layout components to use on other pages
   return (
-    <Formik
-      enableReinitialize
-      initialValues={{
-        username: "",
-        password: "",
-      }}
-      validate={(values) => {
-        const errors = {};
+    <FormContainer>
+      <Formik
+        enableReinitialize
+        initialValues={{
+          username: "",
+          password: "",
+        }}
+        validate={(values) => {
+          const errors = {};
 
-        if (!values.username) {
-          errors.username = "Please enter a username";
-        }
-        if (!values.password) {
-          errors.password = "Please enter a password";
-        }
-        return errors;
-      }}
-      onSubmit={handleSubmit}
-    >
-      {({ isSubmitting }) => (
-        <Box>
-          <Heading>Login</Heading>
-          <Box p={4}>
+          if (!values.username) {
+            errors.username = "Please enter a username";
+          }
+          if (!values.password) {
+            errors.password = "Please enter a password";
+          }
+          return errors;
+        }}
+        onSubmit={handleSubmit}
+      >
+        {({ isSubmitting }) => (
+          <Box>
+            <FormHeader>Login</FormHeader>
+            <Divider mb={8} />
             <Form>
               <Stack spacing={5}>
                 <Field type="text" name="username">
@@ -77,10 +99,9 @@ const LogIn = (props) => {
                     const { errors, touched } = form;
                     return (
                       <FormControl
-                        w={{ xs: "100%", sm: "280px" }}
                         isInvalid={errors.username && touched.username}
                       >
-                        <FormLabel htmlFor="username">username</FormLabel>
+                        <FormLabel htmlFor="username">Username</FormLabel>
                         <Input
                           id="username"
                           type="text"
@@ -97,10 +118,9 @@ const LogIn = (props) => {
                     const { errors, touched } = form;
                     return (
                       <FormControl
-                        w={{ xs: "100%", sm: "280px" }}
                         isInvalid={errors.password && touched.password}
                       >
-                        <FormLabel htmlFor="password">password</FormLabel>
+                        <FormLabel htmlFor="password">Password</FormLabel>
                         <Input
                           id="password"
                           type="password"
@@ -116,22 +136,22 @@ const LogIn = (props) => {
                 <Button type="submit">Login</Button>
               </Stack>
             </Form>
+            {serverErrorMessage && (
+              <Alert
+                status="error"
+                flexDirection="column"
+                justifyContent="center"
+                textAlign="center"
+                height="200px"
+              >
+                <Icon name="warning" size="32px" color="red.500" />
+                <Text maxWidth="sm">{serverErrorMessage}</Text>
+              </Alert>
+            )}
           </Box>
-          {serverErrorMessage && (
-            <Alert
-              status="error"
-              flexDirection="column"
-              justifyContent="center"
-              textAlign="center"
-              height="200px"
-            >
-              <Icon name="warning" size="32px" color="red.500" />
-              <Text maxWidth="sm">{serverErrorMessage}</Text>
-            </Alert>
-          )}
-        </Box>
-      )}
-    </Formik>
+        )}
+      </Formik>
+    </FormContainer>
   );
 };
 

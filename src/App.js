@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, ThemeProvider, CSSReset } from "@chakra-ui/core";
+import { Box, Flex, ThemeProvider, CSSReset } from "@chakra-ui/core";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -31,24 +31,28 @@ function App() {
         <Router>
           <UserMe />
           <Menu />
-          <Box px={30} py={50} backgroundColor="gray.100">
-            <Box backgroundColor="white" rounded="md">
-              <Switch>
-                <Route path="/sign-up" component={SignUp} />
-                <Route path="/login" component={LogIn} />
-                <Route path="/logout" component={LogOut} />
-                <Route path="/restaurant/:id" component={Restaurant} />
-                <Route path="/profile" component={Profile} />
-                <Route path="/verify/:code" component={Verify} />
-                {/* TODO - test what happens when visit this Url and user */}
-                <Route path="/admin/users" component={ViewUsers} />
-                <Route path="/admin/restaurants" component={ViewRestaurants} />
-                <Route path="/admin/reviews" component={ViewReviews} />
+          <Flex
+            px={30}
+            py={50}
+            backgroundColor="gray.100"
+            alignItems="center"
+            justifyContent="center"
+          >
+            <Switch>
+              <Route path="/sign-up" component={SignUp} />
+              <Route path="/login" component={LogIn} />
+              <Route path="/logout" component={LogOut} />
+              <Route path="/restaurant/:id" component={Restaurant} />
+              <Route path="/profile" component={Profile} />
+              <Route path="/verify/:code" component={Verify} />
+              {/* TODO - test what happens when visit this Url and user */}
+              <Route path="/admin/users" component={ViewUsers} />
+              <Route path="/admin/restaurants" component={ViewRestaurants} />
+              <Route path="/admin/reviews" component={ViewReviews} />
 
-                {user && <Route path="/" component={Home} />}
-              </Switch>
-            </Box>
-          </Box>
+              {user && <Route path="/" component={Home} />}
+            </Switch>
+          </Flex>
           <Box fontStyle="italic" fontSize="xs" backgroundColor="red.100">
             <Box>User context {JSON.stringify(user)}</Box>
             <Box>
