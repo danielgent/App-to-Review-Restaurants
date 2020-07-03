@@ -13,12 +13,12 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Select,
   FormErrorMessage,
 } from "@chakra-ui/core";
 import { Formik, Form, Field } from "formik";
 import axios from "axios";
 import DatePicker from "react-datepicker";
+import Rating from "@material-ui/lab/Rating";
 
 import { getAuthHeader } from "utils";
 
@@ -53,7 +53,7 @@ const AddReviewModal = ({ isOpen, onClose, onSubmit, restaurantId }) => {
       enableReinitialize
       initialValues={{
         comment: "",
-        rating: "5",
+        rating: 0,
         visitDate: new Date(),
       }}
       validate={(values) => {
@@ -101,13 +101,8 @@ const AddReviewModal = ({ isOpen, onClose, onSubmit, restaurantId }) => {
                             isInvalid={errors.rating && touched.rating}
                           >
                             <FormLabel htmlFor="rating">Rating</FormLabel>
-                            <Select id="rating" {...field}>
-                              <option value={1}>1</option>
-                              <option value={2}>2</option>
-                              <option value={3}>3</option>
-                              <option value={4}>4</option>
-                              <option value={5}>5</option>
-                            </Select>
+                            {/* TODO - why turning into string on onChange? weird */}
+                            <Rating id="rating" size="large" {...field} />
                             <FormErrorMessage>{errors.rating}</FormErrorMessage>
                           </FormControl>
                         );

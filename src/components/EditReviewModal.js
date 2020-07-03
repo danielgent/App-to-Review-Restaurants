@@ -102,6 +102,7 @@ const EditReviewModal = ({ isOpen, onClose, onSubmit, review }) => {
                             isInvalid={errors.rating && touched.rating}
                           >
                             <FormLabel htmlFor="rating">Rating</FormLabel>
+                            {/* TODO - user Rating component from Material UI */}
                             <Select id="rating" {...field}>
                               <option value={1}>1</option>
                               <option value={2}>2</option>
