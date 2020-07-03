@@ -28,7 +28,7 @@ describe("api tests", () => {
 
   let owner1Token;
   let user3Token;
-  let user1Token;
+  let user4Token;
   let adminToken;
 
   beforeAll(async () => {
@@ -89,7 +89,7 @@ describe("api tests", () => {
   });
 
   beforeEach(async () => {
-    const res = await agent.get("/reloadDB");
+    await agent.get("/reloadDB");
   });
 
   afterAll(async () => {
@@ -543,6 +543,25 @@ describe("api tests", () => {
   });
 
   describe("reviews tests", () => {
+    it("/reviews/me/restaurant/[id] should reply true if current user has left a review", async () => {
+      const res = await agent
+        .get(`/reviews/me/restaurant/${restaurant1Id}`)
+        .set("Authorization", `Bearer ${user3Token}`);
+
+      expect(res.statusCode).toBe(200);
+
+      // database resetting isn't working. if put this test last then this assertion fails
+      expect(res.body).toBe(false);
+
+      const res2 = await agent
+        .get(`/reviews/me/restaurant/${restaurant2Id}`)
+        .set("Authorization", `Bearer ${user4Token}`);
+
+      expect(res2.statusCode).toBe(200);
+
+      expect(res2.body).toBe(true);
+    });
+
     it("/reviews/ should create new review", async () => {
       const res = await agent
         .post("/reviews")
@@ -618,24 +637,6 @@ describe("api tests", () => {
 
       // TO TEST
       // * is owner of that restaurant. anything else then can't. also that hasn't replied? (not huge problem just overwrite)
-    });
-
-    it("/reviews/me/restaurant/[id] should reply true if current user has left a review", async () => {
-      // const res = await agent
-      //   .get(`/reviews/me/restaurant/${restaurant1Id}`)
-      //   .set("Authorization", `Bearer ${user3Token}`);
-
-      // expect(res.statusCode).toBe(200);
-
-      // expect(res.body).toBe(false);
-
-      const res2 = await agent
-        .get(`/reviews/me/restaurant/${restaurant2Id}`)
-        .set("Authorization", `Bearer ${user4Token}`);
-
-      expect(res2.statusCode).toBe(200);
-
-      expect(res2.body).toBe(true);
     });
   });
 });

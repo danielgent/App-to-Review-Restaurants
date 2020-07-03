@@ -15,6 +15,8 @@ import CommentItem from "components/CommentItem";
 import AddReviewModal from "components/AddReviewModal";
 import { getAuthHeader } from "utils";
 import { Container } from "components/Styled";
+import UserContext from "contexts/user-context";
+import { ROLES } from "globalConstants";
 
 const SectionTitle = (props) => (
   <Heading as="h2" size="md" mb={6} color="gray.600" {...props} />
@@ -38,6 +40,7 @@ const fetchRestaurant = ({ setIsLoading, setRestaurant, id }) => {
 
 const Restaurant = () => {
   let { id } = useParams();
+  const { user } = React.useContext(UserContext);
 
   const [restaurant, setRestaurant] = React.useState(null);
   const [isLoading, setIsLoading] = React.useState(true);
@@ -114,14 +117,17 @@ const Restaurant = () => {
       <Box p={4}>
         <Heading as="h1">{name}</Heading>
         <Box p={8}>{innerContent}</Box>
-        {/* TODO - need something from BE to say that user cannot rate */}
-        <Button onClick={onOpen}>Rate this restaurant</Button>
-        <AddReviewModal
-          isOpen={isOpen}
-          onClose={onClose}
-          onSubmit={handleSubmit}
-          restaurantId={id}
-        />
+        {user.role === ROLES.user && (
+          <>
+            <Button onClick={onOpen}>Rate this restaurant</Button>
+            <AddReviewModal
+              isOpen={isOpen}
+              onClose={onClose}
+              onSubmit={handleSubmit}
+              restaurantId={id}
+            />
+          </>
+        )}
       </Box>
     </Container>
   );
