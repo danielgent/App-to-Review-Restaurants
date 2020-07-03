@@ -59,10 +59,11 @@ const enrichRestaurant = async (r) => {
   const highReview = getHighReview(reviewsEnriched);
   const lowReview = getLowReview(reviewsEnriched);
 
-  const averageRating = sum / total;
+  // truncate to one decimal plase
+  const averageRating = Math.floor((sum / total) * 10) / 10;
 
   return {
-    // mongoose model
+    // mongoose model to JS object
     ...r._doc,
     averageRating,
     highReview,

@@ -375,7 +375,7 @@ describe("api tests", () => {
       expect(restaurants[1]).toEqual(
         expect.objectContaining({
           name: "Steak House",
-          averageRating: 2.6666666666666665,
+          averageRating: 2.6,
         })
       );
 
@@ -435,7 +435,7 @@ describe("api tests", () => {
       expect(res2.body[0]).toEqual(
         expect.objectContaining({
           name: "Steak House",
-          averageRating: 2.6666666666666665,
+          averageRating: 2.6,
         })
       );
     });
