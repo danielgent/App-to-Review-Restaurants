@@ -1,4 +1,8 @@
-describe("User flow", function () {
+describe("Owner flow", function () {
+  before(() => {
+    cy.request("POST", `${Cypress.env("api_host")}/reloadDB`);
+  });
+
   it("logs in, replies to review, adds new restaurant", function () {
     cy.visit(Cypress.env("app_host"));
 

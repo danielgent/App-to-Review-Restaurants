@@ -1,4 +1,8 @@
 describe("User flow", function () {
+  before(() => {
+    cy.request("POST", `${Cypress.env("api_host")}/reloadDB`);
+  });
+
   it("logs in, filters, adds review", function () {
     cy.visit(Cypress.env("app_host"));
 

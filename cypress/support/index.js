@@ -16,9 +16,9 @@
 // Import commands.js using ES2015 syntax:
 import "./commands";
 
-before(() => {
-  cy.request("POST", `${Cypress.env("api_host")}/reloadDB`);
-});
+// before(() => {
+//   cy.request("POST", `${Cypress.env("api_host")}/reloadDB`);
+// });
 
 // Doesn't work. hitting async weirdness where db is still writing all when requesting
 // beforeEach(() => {

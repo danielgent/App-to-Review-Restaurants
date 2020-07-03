@@ -1,4 +1,8 @@
 describe("Admin flow", function () {
+  before(() => {
+    cy.request("POST", `${Cypress.env("api_host")}/reloadDB`);
+  });
+
   it("has reviews CRUD", function () {
     cy.visit(Cypress.env("app_host"));
 
@@ -14,10 +18,8 @@ describe("Admin flow", function () {
     cy.findAllByRole("button", { name: "Delete review" }).eq(1).click();
     cy.findByText("Are you sure you want to delete this review?");
     cy.findByRole("button", { name: "Confirm" }).click();
-    // TODO -safe loading code. Copy this after ever loading state assertion to be sure
     cy.findByRole("progressbar");
     cy.findByRole("progressbar").should("not.exist");
-    // oooo, possible false positive here as shows loading spinner!! TODO - something to check after. Ouch
     cy.findByText(/Thanks for your very fast response/).should("not.exist");
 
     // edit review name
@@ -28,6 +30,8 @@ describe("Admin flow", function () {
       .clear()
       .type("cypress new review text");
     cy.findByRole("button", { name: "Update Review" }).click();
+    cy.findByRole("progressbar");
+    cy.findByRole("progressbar").should("not.exist");
     cy.findByText("More or less").should("not.exist");
     cy.findByText("cypress new review text");
   });
@@ -47,6 +51,8 @@ describe("Admin flow", function () {
     cy.findAllByRole("button", { name: "Delete restaurant" }).eq(0).click();
     cy.findByText(/Are you sure you want to delete Owner's Diner?/);
     cy.findByRole("button", { name: "Confirm" }).click();
+    cy.findByRole("progressbar");
+    cy.findByRole("progressbar").should("not.exist");
     cy.findByText("Owner's Diner").should("not.exist");
 
     // edit restaurant name
@@ -57,6 +63,8 @@ describe("Admin flow", function () {
       .clear()
       .type("cypress new restaurant name");
     cy.findByRole("button", { name: "Update restaurant" }).click();
+    cy.findByRole("progressbar");
+    cy.findByRole("progressbar").should("not.exist");
     cy.findByText("Owner's Diner").should("not.exist");
     cy.findByText("cypress new restaurant name");
   });
@@ -86,6 +94,8 @@ describe("Admin flow", function () {
       "Are you sure you want to delete this user another-owner? Will also delete all user's restaurants and reviews"
     );
     cy.findByRole("button", { name: "Confirm" }).click();
+    cy.findByRole("progressbar");
+    cy.findByRole("progressbar").should("not.exist");
     cy.findByText("another-owner@example.com").should("not.exist");
 
     // edit b-user username
@@ -96,6 +106,8 @@ describe("Admin flow", function () {
       .clear()
       .type("cypress new username");
     cy.findByRole("button", { name: "Update User" }).click();
+    cy.findByRole("progressbar");
+    cy.findByRole("progressbar").should("not.exist");
     cy.findByText("b-user").should("not.exist");
     cy.findByText("cypress new username");
 
