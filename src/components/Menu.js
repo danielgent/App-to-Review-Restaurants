@@ -49,12 +49,17 @@ const Menu = () => {
         )}
       </Stack>
       {user && (
-        <Stack isInline spacing={2} alignItems="center" justifyContent="center">
-          <MenuItem>
-            <Link to="/profile">Profile</Link>
-          </MenuItem>
-          <Avatar name={username} src={avatarImageUrl} />
-        </Stack>
+        <Link to="/profile">
+          <Stack
+            isInline
+            spacing={2}
+            alignItems="center"
+            justifyContent="center"
+          >
+            <MenuItem>Profile</MenuItem>
+            <Avatar name={username} src={avatarImageUrl} />
+          </Stack>
+        </Link>
       )}
     </Flex>
   );
