@@ -8,14 +8,15 @@ import {
   FormErrorMessage,
   Input,
   Button,
-  Divider,
+  Divider as RDivider,
   Alert,
   Icon,
   Text,
+  Flex,
 } from "@chakra-ui/core";
 import { Formik, Form, Field } from "formik";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 import UserContext from "contexts/user-context";
 import { LOCAL_STORAGE_TOKEN_KEY } from "globalConstants";
@@ -37,6 +38,13 @@ const FormHeader = (props) => <Heading mb={10} {...props} />;
 const FormControl = (props) => <RFormControl mb={4} {...props} />;
 
 const FormLabel = (props) => <RFormLabel mb={4} fontWeight="bold" {...props} />;
+
+const SubmitButton = (props) => (
+  <Button type="submit" textTransform="uppercase" {...props} py={6} px={4} />
+);
+
+const Divider = (props) => <RDivider mb={8} {...props} />;
+const StyledLink = (props) => <Text textDecoration="underline" {...props} />;
 
 const LogIn = (props) => {
   const [serverErrorMessage, setServerErrorMessage] = React.useState("");
@@ -91,7 +99,7 @@ const LogIn = (props) => {
         {({ isSubmitting }) => (
           <Box>
             <FormHeader>Login</FormHeader>
-            <Divider mb={8} />
+            <Divider />
             <Form>
               <Stack spacing={5}>
                 <Field type="text" name="username">
@@ -133,7 +141,7 @@ const LogIn = (props) => {
                   }}
                 </Field>
                 <Divider />
-                <Button type="submit">Login</Button>
+                <SubmitButton>Login</SubmitButton>
               </Stack>
             </Form>
             {serverErrorMessage && (
@@ -148,6 +156,12 @@ const LogIn = (props) => {
                 <Text maxWidth="sm">{serverErrorMessage}</Text>
               </Alert>
             )}
+            <Divider />
+            <Flex justifyContent="center" alignItems="center">
+              <Link to="/sign-up">
+                <StyledLink>Create an account</StyledLink>
+              </Link>
+            </Flex>
           </Box>
         )}
       </Formik>

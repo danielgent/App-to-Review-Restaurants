@@ -1,13 +1,17 @@
 import React from "react";
-import { Box, Stack, Link as Clink, Flex } from "@chakra-ui/core";
+import { Box, Stack, Link as Clink, Flex, Avatar } from "@chakra-ui/core";
 import { Link, useHistory } from "react-router-dom";
 
 import { LOCAL_STORAGE_TOKEN_KEY, ROLES } from "globalConstants";
 import UserContext from "contexts/user-context";
 
+const MenuItem = (props) => <Box px={6} py={3} fontWeight="bold" {...props} />;
+
 const Menu = () => {
   let history = useHistory();
   const { updateUser, user } = React.useContext(UserContext);
+
+  const { username, avatarImageUrl } = user || {};
 
   const logout = () => {
     localStorage.removeItem(LOCAL_STORAGE_TOKEN_KEY);
@@ -18,34 +22,40 @@ const Menu = () => {
   return (
     <Flex p={4}>
       <Stack isInline spacing={2} flexGrow={1}>
-        <Box>
+        <MenuItem>
           <Link to="/sign-up">Sign up</Link>
-        </Box>
-        <Box>
+        </MenuItem>
+        <MenuItem>
           <Link to="/login">Log in</Link>
-        </Box>
-        <Box>
+        </MenuItem>
+        <MenuItem>
           <Clink onClick={logout}>Log out</Clink>
-        </Box>
-        <Box>
+        </MenuItem>
+        <MenuItem>
           <Link to="/">View all</Link>
-        </Box>
+        </MenuItem>
         {user && user.role === ROLES.admin && (
           <>
-            <Box>
+            <MenuItem>
               <Link to="/admin/users">View all users</Link>
-            </Box>
-            <Box>
+            </MenuItem>
+            <MenuItem>
               <Link to="/admin/restaurants">View all restaurants</Link>
-            </Box>
-            <Box>
+            </MenuItem>
+            <MenuItem>
               <Link to="/admin/reviews">View all reviews</Link>
-            </Box>
+            </MenuItem>
           </>
         )}
       </Stack>
-      {/* show profile image here. that should be in context then, and returned from /me endpoint */}
-      <Link to="/profile">Profile</Link>
+      {user && (
+        <Stack isInline spacing={2} alignItems="center" justifyContent="center">
+          <MenuItem>
+            <Link to="/profile">Profile</Link>
+          </MenuItem>
+          <Avatar name={username} src={avatarImageUrl} />
+        </Stack>
+      )}
     </Flex>
   );
 };
