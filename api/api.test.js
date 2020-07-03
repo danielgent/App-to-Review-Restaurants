@@ -593,6 +593,31 @@ describe("api tests", () => {
       // * is user, hasn't already left review
     });
 
+    it("/reviews/ doesn't allow multiple reviews", async () => {
+      await agent
+        .post("/reviews")
+        .send({
+          comment: "lorem lorem lorem",
+          restaurant: restaurant1Id,
+          rating: 5,
+          visitDate: "2020-04-04",
+        })
+        .set("Authorization", `Bearer ${user3Token}`);
+
+      const res = await agent
+        .post("/reviews")
+        .send({
+          comment: "lorem lorem lorem",
+          restaurant: restaurant1Id,
+          rating: 5,
+          visitDate: "2020-04-04",
+        })
+        .set("Authorization", `Bearer ${user3Token}`);
+
+      expect(res.statusCode).toBe(400);
+      expect(res.body.error).toBe("One review per user limit");
+    });
+
     it("/reviews/me/unreplied should give list of all unreplied reviews of owner's restaurants", async () => {
       const res = await agent
         .get(`/reviews/me/unreplied`)

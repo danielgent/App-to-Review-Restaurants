@@ -18,7 +18,7 @@ router.get("/me/unreplied", authLoggedIn, async (req, res) => {
     const { role, id } = req.user;
 
     if (role !== "owner") {
-      res.status(400).send({ error: "Incorrect role" });
+      return res.status(400).send({ error: "Incorrect role" });
     }
 
     // 1. get all restaurants filtered by owner
@@ -58,7 +58,7 @@ router.get("/me/restaurant/:id", authLoggedIn, async (req, res) => {
     console.log("restaurantId ", restaurantId);
 
     if (role !== "user") {
-      res.status(400).send({ error: "Incorrect role" });
+      return res.status(400).send({ error: "Incorrect role" });
     }
 
     const reviews = await ReviewsModel.find({
@@ -77,12 +77,30 @@ router.get("/me/restaurant/:id", authLoggedIn, async (req, res) => {
   }
 });
 
-// PERMISSIONS - user
-router.post("/", authLoggedIn, (req, res) => {
+router.post("/", authLoggedIn, async (req, res) => {
+  const { role, id } = req.user;
+
+  const { restaurant, comment, rating, visitDate } = req.body;
+
+  if (role !== "user") {
+    return res.status(400).send({ error: "Incorrect role" });
+  }
+
+  const existingReview = await ReviewsModel.findOne({
+    reviewer: id,
+    restaurant,
+  }).exec();
+
+  if (existingReview) {
+    return res.status(400).send({ error: "One review per user limit" });
+  }
+
   const review = {
-    ...req.body,
-    // current user
-    reviewer: req.user.id,
+    reviewer: id,
+    restaurant,
+    comment,
+    rating,
+    visitDate,
   };
 
   var review_instance = new ReviewsModel(review);
