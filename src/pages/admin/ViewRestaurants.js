@@ -115,8 +115,8 @@ const ViewRestaurants = () => {
         onClose={() => setRestaurantToDelete(null)}
         onConfirm={handleDeleteRestaurant}
       >
-        Are you sure you want to delete this restaurant
-        {restaurantToDelete?.restaurantname}? All reviews will also be deleted
+        Are you sure you want to delete {restaurantToDelete?.name}? All reviews
+        will also be deleted
       </ConfirmationModal>
     </Container>
   );

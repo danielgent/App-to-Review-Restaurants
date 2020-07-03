@@ -1,4 +1,66 @@
 describe("Admin flow", function () {
+  it("has reviews CRUD", function () {
+    cy.visit(Cypress.env("app_host"));
+
+    cy.findByLabelText("Username").type("admin");
+    cy.findByLabelText("Password").type("admin");
+    cy.findByRole("button", { name: "Login" }).click();
+
+    // restaurant CRUD
+    cy.findByRole("link", { name: "View all reviews" }).click();
+
+    // delete review
+    cy.findByText(/Thanks for your very fast response/);
+    cy.findAllByRole("button", { name: "Delete review" }).eq(1).click();
+    cy.findByText("Are you sure you want to delete this review?");
+    cy.findByRole("button", { name: "Confirm" }).click();
+    // TODO -safe loading code. Copy this after ever loading state assertion to be sure
+    cy.findByRole("progressbar");
+    cy.findByRole("progressbar").should("not.exist");
+    // oooo, possible false positive here as shows loading spinner!! TODO - something to check after. Ouch
+    cy.findByText(/Thanks for your very fast response/).should("not.exist");
+
+    // edit review name
+    cy.findByText("More or less");
+    cy.findAllByRole("button", { name: "Edit review" }).eq(3).click();
+    cy.findByLabelText("Comment")
+      .should("have.value", "More or less")
+      .clear()
+      .type("cypress new review text");
+    cy.findByRole("button", { name: "Update Review" }).click();
+    cy.findByText("More or less").should("not.exist");
+    cy.findByText("cypress new review text");
+  });
+
+  it("has restaurant CRUD", function () {
+    cy.visit(Cypress.env("app_host"));
+
+    cy.findByLabelText("Username").type("admin");
+    cy.findByLabelText("Password").type("admin");
+    cy.findByRole("button", { name: "Login" }).click();
+
+    // restaurant CRUD
+    cy.findByRole("link", { name: "View all restaurants" }).click();
+
+    // delete restaurant
+    cy.findByText("Owner's Diner");
+    cy.findAllByRole("button", { name: "Delete restaurant" }).eq(0).click();
+    cy.findByText(/Are you sure you want to delete Owner's Diner?/);
+    cy.findByRole("button", { name: "Confirm" }).click();
+    cy.findByText("Owner's Diner").should("not.exist");
+
+    // edit restaurant name
+    cy.findByText("Steak House");
+    cy.findAllByRole("button", { name: "Edit restaurant" }).eq(0).click();
+    cy.findByLabelText("Name")
+      .should("have.value", "Steak House")
+      .clear()
+      .type("cypress new restaurant name");
+    cy.findByRole("button", { name: "Update restaurant" }).click();
+    cy.findByText("Owner's Diner").should("not.exist");
+    cy.findByText("cypress new restaurant name");
+  });
+
   it("has user CRUD", function () {
     cy.visit(Cypress.env("app_host"));
 
@@ -40,26 +102,5 @@ describe("Admin flow", function () {
     // should be one unlocked user
     cy.findByRole("button", { name: "Unlock user" }).click();
     cy.findByText("Unlock user").should("not.exist");
-  });
-
-  it.skip("has restaurant CRUD", function () {
-    // restaurant CRUD
-    cy.findByRole("link", { name: "View all restaurants" }).click();
-
-    // delete restaurant
-    cy.findByText("Owner's Diner");
-    cy.findAllByRole("button", { name: "Delete restaurant" }).eq(0).click();
-    // cy.findByText(
-    //   "Are you sure you want to delete this user another-owner? Will also delete all user's restaurants and reviews"
-    // );
-    // cy.findByRole("button", { name: "Confirm" }).click();
-    // cy.findByText("another-owner@example.com").should("not.exist");
-
-    // Owner's Diner
-
-    // name
-
-    // reviews CRUD
-    // note reviews? meh
   });
 });

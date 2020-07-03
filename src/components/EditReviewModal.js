@@ -62,9 +62,6 @@ const EditReviewModal = ({ isOpen, onClose, onSubmit, review }) => {
         if (!values.comment) {
           errors.comment = "Please enter a comment";
         }
-        if (!values.reply) {
-          errors.reply = "Please enter a reply";
-        }
         return errors;
       }}
       onSubmit={handleSubmit}
@@ -143,16 +140,11 @@ const EditReviewModal = ({ isOpen, onClose, onSubmit, review }) => {
                       }}
                     </Field>
                     <Field type="text" name="reply" autoComplete="off">
-                      {({ field, form }) => {
-                        const { errors, touched } = form;
+                      {({ field }) => {
                         return (
-                          <FormControl
-                            w={{ xs: "100%", sm: "280px" }}
-                            isInvalid={errors.reply && touched.reply}
-                          >
+                          <FormControl w={{ xs: "100%", sm: "280px" }}>
                             <FormLabel htmlFor="reply">Reply</FormLabel>
                             <Input id="reply" type="text" {...field} />
-                            <FormErrorMessage>{errors.reply}</FormErrorMessage>
                           </FormControl>
                         );
                       }}

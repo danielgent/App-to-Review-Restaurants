@@ -100,7 +100,7 @@ const EditRestaurantModal = ({
                   Close
                 </Button>
                 <Button variant="ghost" type="submit">
-                  Edit restaurant
+                  Update restaurant
                 </Button>
               </ModalFooter>
             </Form>
