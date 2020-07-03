@@ -13,7 +13,7 @@ import { getAuthHeader } from "utils";
 import RestaurantListItem from "components/RestaurantListItem";
 import { Container, Divider, Heading } from "components/Styled";
 
-const DEFAULT_FILTERS = { min: 1, max: 5 };
+const DEFAULT_FILTERS = { min: "", max: "" };
 
 const UserHomepage = (props) => {
   const [isLoading, setIsLoading] = React.useState(true);
@@ -79,6 +79,7 @@ const UserHomepage = (props) => {
             value={filters.min}
             onChange={handleMinRatingChange}
           >
+            <option value={""}>none</option>
             <option value={1}>1</option>
             <option value={2}>2</option>
             <option value={3}>3</option>
@@ -95,6 +96,7 @@ const UserHomepage = (props) => {
             value={filters.max}
             onChange={handleMaxRatingChange}
           >
+            <option value={""}>none</option>
             <option value={1}>1</option>
             <option value={2}>2</option>
             <option value={3}>3</option>
