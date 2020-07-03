@@ -105,9 +105,11 @@ const UserHomepage = (props) => {
         </FormControl>
         <Divider />
       </Box>
-      {restaurants.map((restaurant) => (
-        <RestaurantListItem key={restaurant._id} restaurant={restaurant} />
-      ))}
+      {restaurants.length === 0
+        ? "no results"
+        : restaurants.map((restaurant) => (
+            <RestaurantListItem key={restaurant._id} restaurant={restaurant} />
+          ))}
     </Container>
   );
 };

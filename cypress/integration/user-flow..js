@@ -24,6 +24,9 @@ describe("User flow", function () {
     cy.findByText("Steak House").should("not.exist");
 
     cy.findByLabelText("Select maximum average rating").select("3");
+    cy.findByText("no results");
+
+    cy.findByLabelText("Select minimum average rating").select("2");
     cy.findByText("Owner's Diner").should("not.exist");
     cy.findByText("Steak House");
 
