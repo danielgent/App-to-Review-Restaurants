@@ -29,13 +29,20 @@ import { disallowWhitespaceChangeHandler } from "utils";
 
 const responseGoogle = (response) => {
   console.log(response);
+
+  axios
+    .post(`${process.env.REACT_APP_API_URL}/google/verify`, {
+      token: response.tokenId,
+    })
+    .then(({ data }) => {
+      console.log("toke validated yes ok");
+    });
 };
 
 const LogIn = (props) => {
   const [serverErrorMessage, setServerErrorMessage] = React.useState("");
 
   const invalidToken = window.location.search.includes("invalid_token");
-  console.log("invalidToken ", invalidToken);
 
   let history = useHistory();
   const { updateUser } = React.useContext(UserContext);

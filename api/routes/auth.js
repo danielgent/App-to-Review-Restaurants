@@ -207,4 +207,60 @@ router.get("/verify/:code", async (req, res) => {
   }
 });
 
+// not sure if should be post. have a GET for login but a POST for signup that does more?
+router.post("/google/verify", async (req, res) => {
+  try {
+    const { token } = req.body;
+
+    const { OAuth2Client } = require("google-auth-library");
+    const client = new OAuth2Client(process.env.REACT_APP_GOOGLE_CLIENT_ID);
+    async function verify() {
+      const ticket = await client.verifyIdToken({
+        idToken: token,
+        audience: process.env.REACT_APP_GOOGLE_CLIENT_ID,
+      });
+      const payload = ticket.getPayload();
+      console.log("PAYLOAD: ", payload);
+      /*
+      {
+        iss: 'accounts.google.com',
+        azp:
+        '704776074916-0qnnuet5oh6avhr96t5svl895lk4sas8.apps.googleusercontent.com',
+        aud:
+        '704776074916-0qnnuet5oh6avhr96t5svl895lk4sas8.apps.googleusercontent.com',
+        sub: '112515345231656147064',
+        hd: 'whalar.com',
+        email: 'dan@whalar.com',
+        email_verified: true,
+        at_hash: 'Cx86g6Dqu1j-kvgo_COnJg',
+        name: 'Dan Gent',
+        picture:
+        'https://lh4.googleusercontent.com/-G3waE7TikKA/AAAAAAAAAAI/AAAAAAAAAAA/AMZuucnHuYCsvdueY58DoRhdy53_sU-wKQ/s96-c/photo.jpg',
+        given_name: 'Dan',
+        family_name: 'Gent',
+        locale: 'en',
+        iat: 1593875705,
+        exp: 1593879305,
+        jti: '425361e201e20ff78c58c09977a1cd17c75755ed'
+      }
+      */
+
+      const userid = payload["sub"];
+      // If request specified a G Suite domain:
+      // const domain = payload['hd'];
+
+      return userid;
+    }
+    const userid = verify();
+
+    res.status(200).json({
+      message: "Google token verified ok",
+      id: userid,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ error: error.message });
+  }
+});
+
 module.exports = router;
