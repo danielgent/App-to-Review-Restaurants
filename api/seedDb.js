@@ -4,19 +4,25 @@ var RestaurantModel = require("./models/RestaurantModel");
 var ReviewsModel = require("./models/ReviewsModel");
 const Bcrypt = require("bcryptjs");
 var users = require("./fixtures/users");
+var restaurants = require("./fixtures/restaurants");
 
-const createRestaurant = (name, owner) =>
-  RestaurantModel({
+const createRestaurant = async (name, owner) => {
+  const r = RestaurantModel({
     name,
     owner,
-  }).save();
+  });
+
+  await r.save();
+
+  return r._id;
+};
 // const createReview = (name, owner) =>
 //   ReviewsModel({
 //     name,
 //     owner,
 //   }).save();
-const createUser = (username, name, email) =>
-  UserModel({
+const createUser = async (username, name, email) => {
+  const u = UserModel({
     name,
     username,
     password: "abcde",
@@ -24,7 +30,12 @@ const createUser = (username, name, email) =>
     role: "user",
     isVerified: true,
     verificationToken: "abcde",
-  }).save();
+  });
+
+  await u.save();
+
+  return u._id;
+};
 
 const seedDatabases = async () => {
   // Deprecated methods but work for testing
@@ -231,27 +242,25 @@ const seedDatabases = async () => {
 
   // putting behind flag in case tests get slow. These fixtures not used in tests
   if (process.env.EXTENDED_SEED_DATABASE) {
-    await createRestaurant("Jasmine Grill", owner1._id);
-    await createRestaurant("Revolution Oxford Road", owner1._id);
-    await createRestaurant("Platzki", owner1._id);
-    await createRestaurant("Alborz Restaurant", owner1._id);
-    await createRestaurant("Etci Mehmet Steakhouse", owner1._id);
-    await createRestaurant("Zaytoon", owner1._id);
-    await createRestaurant("Blue Eyed Panda", owner1._id);
-    await createRestaurant("Wah Ji Wah", owner2._id);
-    await createRestaurant("Vero Moderno", owner2._id);
-    await createRestaurant("The Counter House", owner2._id);
-    await createRestaurant("La Casita", owner2._id);
-    await createRestaurant("Sangam", owner2._id);
-    await createRestaurant("Zumu Street", owner2._id);
-    await createRestaurant("Double Zero 00 Neapolitan Pizza", owner2._id);
-    await createRestaurant("The Laundrette Chorlton", owner2._id);
-    await createRestaurant("One Plus Restaurant", owner2._id);
+    let userIds = [];
+    let restaurantIds = [];
 
     for (let i = 0; i < users.length; i++) {
       const user = users[i];
-      await createUser(user[0], user[1], user[2]);
+      const id = await createUser(user[0], user[1], user[2]);
+      userIds.push(id);
     }
+
+    console.log("userIds ", userIds);
+
+    for (let i = 0; i < restaurants.length; i++) {
+      const owner = i % 2 ? owner1._id : owner2._id;
+      const id = await createRestaurant(restaurants[i], owner);
+
+      restaurantIds.push(id);
+    }
+
+    console.log("restaurantIds ", restaurantIds);
   }
 
   return {
