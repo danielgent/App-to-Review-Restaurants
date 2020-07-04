@@ -151,13 +151,19 @@ const LogIn = (props) => {
                 <Text maxWidth="sm">{serverErrorMessage}</Text>
               </Alert>
             )}
-            <GoogleLogin
-              clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-              buttonText="Login"
-              onSuccess={responseGoogle}
-              onFailure={responseGoogle}
-              cookiePolicy={"single_host_origin"}
-            />
+            <Divider />
+            <Flex alignItems="center" justifyContent="center" p={4}>
+              <Text fontStyle="italic" color="gray.400" mr={2}>
+                or sign in with
+              </Text>
+              <GoogleLogin
+                clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+                buttonText="Login"
+                onSuccess={responseGoogle}
+                onFailure={responseGoogle}
+                cookiePolicy={"single_host_origin"}
+              />
+            </Flex>
             <Divider />
             <Flex justifyContent="center" alignItems="center">
               <Link to="/sign-up">
