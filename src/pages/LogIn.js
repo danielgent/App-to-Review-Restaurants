@@ -48,6 +48,8 @@ const LogIn = (props) => {
           role: data.role,
           avatarFilename: data.avatarFilename,
           username: data.username,
+          name: data.name,
+          email: data.email,
         });
 
         localStorage.setItem(LOCAL_STORAGE_TOKEN_KEY, data.token);

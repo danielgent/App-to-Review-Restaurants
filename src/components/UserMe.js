@@ -40,6 +40,8 @@ const UserMe = () => {
               role: data.role,
               avatarFilename: data.avatarFilename,
               username: data.username,
+              name: data.name,
+              email: data.email,
             });
             toast({
               description: "Successfully logged in",

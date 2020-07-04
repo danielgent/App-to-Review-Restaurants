@@ -142,6 +142,8 @@ router.post("/login", async (req, res) => {
       token,
       avatarFilename: user.avatarFilename,
       username: user.username,
+      name: user.name,
+      email: user.email,
     });
   } catch (error) {
     console.log(error);
@@ -166,6 +168,8 @@ router.get("/me", authLoggedIn, async (req, res) => {
       token: req.body.token,
       avatarFilename: user.avatarFilename,
       username: user.username,
+      name: user.name,
+      email: user.email,
     });
   } catch (error) {
     console.log(error);
@@ -272,6 +276,8 @@ router.get("/google/verify/:token", async (req, res) => {
       avatarFilename: user.avatarFilename,
       username: user.username,
       googleId,
+      name: user.name,
+      email: user.email,
     });
   } catch (error) {
     console.log(error);

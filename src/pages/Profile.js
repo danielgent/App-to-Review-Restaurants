@@ -45,6 +45,10 @@ const Profile = (props) => {
   return (
     <Container maxWidth={600}>
       <Heading as="h1">Profile</Heading>
+      <Text>Your name</Text>
+      <Text>{user.name}</Text>
+      <Text>Your email</Text>
+      <Text>{user.email}</Text>
 
       <Flex align="center" justify="center">
         {user ? (
