@@ -7,11 +7,10 @@ import {
   useDisclosure,
 } from "@chakra-ui/core";
 import React from "react";
-import axios from "axios";
 
 import UserContext from "contexts/user-context";
 import UploadProfileModal from "components/UploadProfileModal";
-import { getAuthHeader } from "utils";
+import { getAuthHeader, authAxios } from "utils";
 import { Container, Heading } from "components/Styled";
 
 const Profile = (props) => {
@@ -26,7 +25,7 @@ const Profile = (props) => {
     `${process.env.REACT_APP_API_URL}/${avatarFilename}`;
 
   const refetch = () => {
-    axios
+    authAxios
       .get(`${process.env.REACT_APP_API_URL}/me`, {
         headers: getAuthHeader(),
       })

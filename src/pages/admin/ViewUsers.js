@@ -1,5 +1,4 @@
 import React from "react";
-import axios from "axios";
 import {
   CircularProgress,
   SimpleGrid,
@@ -8,10 +7,10 @@ import {
   Button,
 } from "@chakra-ui/core";
 
-import { getAuthHeader } from "utils";
 import EditUserModal from "components/EditUserModal";
 import ConfirmationModal from "components/ConfirmationModal";
 import { Container, Heading, TableCell } from "components/Styled";
+import { getAuthHeader, authAxios } from "utils";
 
 const HeaderText = (props) => <Text fontWeight="bold" {...props} />;
 
@@ -25,7 +24,7 @@ const ViewUsers = () => {
 
   const fetchUsers = () => {
     setIsLoading(true);
-    axios
+    authAxios
       .get(`${process.env.REACT_APP_API_URL}/users`, {
         headers: getAuthHeader(),
       })
@@ -42,7 +41,7 @@ const ViewUsers = () => {
   }, []);
 
   const handleUnlockUser = async (userId) => {
-    axios
+    authAxios
       .post(
         `${process.env.REACT_APP_API_URL}/users/unlock/${userId}`,
         {},
@@ -70,7 +69,7 @@ const ViewUsers = () => {
     setUserToEdit(null);
   };
   const handleDeleteUser = () => {
-    axios
+    authAxios
       .delete(`${process.env.REACT_APP_API_URL}/users/${userToDelete._id}`, {
         headers: getAuthHeader(),
       })

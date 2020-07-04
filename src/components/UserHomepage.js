@@ -1,5 +1,4 @@
 import React from "react";
-import axios from "axios";
 import {
   Box,
   CircularProgress,
@@ -9,9 +8,9 @@ import {
   Button,
 } from "@chakra-ui/core";
 
-import { getAuthHeader } from "utils";
 import RestaurantListItem from "components/RestaurantListItem";
 import { Container, Divider, Heading } from "components/Styled";
+import { getAuthHeader, authAxios } from "utils";
 
 const DEFAULT_FILTERS = { min: "", max: "" };
 
@@ -22,7 +21,7 @@ const UserHomepage = (props) => {
 
   React.useEffect(() => {
     setIsLoading(true);
-    axios
+    authAxios
       .get(`${process.env.REACT_APP_API_URL}/restaurants`, {
         params: {
           ratingMin: filters.min,

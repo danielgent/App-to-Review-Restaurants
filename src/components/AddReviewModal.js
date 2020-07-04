@@ -16,18 +16,17 @@ import {
   FormErrorMessage,
 } from "@chakra-ui/core";
 import { Formik, Form, Field } from "formik";
-import axios from "axios";
 import DatePicker from "react-datepicker";
 import Rating from "@material-ui/lab/Rating";
 
-import { getAuthHeader } from "utils";
+import { getAuthHeader, authAxios } from "utils";
 
 const formatDate = (date) =>
   `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
 
 const AddReviewModal = ({ isOpen, onClose, onSubmit, restaurantId }) => {
   const handleSubmit = (values, { setSubmitting, resetForm }) => {
-    axios
+    authAxios
       .post(
         `${process.env.REACT_APP_API_URL}/reviews`,
         {

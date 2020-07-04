@@ -1,5 +1,7 @@
 import { LOCAL_STORAGE_TOKEN_KEY } from "globalConstants";
+import axios from "axios";
 
+// TODO - remove this to make sure everywhere uses useAuthAxios
 export const getAuthHeader = () => {
   const token = localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY);
 
@@ -19,3 +21,18 @@ export const disallowWhitespaceChangeHandler = (onChange) => (e) =>
       value: e.target.value.trim(),
     },
   });
+
+export const authAxios = (() => {
+  const newAxios = axios.create();
+
+  newAxios.interceptors.request.use(
+    function (config) {
+      console.log("look am I'm logging");
+      return config;
+    },
+    function (error) {
+      return Promise.reject(error);
+    }
+  );
+  return newAxios;
+})();

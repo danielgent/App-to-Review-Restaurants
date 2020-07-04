@@ -17,10 +17,9 @@ import {
   Alert,
   Icon,
 } from "@chakra-ui/core";
-import axios from "axios";
 import { useDropzone } from "react-dropzone";
 
-import { getAuthHeader } from "utils";
+import { getAuthHeader, authAxios } from "utils";
 
 const UploadProfileModal = ({
   isOpen,
@@ -62,7 +61,7 @@ const UploadProfileModal = ({
   const handleUpload = () => {
     const data = new FormData();
     data.append("avatar", file);
-    axios
+    authAxios
       .post(`${process.env.REACT_APP_API_URL}/users/profile`, data, {
         headers: getAuthHeader(),
       })

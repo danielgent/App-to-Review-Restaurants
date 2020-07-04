@@ -1,9 +1,8 @@
 import { CircularProgress, useDisclosure, Button } from "@chakra-ui/core";
 import React from "react";
 import AddReviewModal from "components/AddReviewModal";
-import axios from "axios";
 
-import { getAuthHeader } from "utils";
+import { getAuthHeader, authAxios } from "utils";
 
 const CreateReviewButton = ({ onCreateReview, restaurantId }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -12,7 +11,7 @@ const CreateReviewButton = ({ onCreateReview, restaurantId }) => {
 
   React.useEffect(() => {
     setIsLoading(true);
-    axios
+    authAxios
       .get(
         `${process.env.REACT_APP_API_URL}/reviews/me/restaurant/${restaurantId}`,
         {

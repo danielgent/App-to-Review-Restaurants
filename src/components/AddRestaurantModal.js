@@ -16,13 +16,12 @@ import {
   FormErrorMessage,
 } from "@chakra-ui/core";
 import { Formik, Form, Field } from "formik";
-import axios from "axios";
 
-import { getAuthHeader } from "utils";
+import { getAuthHeader, authAxios } from "utils";
 
 const AddRestaurantModal = ({ isOpen, onClose, onSubmit }) => {
   const handleSubmit = (values, { setSubmitting, resetForm }) => {
-    axios
+    authAxios
       .post(
         `${process.env.REACT_APP_API_URL}/restaurants`,
         {

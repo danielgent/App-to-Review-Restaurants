@@ -17,17 +17,16 @@ import {
   FormErrorMessage,
 } from "@chakra-ui/core";
 import { Formik, Form, Field } from "formik";
-import axios from "axios";
 import DatePicker from "react-datepicker";
 
-import { getAuthHeader } from "utils";
+import { getAuthHeader, authAxios } from "utils";
 
 const formatDate = (date) =>
   `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
 
 const EditReviewModal = ({ isOpen, onClose, onSubmit, review }) => {
   const handleSubmit = (values, { setSubmitting, resetForm }) => {
-    axios
+    authAxios
       .patch(
         `${process.env.REACT_APP_API_URL}/reviews/${review._id}`,
         {

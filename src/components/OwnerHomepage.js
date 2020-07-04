@@ -6,24 +6,23 @@ import {
   useDisclosure,
   Text,
 } from "@chakra-ui/core";
-import axios from "axios";
 
 import RestaurantListItem from "components/RestaurantListItem";
 import AddRestaurantModal from "components/AddRestaurantModal";
 import AddReplyModal from "components/AddReplyModal";
 import CommentItem from "components/CommentItem";
-import { getAuthHeader } from "utils";
 import { Container, Heading } from "components/Styled";
+import { getAuthHeader, authAxios } from "utils";
 
 const fetchRestaurants = async () =>
-  axios
+  authAxios
     .get(`${process.env.REACT_APP_API_URL}/restaurants/me`, {
       headers: getAuthHeader(),
     })
     .then((response) => response.data);
 
 const fetchReviews = async () =>
-  axios
+  authAxios
     .get(`${process.env.REACT_APP_API_URL}/reviews/me/unreplied`, {
       headers: getAuthHeader(),
     })

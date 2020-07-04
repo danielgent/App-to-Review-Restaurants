@@ -1,5 +1,4 @@
 import React from "react";
-import axios from "axios";
 import {
   CircularProgress,
   SimpleGrid,
@@ -8,10 +7,10 @@ import {
   Button,
 } from "@chakra-ui/core";
 
-import { getAuthHeader } from "utils";
 import EditReviewModal from "components/EditReviewModal";
 import ConfirmationModal from "components/ConfirmationModal";
 import { Container, Heading, TableCell } from "components/Styled";
+import { getAuthHeader, authAxios } from "utils";
 
 const HeaderText = (props) => <Text fontWeight="bold" {...props} />;
 
@@ -25,7 +24,7 @@ const ViewReviews = () => {
 
   const fetchReviews = () => {
     setIsLoading(true);
-    axios
+    authAxios
       .get(`${process.env.REACT_APP_API_URL}/reviews`, {
         headers: getAuthHeader(),
       })
@@ -47,7 +46,7 @@ const ViewReviews = () => {
   };
 
   const handleDeleteReview = () => {
-    axios
+    authAxios
       .delete(
         `${process.env.REACT_APP_API_URL}/reviews/${reviewToDelete._id}`,
         {

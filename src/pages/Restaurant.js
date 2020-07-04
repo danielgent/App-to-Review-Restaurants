@@ -1,13 +1,12 @@
 import React from "react";
 import { Box, Heading, Text, CircularProgress, Stack } from "@chakra-ui/core";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 
 import CommentItem from "components/CommentItem";
 import CreateReviewButton from "components/CreateReviewButton";
 import StaticRating from "components/StaticRating";
 
-import { getAuthHeader } from "utils";
+import { getAuthHeader, authAxios } from "utils";
 import { Container } from "components/Styled";
 import UserContext from "contexts/user-context";
 import { ROLES } from "globalConstants";
@@ -20,7 +19,7 @@ const Section = (props) => <Box padding={2} mb={4} {...props} />;
 
 const fetchRestaurant = ({ setIsLoading, setRestaurant, id }) => {
   setIsLoading(true);
-  axios
+  authAxios
     .get(`${process.env.REACT_APP_API_URL}/restaurants/${id}`, {
       headers: getAuthHeader(),
     })

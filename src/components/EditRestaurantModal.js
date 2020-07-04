@@ -16,9 +16,8 @@ import {
   FormErrorMessage,
 } from "@chakra-ui/core";
 import { Formik, Form, Field } from "formik";
-import axios from "axios";
 
-import { getAuthHeader } from "utils";
+import { getAuthHeader, authAxios } from "utils";
 
 const EditRestaurantModal = ({
   isOpen,
@@ -27,7 +26,7 @@ const EditRestaurantModal = ({
   restaurant = {},
 }) => {
   const handleSubmit = (values, { setSubmitting, resetForm }) => {
-    axios
+    authAxios
       .patch(
         `${process.env.REACT_APP_API_URL}/restaurants/${restaurant._id}`,
         {

@@ -17,15 +17,14 @@ import {
   Select,
 } from "@chakra-ui/core";
 import { Formik, Form, Field } from "formik";
-import axios from "axios";
 import isEmail from "validator/es/lib/isEmail";
 
-import { getAuthHeader } from "utils";
 import { ROLES } from "globalConstants";
+import { getAuthHeader, authAxios } from "utils";
 
 const EditUserModal = ({ isOpen, onClose, onSubmit, user = {} }) => {
   const handleSubmit = (values, { setSubmitting, resetForm }) => {
-    axios
+    authAxios
       .patch(
         `${process.env.REACT_APP_API_URL}/users/${user._id}`,
         {
