@@ -9,14 +9,15 @@ export const disallowWhitespaceChangeHandler = (onChange) => (e) =>
     },
   });
 
+// TODO - most basic example. Force redirect
 export const authAxios = (() => {
   const newAxios = axios.create();
 
   newAxios.interceptors.request.use(
     function (config) {
-      console.count("look am I'm logging");
       // if no token then can even redirect here? UserMe should handle that on mount though as the first request...
       const token = localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY);
+
       config.headers.Authorization = `Bearer ${token}`;
 
       return config;
@@ -25,5 +26,22 @@ export const authAxios = (() => {
       return Promise.reject(error);
     }
   );
+
+  newAxios.interceptors.response.use(
+    (response) => {
+      return response;
+    },
+    function (error) {
+      if (error.response.status === 401) {
+        console.error("Token invalid");
+        localStorage.removeItem(LOCAL_STORAGE_TOKEN_KEY);
+
+        // TODO - first round. Not ideal. Should use react-router but couldn't get history object here
+        window.location.href = "/login?invalid_token";
+      }
+      return Promise.reject(error);
+    }
+  );
+
   return newAxios;
 })();

@@ -12,6 +12,7 @@ import {
 import { Formik, Form, Field } from "formik";
 import axios from "axios";
 import { Link, useHistory } from "react-router-dom";
+import GoogleLogin from "react-google-login";
 
 import UserContext from "contexts/user-context";
 import { LOCAL_STORAGE_TOKEN_KEY } from "globalConstants";
@@ -26,8 +27,16 @@ import {
 } from "components/Styled";
 import { disallowWhitespaceChangeHandler } from "utils";
 
+const responseGoogle = (response) => {
+  console.log(response);
+};
+
 const LogIn = (props) => {
   const [serverErrorMessage, setServerErrorMessage] = React.useState("");
+
+  const invalidToken = window.location.search.includes("invalid_token");
+  console.log("invalidToken ", invalidToken);
+
   let history = useHistory();
   const { updateUser } = React.useContext(UserContext);
 
@@ -54,6 +63,13 @@ const LogIn = (props) => {
 
   return (
     <Container maxWidth={380}>
+      {/* TODO - first round where Axios doesn't have access to React-router history */}
+      {invalidToken && (
+        <Text p={12} fontSize="lg">
+          Token expired. Please login again
+        </Text>
+      )}
+
       <Formik
         enableReinitialize
         initialValues={{
@@ -135,6 +151,13 @@ const LogIn = (props) => {
                 <Text maxWidth="sm">{serverErrorMessage}</Text>
               </Alert>
             )}
+            <GoogleLogin
+              clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+              buttonText="Login"
+              onSuccess={responseGoogle}
+              onFailure={responseGoogle}
+              cookiePolicy={"single_host_origin"}
+            />
             <Divider />
             <Flex justifyContent="center" alignItems="center">
               <Link to="/sign-up">
