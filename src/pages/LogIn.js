@@ -44,10 +44,13 @@ const LogIn = (props) => {
         password: values.password,
       })
       .then(({ data }) => {
-        const { token, role } = data;
-        updateUser({ token, role });
+        updateUser({
+          role: data.role,
+          avatarFilename: data.avatarFilename,
+          username: data.username,
+        });
 
-        localStorage.setItem(LOCAL_STORAGE_TOKEN_KEY, token);
+        localStorage.setItem(LOCAL_STORAGE_TOKEN_KEY, data.token);
 
         history.push("/");
       })

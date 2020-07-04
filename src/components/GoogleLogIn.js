@@ -4,6 +4,7 @@ import { useToast } from "@chakra-ui/core";
 import axios from "axios";
 import { useHistory } from "react-router";
 
+import { LOCAL_STORAGE_TOKEN_KEY } from "globalConstants";
 import UserContext from "contexts/user-context";
 
 const GoogleLogIn = () => {
@@ -19,8 +20,9 @@ const GoogleLogIn = () => {
           role: data.role,
           avatarFilename: data.avatarFilename,
           username: data.username,
-          googleId: data.googleId,
         });
+
+        localStorage.setItem(LOCAL_STORAGE_TOKEN_KEY, data.token);
 
         toast({
           description: "Successfully logged in with Google",
