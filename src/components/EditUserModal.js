@@ -44,6 +44,7 @@ const EditUserModal = ({ isOpen, onClose, onSubmit, user = {} }) => {
       enableReinitialize
       initialValues={{
         username: user?.username || "",
+        name: user?.name || "",
         email: user?.email || "",
         role: user?.role || ROLES.user,
       }}

@@ -101,7 +101,7 @@ describe("Admin flow", function () {
     // edit b-user username
     cy.findByText("b-user");
     cy.findAllByRole("button", { name: "Edit user" }).eq(2).click();
-    cy.findByLabelText("Enter a username")
+    cy.findByLabelText("username")
       .should("have.value", "b-user")
       .clear()
       .type("cypress new username");

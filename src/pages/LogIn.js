@@ -165,7 +165,7 @@ const LogIn = (props) => {
               </Text>
               <GoogleLogin
                 clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-                buttonText="Login"
+                buttonText="Login with Google"
                 onSuccess={responseGoogle}
                 onFailure={responseGoogle}
                 cookiePolicy={"single_host_origin"}

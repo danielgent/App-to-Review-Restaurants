@@ -49,7 +49,7 @@ router.post(
 router.get("/", authLoggedIn, authIsAdmin, async (req, res) => {
   const users = await UserModel.find(
     {},
-    "username email role loginAttempts avatarFilename"
+    "username email name role loginAttempts avatarFilename"
   ).exec();
 
   res.status(200).send(users);

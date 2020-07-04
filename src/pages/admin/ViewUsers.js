@@ -86,7 +86,7 @@ const ViewUsers = () => {
     <Container maxWidth={1200}>
       <Heading>View users</Heading>
       <SimpleGrid
-        columns={7}
+        columns={8}
         borderColor="gray.600"
         borderWidth="1px"
         borderStyle="solid"
@@ -95,6 +95,9 @@ const ViewUsers = () => {
       >
         <TableCell>
           <HeaderText>Username</HeaderText>
+        </TableCell>
+        <TableCell>
+          <HeaderText>Name</HeaderText>
         </TableCell>
         <TableCell>
           <HeaderText>Email</HeaderText>
@@ -113,6 +116,7 @@ const ViewUsers = () => {
         {users.map((user) => (
           <React.Fragment key={user.username}>
             <TableCell>{user.username}</TableCell>
+            <TableCell>{user.name}</TableCell>
             <TableCell>{user.email}</TableCell>
             <TableCell>{user.role}</TableCell>
             <TableCell>{user.avatarFilename}</TableCell>
