@@ -4,37 +4,28 @@ import { useToast } from "@chakra-ui/core";
 import axios from "axios";
 import { useHistory } from "react-router";
 
-import UserContext from "contexts/user-context";
-
-const GoogleLogIn = () => {
+const GoogleSignUp = () => {
   const toast = useToast();
-  const { updateUser } = React.useContext(UserContext);
   const { push } = useHistory();
 
   const responseGoogle = (response) => {
     axios
-      .get(`${process.env.REACT_APP_API_URL}/google/verify/${response.tokenId}`)
+      .post(`${process.env.REACT_APP_API_URL}/google/create`, {
+        token: response.tokenId,
+      })
       .then(({ data }) => {
-        updateUser({
-          role: data.role,
-          avatarFilename: data.avatarFilename,
-          username: data.username,
-          googleId: data.googleId,
-        });
-
         toast({
-          description: "Successfully logged in with Google",
+          description: "Successfully created account with Google. Please login",
           status: "success",
           duration: 9000,
           isClosable: true,
         });
-
-        push("/");
+        push("/login");
       })
       .catch((err) => {
-        // TODO - can't read codes here? WTF Axios. Just gives me an error object
+        console.log("err ", err);
         toast({
-          description: "No account registered with this Google Id",
+          description: "Sign up failed with this Google Id",
           status: "error",
           duration: 9000,
           isClosable: true,
@@ -45,7 +36,7 @@ const GoogleLogIn = () => {
   return (
     <GoogleLogin
       clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-      buttonText="Login with Google"
+      buttonText="Create an account with Google"
       onSuccess={responseGoogle}
       // TODO - what should do here
       onFailure={responseGoogle}
@@ -54,4 +45,4 @@ const GoogleLogIn = () => {
   );
 };
 
-export default GoogleLogIn;
+export default GoogleSignUp;

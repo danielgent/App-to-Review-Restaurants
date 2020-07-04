@@ -22,6 +22,7 @@ import {
 } from "components/Styled";
 import { disallowWhitespaceChangeHandler } from "utils";
 
+import GoogleSignUp from "components/GoogleSignUp";
 import { ROLES } from "globalConstants";
 
 const SignUp = (props) => {
@@ -251,6 +252,8 @@ const SignUp = (props) => {
               <Text maxWidth="sm">{serverErrorMessage}</Text>
             </Alert>
           )}
+          <Divider />
+          <GoogleSignUp />
         </Container>
       )}
     </Formik>

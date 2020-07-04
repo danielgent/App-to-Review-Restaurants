@@ -22,29 +22,37 @@ const Menu = () => {
   return (
     <Flex p={4}>
       <Stack isInline spacing={2} flexGrow={1}>
-        <MenuItem>
-          <Link to="/sign-up">Sign up</Link>
-        </MenuItem>
-        <MenuItem>
-          <Link to="/login">Log in</Link>
-        </MenuItem>
-        <MenuItem>
-          <Clink onClick={logout}>Log out</Clink>
-        </MenuItem>
-        <MenuItem>
-          <Link to="/">View all</Link>
-        </MenuItem>
-        {user && user.role === ROLES.admin && (
+        {!user && (
           <>
             <MenuItem>
-              <Link to="/admin/users">View all users</Link>
+              <Link to="/sign-up">Sign up</Link>
             </MenuItem>
             <MenuItem>
-              <Link to="/admin/restaurants">View all restaurants</Link>
+              <Link to="/login">Log in</Link>
+            </MenuItem>
+          </>
+        )}
+        {user && (
+          <>
+            <MenuItem>
+              <Clink onClick={logout}>Log out</Clink>
             </MenuItem>
             <MenuItem>
-              <Link to="/admin/reviews">View all reviews</Link>
+              <Link to="/">View all</Link>
             </MenuItem>
+            {user.role === ROLES.admin && (
+              <>
+                <MenuItem>
+                  <Link to="/admin/users">View all users</Link>
+                </MenuItem>
+                <MenuItem>
+                  <Link to="/admin/restaurants">View all restaurants</Link>
+                </MenuItem>
+                <MenuItem>
+                  <Link to="/admin/reviews">View all reviews</Link>
+                </MenuItem>
+              </>
+            )}
           </>
         )}
       </Stack>
