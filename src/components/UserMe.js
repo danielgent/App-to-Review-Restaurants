@@ -1,12 +1,11 @@
 import React from "react";
 import { useLocation, useHistory } from "react-router";
-import axios from "axios";
 import { useMount } from "react-use";
 import { useToast } from "@chakra-ui/core";
 
 import UserContext from "contexts/user-context";
 import { LOCAL_STORAGE_TOKEN_KEY } from "globalConstants";
-import { getAuthHeader } from "utils";
+import { authAxios } from "utils";
 
 const UserMe = () => {
   const { push } = useHistory();
@@ -27,14 +26,15 @@ const UserMe = () => {
       return;
     }
 
+    // THINK => is this still needed? some request will do the token verification?
+    // just need this to update context right.
+
     if (pathname)
       if (!token) {
         push("/login");
       } else {
-        axios
-          .get(`${process.env.REACT_APP_API_URL}/me`, {
-            headers: getAuthHeader(),
-          })
+        authAxios
+          .get(`${process.env.REACT_APP_API_URL}/me`)
           .then(function ({ data }) {
             updateUser({
               role: data.role,

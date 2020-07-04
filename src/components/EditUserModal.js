@@ -20,22 +20,16 @@ import { Formik, Form, Field } from "formik";
 import isEmail from "validator/es/lib/isEmail";
 
 import { ROLES } from "globalConstants";
-import { getAuthHeader, authAxios } from "utils";
+import { authAxios } from "utils";
 
 const EditUserModal = ({ isOpen, onClose, onSubmit, user = {} }) => {
   const handleSubmit = (values, { setSubmitting, resetForm }) => {
     authAxios
-      .patch(
-        `${process.env.REACT_APP_API_URL}/users/${user._id}`,
-        {
-          username: values.username,
-          email: values.email,
-          role: values.role,
-        },
-        {
-          headers: getAuthHeader(),
-        }
-      )
+      .patch(`${process.env.REACT_APP_API_URL}/users/${user._id}`, {
+        username: values.username,
+        email: values.email,
+        role: values.role,
+      })
       .then(function (response) {
         onSubmit();
       })

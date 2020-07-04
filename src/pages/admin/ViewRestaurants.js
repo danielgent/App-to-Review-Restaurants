@@ -10,7 +10,7 @@ import {
 import EditRestaurantModal from "components/EditRestaurantModal";
 import ConfirmationModal from "components/ConfirmationModal";
 import { Container, Heading, TableCell } from "components/Styled";
-import { getAuthHeader, authAxios } from "utils";
+import { authAxios } from "utils";
 
 const HeaderText = (props) => <Text fontWeight="bold" {...props} />;
 
@@ -25,9 +25,7 @@ const ViewRestaurants = () => {
   const fetchRestaurants = () => {
     setIsLoading(true);
     authAxios
-      .get(`${process.env.REACT_APP_API_URL}/restaurants`, {
-        headers: getAuthHeader(),
-      })
+      .get(`${process.env.REACT_APP_API_URL}/restaurants`)
       .then((response) => {
         setRestaurants(response.data);
       })
@@ -47,10 +45,7 @@ const ViewRestaurants = () => {
   const handleDeleteRestaurant = () => {
     authAxios
       .delete(
-        `${process.env.REACT_APP_API_URL}/restaurants/${restaurantToDelete._id}`,
-        {
-          headers: getAuthHeader(),
-        }
+        `${process.env.REACT_APP_API_URL}/restaurants/${restaurantToDelete._id}`
       )
       .then(function (response) {
         toast({

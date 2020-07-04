@@ -10,7 +10,7 @@ import {
 import EditUserModal from "components/EditUserModal";
 import ConfirmationModal from "components/ConfirmationModal";
 import { Container, Heading, TableCell } from "components/Styled";
-import { getAuthHeader, authAxios } from "utils";
+import { authAxios } from "utils";
 
 const HeaderText = (props) => <Text fontWeight="bold" {...props} />;
 
@@ -25,9 +25,7 @@ const ViewUsers = () => {
   const fetchUsers = () => {
     setIsLoading(true);
     authAxios
-      .get(`${process.env.REACT_APP_API_URL}/users`, {
-        headers: getAuthHeader(),
-      })
+      .get(`${process.env.REACT_APP_API_URL}/users`)
       .then((response) => {
         setUsers(response.data);
       })
@@ -42,13 +40,7 @@ const ViewUsers = () => {
 
   const handleUnlockUser = async (userId) => {
     authAxios
-      .post(
-        `${process.env.REACT_APP_API_URL}/users/unlock/${userId}`,
-        {},
-        {
-          headers: getAuthHeader(),
-        }
-      )
+      .post(`${process.env.REACT_APP_API_URL}/users/unlock/${userId}`, {})
       .then(function (response) {
         toast({
           description: "User unlocked",
@@ -70,9 +62,7 @@ const ViewUsers = () => {
   };
   const handleDeleteUser = () => {
     authAxios
-      .delete(`${process.env.REACT_APP_API_URL}/users/${userToDelete._id}`, {
-        headers: getAuthHeader(),
-      })
+      .delete(`${process.env.REACT_APP_API_URL}/users/${userToDelete._id}`)
       .then(function (response) {
         toast({
           description: "User succesfully deleted",

@@ -10,7 +10,7 @@ import React from "react";
 
 import UserContext from "contexts/user-context";
 import UploadProfileModal from "components/UploadProfileModal";
-import { getAuthHeader, authAxios } from "utils";
+import { authAxios } from "utils";
 import { Container, Heading } from "components/Styled";
 
 const Profile = (props) => {
@@ -26,9 +26,7 @@ const Profile = (props) => {
 
   const refetch = () => {
     authAxios
-      .get(`${process.env.REACT_APP_API_URL}/me`, {
-        headers: getAuthHeader(),
-      })
+      .get(`${process.env.REACT_APP_API_URL}/me`)
       .then(function ({ data }) {
         // TODO this is duplicated from UserMe and Login. Want a hook to refresh userData raelly
         updateUser({

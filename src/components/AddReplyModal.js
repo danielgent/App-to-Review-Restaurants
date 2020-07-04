@@ -16,7 +16,7 @@ import {
 } from "@chakra-ui/core";
 import { Formik, Form, Field } from "formik";
 
-import { getAuthHeader, authAxios } from "utils";
+import { authAxios } from "utils";
 
 const AddReplyModal = ({
   isOpen,
@@ -27,15 +27,9 @@ const AddReplyModal = ({
 }) => {
   const handleSubmit = (values, { setSubmitting, resetForm }) => {
     authAxios
-      .post(
-        `${process.env.REACT_APP_API_URL}/reviews/${reviewId}/reply`,
-        {
-          reply: values.reply,
-        },
-        {
-          headers: getAuthHeader(),
-        }
-      )
+      .post(`${process.env.REACT_APP_API_URL}/reviews/${reviewId}/reply`, {
+        reply: values.reply,
+      })
       .then(function (response) {
         onSubmit();
       })

@@ -6,7 +6,7 @@ import CommentItem from "components/CommentItem";
 import CreateReviewButton from "components/CreateReviewButton";
 import StaticRating from "components/StaticRating";
 
-import { getAuthHeader, authAxios } from "utils";
+import { authAxios } from "utils";
 import { Container } from "components/Styled";
 import UserContext from "contexts/user-context";
 import { ROLES } from "globalConstants";
@@ -20,9 +20,7 @@ const Section = (props) => <Box padding={2} mb={4} {...props} />;
 const fetchRestaurant = ({ setIsLoading, setRestaurant, id }) => {
   setIsLoading(true);
   authAxios
-    .get(`${process.env.REACT_APP_API_URL}/restaurants/${id}`, {
-      headers: getAuthHeader(),
-    })
+    .get(`${process.env.REACT_APP_API_URL}/restaurants/${id}`)
     .then((response) => {
       setRestaurant(response.data);
     })

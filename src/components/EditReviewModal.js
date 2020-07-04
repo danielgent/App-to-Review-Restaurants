@@ -19,7 +19,7 @@ import {
 import { Formik, Form, Field } from "formik";
 import DatePicker from "react-datepicker";
 
-import { getAuthHeader, authAxios } from "utils";
+import { authAxios } from "utils";
 
 const formatDate = (date) =>
   `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
@@ -27,18 +27,12 @@ const formatDate = (date) =>
 const EditReviewModal = ({ isOpen, onClose, onSubmit, review }) => {
   const handleSubmit = (values, { setSubmitting, resetForm }) => {
     authAxios
-      .patch(
-        `${process.env.REACT_APP_API_URL}/reviews/${review._id}`,
-        {
-          comment: values.comment,
-          rating: Number.parseInt(values.rating, 10),
-          visitDate: formatDate(values.visitDate),
-          reply: values.reply,
-        },
-        {
-          headers: getAuthHeader(),
-        }
-      )
+      .patch(`${process.env.REACT_APP_API_URL}/reviews/${review._id}`, {
+        comment: values.comment,
+        rating: Number.parseInt(values.rating, 10),
+        visitDate: formatDate(values.visitDate),
+        reply: values.reply,
+      })
       .then(function (response) {
         onSubmit();
       })

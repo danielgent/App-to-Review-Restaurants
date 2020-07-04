@@ -12,20 +12,16 @@ import AddRestaurantModal from "components/AddRestaurantModal";
 import AddReplyModal from "components/AddReplyModal";
 import CommentItem from "components/CommentItem";
 import { Container, Heading } from "components/Styled";
-import { getAuthHeader, authAxios } from "utils";
+import { authAxios } from "utils";
 
 const fetchRestaurants = async () =>
   authAxios
-    .get(`${process.env.REACT_APP_API_URL}/restaurants/me`, {
-      headers: getAuthHeader(),
-    })
+    .get(`${process.env.REACT_APP_API_URL}/restaurants/me`)
     .then((response) => response.data);
 
 const fetchReviews = async () =>
   authAxios
-    .get(`${process.env.REACT_APP_API_URL}/reviews/me/unreplied`, {
-      headers: getAuthHeader(),
-    })
+    .get(`${process.env.REACT_APP_API_URL}/reviews/me/unreplied`)
     .then((response) => response.data);
 
 const OwnerHomepage = () => {

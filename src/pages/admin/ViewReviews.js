@@ -10,7 +10,7 @@ import {
 import EditReviewModal from "components/EditReviewModal";
 import ConfirmationModal from "components/ConfirmationModal";
 import { Container, Heading, TableCell } from "components/Styled";
-import { getAuthHeader, authAxios } from "utils";
+import { authAxios } from "utils";
 
 const HeaderText = (props) => <Text fontWeight="bold" {...props} />;
 
@@ -25,9 +25,7 @@ const ViewReviews = () => {
   const fetchReviews = () => {
     setIsLoading(true);
     authAxios
-      .get(`${process.env.REACT_APP_API_URL}/reviews`, {
-        headers: getAuthHeader(),
-      })
+      .get(`${process.env.REACT_APP_API_URL}/reviews`)
       .then((response) => {
         setReviews(response.data);
       })
@@ -47,12 +45,7 @@ const ViewReviews = () => {
 
   const handleDeleteReview = () => {
     authAxios
-      .delete(
-        `${process.env.REACT_APP_API_URL}/reviews/${reviewToDelete._id}`,
-        {
-          headers: getAuthHeader(),
-        }
-      )
+      .delete(`${process.env.REACT_APP_API_URL}/reviews/${reviewToDelete._id}`)
       .then(function (response) {
         toast({
           description: "Review succesfully deleted",

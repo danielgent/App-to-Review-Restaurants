@@ -3,8 +3,6 @@ import { useParams, useHistory } from "react-router-dom";
 import { Spinner, Flex, Box, Heading, Text } from "@chakra-ui/core";
 import axios from "axios";
 
-import { getAuthHeader } from "utils";
-
 const Verify = () => {
   const [isLoading, setIsLoading] = React.useState(true);
   let { push } = useHistory();
@@ -14,9 +12,7 @@ const Verify = () => {
   React.useEffect(() => {
     setIsLoading(true);
     axios
-      .get(`${process.env.REACT_APP_API_URL}/verify/${code}`, {
-        headers: getAuthHeader(),
-      })
+      .get(`${process.env.REACT_APP_API_URL}/verify/${code}`)
       .then((response) => {
         window.setTimeout(push, 2 * 1000, "/login");
         setIsLoading(false);

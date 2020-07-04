@@ -1,19 +1,6 @@
 import { LOCAL_STORAGE_TOKEN_KEY } from "globalConstants";
 import axios from "axios";
 
-// TODO - remove this to make sure everywhere uses useAuthAxios
-export const getAuthHeader = () => {
-  const token = localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY);
-
-  if (token) {
-    return {
-      Authorization: `Bearer ${token}`,
-    };
-  }
-
-  return {};
-};
-
 export const disallowWhitespaceChangeHandler = (onChange) => (e) =>
   onChange({
     target: {
@@ -27,7 +14,11 @@ export const authAxios = (() => {
 
   newAxios.interceptors.request.use(
     function (config) {
-      console.log("look am I'm logging");
+      console.count("look am I'm logging");
+      // if no token then can even redirect here? UserMe should handle that on mount though as the first request...
+      const token = localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY);
+      config.headers.Authorization = `Bearer ${token}`;
+
       return config;
     },
     function (error) {

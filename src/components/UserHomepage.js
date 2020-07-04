@@ -10,7 +10,7 @@ import {
 
 import RestaurantListItem from "components/RestaurantListItem";
 import { Container, Divider, Heading } from "components/Styled";
-import { getAuthHeader, authAxios } from "utils";
+import { authAxios } from "utils";
 
 const DEFAULT_FILTERS = { min: "", max: "" };
 
@@ -27,7 +27,6 @@ const UserHomepage = (props) => {
           ratingMin: filters.min,
           ratingMax: filters.max,
         },
-        headers: getAuthHeader(),
       })
       .then((response) => {
         setRestaurants(response.data);
