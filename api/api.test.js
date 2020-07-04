@@ -117,7 +117,7 @@ describe("api tests", () => {
             id: user3Id,
             role: "user",
             username: "user-no-reviews",
-            avatarFilename: "kent-c-dodds",
+            avatarFilename: "https://bit.ly/prosper-baba",
           })
         );
       });
@@ -216,7 +216,7 @@ describe("api tests", () => {
         expect(res.body).toEqual(
           expect.objectContaining({
             role: "user",
-            avatarFilename: "sage-adebayo",
+            avatarFilename: "https://bit.ly/sage-adebayo",
             username: "b-user",
           })
         );
@@ -433,13 +433,13 @@ describe("api tests", () => {
       // check reviewers enriched correctly
       expect(restaurants[1].highReview.reviewer).toEqual(
         expect.objectContaining({
-          avatarFilename: "code-beast",
+          avatarFilename: "https://bit.ly/code-beast",
           username: "a",
         })
       );
       expect(restaurants[1].lowReview.reviewer).toEqual(
         expect.objectContaining({
-          avatarFilename: "TODO",
+          avatarFilename: "https://bit.ly/ryan-florence",
           username: "user-locked-out",
         })
       );
