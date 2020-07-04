@@ -5,6 +5,7 @@ var ReviewsModel = require("./models/ReviewsModel");
 const Bcrypt = require("bcryptjs");
 var users = require("./fixtures/users");
 var restaurants = require("./fixtures/restaurants");
+var comments = require("./fixtures/comments");
 
 const createRestaurant = async (name, owner) => {
   const r = RestaurantModel({
@@ -16,11 +17,22 @@ const createRestaurant = async (name, owner) => {
 
   return r._id;
 };
-// const createReview = (name, owner) =>
-//   ReviewsModel({
-//     name,
-//     owner,
-//   }).save();
+const createReview = ({
+  comment,
+  reviewer,
+  restaurant,
+  rating,
+  visitDate,
+  reply,
+}) =>
+  ReviewsModel({
+    comment,
+    reviewer,
+    restaurant,
+    rating,
+    visitDate,
+    reply,
+  }).save();
 const createUser = async (username, name, email) => {
   const u = UserModel({
     name,
@@ -251,16 +263,27 @@ const seedDatabases = async () => {
       userIds.push(id);
     }
 
-    console.log("userIds ", userIds);
+    // console.log("userIds ", userIds);
 
     for (let i = 0; i < restaurants.length; i++) {
       const owner = i % 2 ? owner1._id : owner2._id;
       const id = await createRestaurant(restaurants[i], owner);
 
       restaurantIds.push(id);
+
+      for (let j = 0; j < comments.length; j++) {
+        await createReview({
+          comment: comments[j],
+          reviewer: userIds[j],
+          restaurant: id,
+          rating: (j % 5) + 1,
+          visitDate: "2020-04-03",
+          reply: j % 2 === 0 ? "Thanks for the review" : null,
+        });
+      }
     }
 
-    console.log("restaurantIds ", restaurantIds);
+    // console.log("restaurantIds ", restaurantIds);
   }
 
   return {

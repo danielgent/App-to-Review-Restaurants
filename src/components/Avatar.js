@@ -7,13 +7,12 @@ const makeAvatarImageUrl = (avatarFilename) =>
     : `${process.env.REACT_APP_API_URL}/${avatarFilename}`;
 
 const Avatar = ({ user }) => {
-  return (
-    <CAvatar
-      name={user.username}
-      mr={4}
-      src={makeAvatarImageUrl(user.avatarFilename)}
-    />
-  );
+  const { avatarFilename, username } = user;
+  const avatarImageUrl = avatarFilename
+    ? makeAvatarImageUrl(avatarFilename)
+    : null;
+
+  return <CAvatar name={username} mr={4} src={avatarImageUrl} />;
 };
 
 export default Avatar;
