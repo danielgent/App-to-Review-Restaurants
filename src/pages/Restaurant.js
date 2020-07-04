@@ -103,7 +103,14 @@ const Restaurant = () => {
       </Section>
       <Section>
         <SectionTitle>Recent reviews</SectionTitle>
-        <Stack spacing="8">
+        <Stack
+          spacing="8"
+          height="500px"
+          overflowY="scroll"
+          border="solid"
+          p={8}
+          mx={-8}
+        >
           {recentReviews.map((review) => (
             <CommentItem key={review._id} review={review} />
           ))}
