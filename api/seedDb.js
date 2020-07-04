@@ -1,11 +1,32 @@
 const jwt = require("jsonwebtoken");
+var UserModel = require("./models/UserModel");
+var RestaurantModel = require("./models/RestaurantModel");
+var ReviewsModel = require("./models/ReviewsModel");
+const Bcrypt = require("bcryptjs");
+var users = require("./fixtures/users");
+
+const createRestaurant = (name, owner) =>
+  RestaurantModel({
+    name,
+    owner,
+  }).save();
+// const createReview = (name, owner) =>
+//   ReviewsModel({
+//     name,
+//     owner,
+//   }).save();
+const createUser = (username, name, email) =>
+  UserModel({
+    name,
+    username,
+    password: "abcde",
+    email,
+    role: "user",
+    isVerified: true,
+    verificationToken: "abcde",
+  }).save();
 
 const seedDatabases = async () => {
-  var UserModel = require("./models/UserModel");
-  var RestaurantModel = require("./models/RestaurantModel");
-  var ReviewsModel = require("./models/ReviewsModel");
-  const Bcrypt = require("bcryptjs");
-
   // Deprecated methods but work for testing
   await UserModel.remove({}).exec();
   await RestaurantModel.remove({}).exec();
@@ -207,6 +228,28 @@ const seedDatabases = async () => {
   );
 
   console.log("user3Token ", user3Token);
+
+  // putting behind flag in case tests get slow. These fixtures not used in tests
+  if (process.env.EXTENDED_SEED_DATABASE) {
+    await createRestaurant("Jasmine Grill", owner1._id);
+    await createRestaurant("Revolution Oxford Road", owner1._id);
+    await createRestaurant("Platzki", owner1._id);
+    await createRestaurant("Alborz Restaurant", owner1._id);
+    await createRestaurant("Etci Mehmet Steakhouse", owner1._id);
+    await createRestaurant("Zaytoon", owner1._id);
+    await createRestaurant("Blue Eyed Panda", owner1._id);
+    await createRestaurant("Wah Ji Wah", owner2._id);
+    await createRestaurant("Vero Moderno", owner2._id);
+    await createRestaurant("The Counter House", owner2._id);
+    await createRestaurant("La Casita", owner2._id);
+    await createRestaurant("Sangam", owner2._id);
+    await createRestaurant("Zumu Street", owner2._id);
+    await createRestaurant("Double Zero 00 Neapolitan Pizza", owner2._id);
+    await createRestaurant("The Laundrette Chorlton", owner2._id);
+    await createRestaurant("One Plus Restaurant", owner2._id);
+
+    // await Promise.all(users.forEach((user) => createUser(...user)));
+  }
 
   return {
     owner1Id: owner1._id.toString(),
