@@ -10,7 +10,7 @@ router.get("/", authLoggedIn, async (req, res) => {
   try {
     const ratingMin = req.query.ratingMin;
 
-    if (ratingMin && ratingMin < 1) {
+    if ((ratingMin && ratingMin < 1) || ratingMin > 5) {
       return res.status(400).send({ error: "Bad parameters" });
     }
 

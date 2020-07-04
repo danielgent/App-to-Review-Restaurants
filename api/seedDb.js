@@ -262,13 +262,13 @@ const seedDatabases = async () => {
           comment: comments[j],
           reviewer: userIds[j],
           restaurant: id,
+          // TODO => too average
           rating: (j % 5) + 1,
           visitDate: "2020-04-03",
           reply: j % 2 === 0 ? "Thanks for the review" : null,
         });
       }
     }
-
     // console.log("restaurantIds ", restaurantIds);
   }
 
