@@ -1,5 +1,12 @@
 import React from "react";
-import { Box, Heading, Text, CircularProgress, Stack } from "@chakra-ui/core";
+import {
+  Box,
+  Heading,
+  Text,
+  CircularProgress,
+  Stack,
+  Image,
+} from "@chakra-ui/core";
 import { useParams } from "react-router-dom";
 
 import CommentItem from "components/CommentItem";
@@ -62,6 +69,7 @@ const Restaurant = () => {
     highReview,
     lowReview,
     recentReviews,
+    galleryImage,
   } = restaurant;
 
   const innerContent =
@@ -71,7 +79,7 @@ const Restaurant = () => {
       <>
         <Text>Avg {averageRating}</Text>
         <StaticRating value={averageRating} size="large" />
-
+        <Image src={galleryImage} alt="Gallery Image" />
         <Section
           backgroundColor="green.100"
           borderColor="green.400"

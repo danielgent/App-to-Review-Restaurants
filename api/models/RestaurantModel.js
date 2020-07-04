@@ -5,6 +5,8 @@ const RestaurantModel = new Mongoose.model("restaurant", {
   // FK to userId
   owner: { type: String, required: true },
   dateAdded: { type: String },
+  profileImage: { type: String },
+  galleryImage: { type: String },
 });
 
 module.exports = RestaurantModel;

@@ -19,7 +19,10 @@ router.get("/", authLoggedIn, async (req, res) => {
       return res.status(400).send({ error: "Bad parameters" });
     }
 
-    const restaurants = await RestaurantModel.find({}, "name owner").exec();
+    const restaurants = await RestaurantModel.find(
+      {},
+      "name profileImage owner"
+    ).exec();
 
     const enrichedRestaurants = await Promise.all(
       restaurants.map(enrichRestaurant)

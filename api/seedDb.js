@@ -6,33 +6,14 @@ const Bcrypt = require("bcryptjs");
 var users = require("./fixtures/users");
 var restaurants = require("./fixtures/restaurants");
 var comments = require("./fixtures/comments");
+var { restaurantsSmall, restaurantsLarge } = require("./fixtures/images");
 
-const createRestaurant = async (name, owner) => {
-  const r = RestaurantModel({
-    name,
-    owner,
-  });
-
+const createRestaurant = async (res) => {
+  const r = RestaurantModel(res);
   await r.save();
-
   return r._id;
 };
-const createReview = ({
-  comment,
-  reviewer,
-  restaurant,
-  rating,
-  visitDate,
-  reply,
-}) =>
-  ReviewsModel({
-    comment,
-    reviewer,
-    restaurant,
-    rating,
-    visitDate,
-    reply,
-  }).save();
+const createReview = (rev) => ReviewsModel(rev).save();
 const createUser = async (username, name, email) => {
   const u = UserModel({
     name,
@@ -267,7 +248,12 @@ const seedDatabases = async () => {
 
     for (let i = 0; i < restaurants.length; i++) {
       const owner = i % 2 ? owner1._id : owner2._id;
-      const id = await createRestaurant(restaurants[i], owner);
+      const id = await createRestaurant({
+        name: restaurants[i],
+        owner,
+        profileImage: restaurantsSmall[i % restaurantsSmall.length],
+        galleryImage: restaurantsLarge[i % restaurantsLarge.length],
+      });
 
       restaurantIds.push(id);
 
