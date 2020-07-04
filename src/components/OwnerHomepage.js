@@ -5,6 +5,7 @@ import {
   Button,
   useDisclosure,
   Text,
+  Flex,
 } from "@chakra-ui/core";
 
 import RestaurantListItem from "components/RestaurantListItem";
@@ -68,20 +69,24 @@ const OwnerHomepage = () => {
   return (
     <Container maxWidth={700}>
       <Heading>Your Restaurants</Heading>
-      {restaurants.map((restaurant) => (
-        <RestaurantListItem key={restaurant._id} restaurant={restaurant} />
-      ))}
+      <Box mb={16}>
+        {restaurants.map((restaurant) => (
+          <RestaurantListItem key={restaurant._id} restaurant={restaurant} />
+        ))}
+      </Box>
       <Heading>Unreplied Reviews</Heading>
       <Box>
         {reviews.length === 0 ? (
           <Text>All your reviews are replied to</Text>
         ) : (
           reviews.map((review) => (
-            <Box key={review._id}>
+            <Box key={review._id} mb={4}>
               <CommentItem review={review} />
-              <Button onClick={() => setReviewIdToReply(review._id)}>
-                Reply to review
-              </Button>
+              <Flex justifyContent="flex-end">
+                <Button mb={4} onClick={() => setReviewIdToReply(review._id)}>
+                  Reply
+                </Button>
+              </Flex>
             </Box>
           ))
         )}

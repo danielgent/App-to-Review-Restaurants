@@ -10,8 +10,6 @@ import {
   ModalCloseButton,
   Box,
   Stack,
-  FormControl,
-  FormLabel,
   Input,
   FormErrorMessage,
 } from "@chakra-ui/core";
@@ -20,6 +18,7 @@ import DatePicker from "react-datepicker";
 import Rating from "@material-ui/lab/Rating";
 
 import { authAxios } from "utils";
+import { FormControl, FormLabel } from "components/Styled";
 
 const formatDate = (date) =>
   `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;

@@ -56,7 +56,7 @@ router.get("/me", authLoggedIn, async (req, res) => {
 
     const restaurants = await RestaurantModel.find(
       { owner: id },
-      "name owner"
+      "name profileImage owner"
     ).exec();
 
     const enrichedRestaurants = await Promise.all(
