@@ -6,7 +6,7 @@ import StaticRating from "components/StaticRating";
 // TODO - rename ReviewItem
 const CommentItem = ({ review, refreshData, ...rest }) => {
   const { reviewer, comment, visitDate, rating, reply } = review;
-  const { avatarFilename, username } = reviewer;
+  const { avatarFilename, username, name } = reviewer;
 
   const formattedDate = new Date(visitDate).toDateString();
 
@@ -14,8 +14,13 @@ const CommentItem = ({ review, refreshData, ...rest }) => {
 
   return (
     <Box {...rest}>
-      <Stack direction="row" spacing="10">
-        <Avatar name={username} mr={4} src={avatarImageUrl} />
+      <Stack isInline spacing="10">
+        <Stack spacing="2">
+          <Avatar name={username} mr={4} src={avatarImageUrl} />
+          <Text fontStyle="italic" fontSize="xs">
+            {name}
+          </Text>
+        </Stack>
         <Box>
           <Text>{comment}</Text>
           <StaticRating value={rating} />
