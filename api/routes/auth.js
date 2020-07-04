@@ -153,10 +153,7 @@ router.post("/login", async (req, res) => {
 
 router.get("/me", authLoggedIn, async (req, res) => {
   try {
-    const user = await UserModel.findById(
-      req.user.id,
-      "avatarFilename username"
-    ).exec();
+    const user = await UserModel.findById(req.user.id).exec();
 
     if (!user) {
       return res.status(401).send({ error: "invalid token" });

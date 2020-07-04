@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  CircularProgress,
-  SimpleGrid,
-  Text,
-  useToast,
-  Button,
-} from "@chakra-ui/core";
+import { CircularProgress, Text, useToast, Button } from "@chakra-ui/core";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";

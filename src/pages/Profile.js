@@ -1,4 +1,11 @@
-import { Flex, Spinner, Text, Button, useDisclosure } from "@chakra-ui/core";
+import {
+  Flex,
+  Spinner,
+  SimpleGrid,
+  Text,
+  Button,
+  useDisclosure,
+} from "@chakra-ui/core";
 import React from "react";
 
 import UserContext from "contexts/user-context";
@@ -6,6 +13,9 @@ import UploadProfileModal from "components/UploadProfileModal";
 import { authAxios } from "utils";
 import { Container, Heading } from "components/Styled";
 import Avatar from "components/Avatar";
+
+const Label = (props) => <Text d="b" p={4} fontWeight="bold" {...props} />;
+const Value = (props) => <Text d="b" p={4} fontStyle="italic" {...props} />;
 
 const Profile = (props) => {
   const { user, updateUser } = React.useContext(UserContext);
@@ -36,15 +46,17 @@ const Profile = (props) => {
   return (
     <Container maxWidth={600}>
       <Heading as="h1">Profile</Heading>
-      <Text>Your name</Text>
-      <Text>{user.name}</Text>
-      <Text>Your email</Text>
-      <Text>{user.email}</Text>
+      <SimpleGrid columns={2} mb={6}>
+        <Label>Your name</Label>
+        <Value>{user.name}</Value>
+        <Label>Your email</Label>
+        <Value>{user.email}</Value>
+      </SimpleGrid>
 
-      <Flex align="center" justify="center">
+      <Flex align="center" justify="center" p={4} border="solid" rounded="lg">
         {user ? (
           <>
-            <Text mr={8}>Current Profile picture</Text>
+            <Label mr={8}>Current Profile picture</Label>
             <Avatar user={user} />
             <Button onClick={onUploadProfileModalOpen}>
               Upload new profile image
