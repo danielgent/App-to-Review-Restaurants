@@ -12,7 +12,6 @@ import {
 import { Formik, Form, Field } from "formik";
 import axios from "axios";
 import { Link, useHistory } from "react-router-dom";
-import GoogleLogin from "react-google-login";
 
 import UserContext from "contexts/user-context";
 import { LOCAL_STORAGE_TOKEN_KEY } from "globalConstants";
@@ -25,19 +24,8 @@ import {
   Divider,
   StyledLink,
 } from "components/Styled";
+import GoogleLogIn from "components/GoogleLogIn";
 import { disallowWhitespaceChangeHandler } from "utils";
-
-const responseGoogle = (response) => {
-  console.log(response);
-
-  axios
-    .post(`${process.env.REACT_APP_API_URL}/google/verify`, {
-      token: response.tokenId,
-    })
-    .then(({ data }) => {
-      console.log("toke validated yes ok");
-    });
-};
 
 const LogIn = (props) => {
   const [serverErrorMessage, setServerErrorMessage] = React.useState("");
@@ -159,18 +147,7 @@ const LogIn = (props) => {
               </Alert>
             )}
             <Divider />
-            <Flex alignItems="center" justifyContent="center" p={4}>
-              <Text fontStyle="italic" color="gray.400" mr={2}>
-                or sign in with
-              </Text>
-              <GoogleLogin
-                clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-                buttonText="Login with Google"
-                onSuccess={responseGoogle}
-                onFailure={responseGoogle}
-                cookiePolicy={"single_host_origin"}
-              />
-            </Flex>
+            <GoogleLogIn />
             <Divider />
             <Flex justifyContent="center" alignItems="center">
               <Link to="/sign-up">

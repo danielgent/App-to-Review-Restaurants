@@ -16,6 +16,7 @@ const UserModel = new Mongoose.model("user", {
   avatarFilename: { type: String },
   isVerified: { type: Boolean, default: false },
   verificationToken: { type: String, required: true },
+  googleId: { type: String },
 });
 
 module.exports = UserModel;

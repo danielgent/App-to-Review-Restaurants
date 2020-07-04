@@ -209,9 +209,9 @@ router.get("/verify/:code", async (req, res) => {
 });
 
 // not sure if should be post. have a GET for login but a POST for signup that does more?
-router.post("/google/verify", async (req, res) => {
+router.get("/google/verify/:token", async (req, res) => {
   try {
-    const { token } = req.body;
+    const { token } = req.params;
 
     const { OAuth2Client } = require("google-auth-library");
     const client = new OAuth2Client(process.env.REACT_APP_GOOGLE_CLIENT_ID);
@@ -252,11 +252,22 @@ router.post("/google/verify", async (req, res) => {
 
       return userid;
     }
-    const userid = verify();
+
+    // TODO - what happens if not a real token?
+    const googleId = await verify();
+
+    const user = await UserModel.findOne({ googleId }).exec();
+
+    if (!user) {
+      // TODO - what status here?
+      return res.status(400).json({
+        error: "No account registered with this Google Id",
+      });
+    }
 
     res.status(200).json({
       message: "Google token verified ok",
-      id: userid,
+      id: googleId,
     });
   } catch (error) {
     console.log(error);
