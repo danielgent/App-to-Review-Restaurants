@@ -29,15 +29,3 @@ export const Divider = (props) => <RDivider mb={8} {...props} />;
 export const StyledLink = (props) => (
   <Text textDecoration="underline" {...props} />
 );
-
-export const TableCell = (props) => (
-  <Box
-    borderColor="gray.600"
-    borderWidth="1px"
-    borderStyle="solid"
-    borderTop="none"
-    borderLeft="none"
-    p={4}
-    {...props}
-  />
-);

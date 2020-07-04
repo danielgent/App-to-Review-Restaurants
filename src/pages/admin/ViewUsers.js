@@ -1,15 +1,14 @@
 import React from "react";
-import {
-  CircularProgress,
-  SimpleGrid,
-  Text,
-  useToast,
-  Button,
-} from "@chakra-ui/core";
+import { CircularProgress, Text, useToast, Button } from "@chakra-ui/core";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
 
 import EditUserModal from "components/EditUserModal";
 import ConfirmationModal from "components/ConfirmationModal";
-import { Container, Heading, TableCell } from "components/Styled";
+import { Container, Heading } from "components/Styled";
 import { authAxios } from "utils";
 
 const HeaderText = (props) => <Text fontWeight="bold" {...props} />;
@@ -85,59 +84,60 @@ const ViewUsers = () => {
   return (
     <Container maxWidth={1200}>
       <Heading>View users</Heading>
-      <SimpleGrid
-        columns={8}
-        borderColor="gray.600"
-        borderWidth="1px"
-        borderStyle="solid"
-        borderRight="none"
-        borderBottom="none"
-      >
-        <TableCell>
-          <HeaderText>Username</HeaderText>
-        </TableCell>
-        <TableCell>
-          <HeaderText>Name</HeaderText>
-        </TableCell>
-        <TableCell>
-          <HeaderText>Email</HeaderText>
-        </TableCell>
-        <TableCell>
-          <HeaderText>Role</HeaderText>
-        </TableCell>
-        <TableCell>
-          <HeaderText>AvatarFilename</HeaderText>
-        </TableCell>
-        <TableCell>
-          <HeaderText>Login Attempts</HeaderText>
-        </TableCell>
-        <TableCell></TableCell>
-        <TableCell></TableCell>
-        {users.map((user) => (
-          <React.Fragment key={user.username}>
-            <TableCell>{user.username}</TableCell>
-            <TableCell>{user.name}</TableCell>
-            <TableCell>{user.email}</TableCell>
-            <TableCell>{user.role}</TableCell>
-            <TableCell>{user.avatarFilename}</TableCell>
-            {user.loginAttempts < 3 ? (
-              <TableCell>{user.loginAttempts}</TableCell>
-            ) : (
+      <Table>
+        <TableHead>
+          <TableCell>
+            <HeaderText>Username</HeaderText>
+          </TableCell>
+          <TableCell>
+            <HeaderText>Name</HeaderText>
+          </TableCell>
+          <TableCell>
+            <HeaderText>Email</HeaderText>
+          </TableCell>
+          <TableCell>
+            <HeaderText>Role</HeaderText>
+          </TableCell>
+          <TableCell>
+            <HeaderText>AvatarFilename</HeaderText>
+          </TableCell>
+          <TableCell>
+            <HeaderText>Login Attempts</HeaderText>
+          </TableCell>
+          <TableCell />
+          <TableCell />
+        </TableHead>
+        <TableBody>
+          {users.map((user) => (
+            <TableRow key={user.username}>
+              <TableCell>{user.username}</TableCell>
+              <TableCell>{user.name}</TableCell>
+              <TableCell>{user.email}</TableCell>
+              <TableCell>{user.role}</TableCell>
+              <TableCell>{user.avatarFilename}</TableCell>
+              {user.loginAttempts < 3 ? (
+                <TableCell>{user.loginAttempts}</TableCell>
+              ) : (
+                <TableCell p={2}>
+                  <Button size="sm" onClick={() => handleUnlockUser(user._id)}>
+                    Unlock
+                  </Button>
+                </TableCell>
+              )}
               <TableCell p={2}>
-                <Button onClick={() => handleUnlockUser(user._id)}>
-                  Unlock user
+                <Button size="sm" onClick={() => setUserToEdit(user)}>
+                  Edit
                 </Button>
               </TableCell>
-            )}
-            <TableCell p={2}>
-              <Button onClick={() => setUserToEdit(user)}>Edit user</Button>
-            </TableCell>
-            <TableCell p={2}>
-              <Button onClick={() => setUserToDelete(user)}>Delete user</Button>
-            </TableCell>
-          </React.Fragment>
-        ))}
-      </SimpleGrid>
+              <TableCell p={2}>
+                <Button size="sm" onClick={() => setUserToDelete(user)}>
+                  Delete
+                </Button>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
       <EditUserModal
         isOpen={!!userToEdit}
         onClose={() => setUserToEdit(null)}

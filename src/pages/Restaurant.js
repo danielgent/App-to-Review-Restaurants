@@ -79,7 +79,7 @@ const Restaurant = () => {
       <>
         <Text>Avg {averageRating}</Text>
         <StaticRating value={averageRating} size="large" />
-        <Image src={galleryImage} alt="Gallery Image" />
+        {galleryImage && <Image src={galleryImage} alt="Gallery Image" />}
         <Section
           backgroundColor="green.100"
           borderColor="green.400"

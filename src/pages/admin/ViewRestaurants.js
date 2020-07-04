@@ -1,15 +1,14 @@
 import React from "react";
-import {
-  CircularProgress,
-  SimpleGrid,
-  Text,
-  useToast,
-  Button,
-} from "@chakra-ui/core";
+import { CircularProgress, Text, useToast, Button } from "@chakra-ui/core";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
 
 import EditRestaurantModal from "components/EditRestaurantModal";
 import ConfirmationModal from "components/ConfirmationModal";
-import { Container, Heading, TableCell } from "components/Styled";
+import { Container, Heading } from "components/Styled";
 import { authAxios } from "utils";
 
 const HeaderText = (props) => <Text fontWeight="bold" {...props} />;
@@ -69,35 +68,32 @@ const ViewRestaurants = () => {
   return (
     <Container maxWidth={1200}>
       <Heading>View restaurants</Heading>
-      <SimpleGrid
-        columns={3}
-        borderColor="gray.600"
-        borderWidth="1px"
-        borderStyle="solid"
-        borderRight="none"
-        borderBottom="none"
-      >
-        <TableCell>
-          <HeaderText>Restaurant name</HeaderText>
-        </TableCell>
-        <TableCell></TableCell>
-        <TableCell></TableCell>
-        {restaurants.map((restaurant) => (
-          <React.Fragment key={restaurant._id}>
-            <TableCell>{restaurant.name}</TableCell>
-            <TableCell p={2}>
-              <Button onClick={() => setRestaurantToEdit(restaurant)}>
-                Edit restaurant
-              </Button>
-            </TableCell>
-            <TableCell p={2}>
-              <Button onClick={() => setRestaurantToDelete(restaurant)}>
-                Delete restaurant
-              </Button>
-            </TableCell>
-          </React.Fragment>
-        ))}
-      </SimpleGrid>
+      <Table>
+        <TableHead>
+          <TableCell>
+            <HeaderText>Restaurant name</HeaderText>
+          </TableCell>
+          <TableCell />
+          <TableCell />
+        </TableHead>
+        <TableBody>
+          {restaurants.map((restaurant) => (
+            <TableRow key={restaurant._id}>
+              <TableCell>{restaurant.name}</TableCell>
+              <TableCell p={2}>
+                <Button onClick={() => setRestaurantToEdit(restaurant)}>
+                  Edit restaurant
+                </Button>
+              </TableCell>
+              <TableCell p={2}>
+                <Button onClick={() => setRestaurantToDelete(restaurant)}>
+                  Delete restaurant
+                </Button>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
       <EditRestaurantModal
         isOpen={!!restaurantToEdit}
         onClose={() => setRestaurantToEdit(null)}

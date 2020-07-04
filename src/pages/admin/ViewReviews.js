@@ -6,10 +6,15 @@ import {
   useToast,
   Button,
 } from "@chakra-ui/core";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
 
 import EditReviewModal from "components/EditReviewModal";
 import ConfirmationModal from "components/ConfirmationModal";
-import { Container, Heading, TableCell } from "components/Styled";
+import { Container, Heading } from "components/Styled";
 import { authAxios } from "utils";
 
 const HeaderText = (props) => <Text fontWeight="bold" {...props} />;
@@ -68,48 +73,43 @@ const ViewReviews = () => {
   return (
     <Container maxWidth={1200}>
       <Heading>View reviews</Heading>
-      <SimpleGrid
-        columns={6}
-        borderColor="gray.600"
-        borderWidth="1px"
-        borderStyle="solid"
-        borderRight="none"
-        borderBottom="none"
-      >
-        <TableCell>
-          <HeaderText>Comment</HeaderText>
-        </TableCell>
-        <TableCell>
-          <HeaderText>Rating</HeaderText>
-        </TableCell>
-        <TableCell>
-          <HeaderText>Visit Date</HeaderText>
-        </TableCell>
-        <TableCell>
-          <HeaderText>Reply</HeaderText>
-        </TableCell>
-        <TableCell></TableCell>
-        <TableCell></TableCell>
-        {reviews.map((review) => (
-          <React.Fragment key={review._id}>
-            {/* TODO - should enrich data then pull down resturant name and username. or group by restaurant? */}
-            <TableCell>{review.comment}</TableCell>
-            <TableCell>{review.rating}</TableCell>
-            <TableCell>{review.visitDate}</TableCell>
-            <TableCell>{review.reply}</TableCell>
-            <TableCell p={2}>
-              <Button onClick={() => setReviewToEdit(review)}>
-                Edit review
-              </Button>
-            </TableCell>
-            <TableCell p={2}>
-              <Button onClick={() => setReviewToDelete(review)}>
-                Delete review
-              </Button>
-            </TableCell>
-          </React.Fragment>
-        ))}
-      </SimpleGrid>
+      <Table>
+        <TableHead>
+          <TableCell>
+            <HeaderText>Comment</HeaderText>
+          </TableCell>
+          <TableCell>
+            <HeaderText>Rating</HeaderText>
+          </TableCell>
+          <TableCell>
+            <HeaderText>Visit Date</HeaderText>
+          </TableCell>
+          <TableCell>
+            <HeaderText>Reply</HeaderText>
+          </TableCell>
+          <TableCell></TableCell>
+          <TableCell></TableCell>
+        </TableHead>
+        <TableBody>
+          {reviews.map((review) => (
+            <TableRow key={review._id}>
+              {/* TODO - should enrich data then pull down resturant name and username. or group by restaurant? */}
+              <TableCell>{review.comment}</TableCell>
+              <TableCell>{review.rating}</TableCell>
+              <TableCell>{review.visitDate}</TableCell>
+              <TableCell>{review.reply}</TableCell>
+              <TableCell p={2}>
+                <Button onClick={() => setReviewToEdit(review)}>Edit</Button>
+              </TableCell>
+              <TableCell p={2}>
+                <Button onClick={() => setReviewToDelete(review)}>
+                  Delete
+                </Button>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
       <EditReviewModal
         isOpen={!!reviewToEdit}
         onClose={() => setReviewToEdit(null)}
