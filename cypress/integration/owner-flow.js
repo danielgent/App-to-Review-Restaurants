@@ -17,14 +17,13 @@ describe("Owner flow", function () {
     cy.findAllByText("Your Restaurants");
     // see own restaurant
     cy.findByText("Steak House");
-    // one unreplied review
-    cy.findByText("Reply to review").click();
+    cy.findAllByText("Reply").eq(0).click();
 
     cy.findByLabelText("Reply").type("new cypress reply");
     cy.findByRole("button", { name: "Reply" }).click();
 
     // assert no more unreplied review
-    cy.findByText("All your reviews are replied to");
+    // cy.findByText("All your reviews are replied to");
 
     // now create a restaurant
     cy.findByRole("button", { name: "Create new restaurant" }).click();

@@ -15,7 +15,7 @@ describe("Admin flow", function () {
 
     // delete review
     cy.findByText(/Thanks for your very fast response/);
-    cy.findAllByRole("button", { name: "Delete review" }).eq(1).click();
+    cy.findAllByRole("button", { name: "Delete" }).eq(1).click();
     cy.findByText("Are you sure you want to delete this review?");
     cy.findByRole("button", { name: "Confirm" }).click();
     cy.findByRole("progressbar");
@@ -24,7 +24,7 @@ describe("Admin flow", function () {
 
     // edit review name
     cy.findByText("More or less");
-    cy.findAllByRole("button", { name: "Edit review" }).eq(3).click();
+    cy.findAllByRole("button", { name: "Edit" }).eq(3).click();
     cy.findByLabelText("Comment")
       .should("have.value", "More or less")
       .clear()
@@ -87,7 +87,7 @@ describe("Admin flow", function () {
 
     // delete first owner user
     cy.findByText("another-owner@example.com");
-    cy.findAllByRole("button", { name: "Delete user" }).eq(1).click();
+    cy.findAllByRole("button", { name: "Delete" }).eq(1).click();
     cy.findByText(
       "Are you sure you want to delete this user another-owner? Will also delete all user's restaurants and reviews"
     );
@@ -98,7 +98,7 @@ describe("Admin flow", function () {
 
     // edit b-user username
     cy.findByText("b-user");
-    cy.findAllByRole("button", { name: "Edit user" }).eq(2).click();
+    cy.findAllByRole("button", { name: "Edit" }).eq(2).click();
     cy.findByLabelText("username")
       .should("have.value", "b-user")
       .clear()
@@ -110,7 +110,7 @@ describe("Admin flow", function () {
     cy.findByText("cypress new username");
 
     // should be one unlocked user
-    cy.findByRole("button", { name: "Unlock user" }).click();
+    cy.findByRole("button", { name: "Unlock" }).click();
     cy.findByText("Unlock user").should("not.exist");
   });
 });
