@@ -21,7 +21,7 @@ const seedDatabases = async () => {
     password: Bcrypt.hashSync("o", Number(process.env.SALT_ROUNDS)),
     email: "owner@example.com",
     role: "owner",
-    avatarFilename: "dan-abramov",
+    avatarFilename: "https://bit.ly/dan-abramov",
     isVerified: true,
     verificationToken: "some-token",
   });
@@ -48,7 +48,7 @@ const seedDatabases = async () => {
     ),
     email: "another-owner@example.com",
     role: "owner",
-    avatarFilename: "sage-adebayo",
+    avatarFilename: "https://bit.ly/sage-adebayo",
     isVerified: true,
     verificationToken: "some-token",
   });
@@ -82,7 +82,7 @@ const seedDatabases = async () => {
     password: Bcrypt.hashSync("a", Number(process.env.SALT_ROUNDS)),
     email: "user1@example.com",
     role: "user",
-    avatarFilename: "code-beast",
+    avatarFilename: "https://bit.ly/code-beast",
     isVerified: true,
     verificationToken: "some-token",
   });
@@ -93,7 +93,7 @@ const seedDatabases = async () => {
     password: Bcrypt.hashSync("password-2", Number(process.env.SALT_ROUNDS)),
     email: "user2@example.com",
     role: "user",
-    avatarFilename: "sage-adebayo",
+    avatarFilename: "https://bit.ly/sage-adebayo",
     isVerified: true,
     verificationToken: "some-token",
   });
@@ -104,7 +104,7 @@ const seedDatabases = async () => {
     password: Bcrypt.hashSync("password-3", Number(process.env.SALT_ROUNDS)),
     email: "user3@example.com",
     role: "user",
-    avatarFilename: "kent-c-dodds",
+    avatarFilename: "https://bit.ly/prosper-baba",
     isVerified: true,
     verificationToken: "some-token",
   });
@@ -115,7 +115,7 @@ const seedDatabases = async () => {
     password: Bcrypt.hashSync("password", Number(process.env.SALT_ROUNDS)),
     email: "user4@example.com",
     role: "user",
-    avatarFilename: "TODO",
+    avatarFilename: "https://bit.ly/ryan-florence",
     isVerified: true,
     verificationToken: "some-token",
     loginAttempts: 3,
@@ -127,7 +127,7 @@ const seedDatabases = async () => {
     password: Bcrypt.hashSync("password", Number(process.env.SALT_ROUNDS)),
     email: "user5@example.com",
     role: "user",
-    avatarFilename: "foo",
+    avatarFilename: "https://bit.ly/kent-c-dodds",
     isVerified: false,
     verificationToken: "example-verification-token",
   });
@@ -190,7 +190,7 @@ const seedDatabases = async () => {
     password: Bcrypt.hashSync("admin", Number(process.env.SALT_ROUNDS)),
     email: "admin@example.com",
     role: "admin",
-    avatarFilename: "foo",
+    avatarFilename: "https://bit.ly/tioluwani-kolawole",
     isVerified: true,
     verificationToken: "some-token",
   });
