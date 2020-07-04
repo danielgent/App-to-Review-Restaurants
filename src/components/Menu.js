@@ -1,17 +1,16 @@
 import React from "react";
-import { Box, Stack, Link as Clink, Flex, Avatar } from "@chakra-ui/core";
+import { Box, Stack, Link as Clink, Flex } from "@chakra-ui/core";
 import { Link, useHistory } from "react-router-dom";
 
 import { LOCAL_STORAGE_TOKEN_KEY, ROLES } from "globalConstants";
 import UserContext from "contexts/user-context";
+import Avatar from "components/Avatar";
 
 const MenuItem = (props) => <Box px={6} py={3} fontWeight="bold" {...props} />;
 
 const Menu = () => {
   let history = useHistory();
   const { updateUser, user } = React.useContext(UserContext);
-
-  const { username, avatarImageUrl } = user || {};
 
   const logout = () => {
     localStorage.removeItem(LOCAL_STORAGE_TOKEN_KEY);
@@ -65,7 +64,7 @@ const Menu = () => {
             justifyContent="center"
           >
             <MenuItem>Profile</MenuItem>
-            <Avatar name={username} src={avatarImageUrl} />
+            <Avatar user={user} />
           </Stack>
         </Link>
       )}

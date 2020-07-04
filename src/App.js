@@ -5,7 +5,6 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import SignUp from "pages/SignUp";
 import LogIn from "pages/LogIn";
-import LogOut from "pages/LogOut";
 import Home from "pages/Home";
 import Restaurant from "pages/Restaurant";
 import Profile from "pages/Profile";
@@ -41,16 +40,20 @@ function App() {
             <Switch>
               <Route path="/sign-up" component={SignUp} />
               <Route path="/login" component={LogIn} />
-              <Route path="/logout" component={LogOut} />
-              <Route path="/restaurant/:id" component={Restaurant} />
-              <Route path="/profile" component={Profile} />
               <Route path="/verify/:code" component={Verify} />
-              {/* TODO - test what happens when visit this Url and user */}
-              <Route path="/admin/users" component={ViewUsers} />
-              <Route path="/admin/restaurants" component={ViewRestaurants} />
-              <Route path="/admin/reviews" component={ViewReviews} />
-
-              {user && <Route path="/" component={Home} />}
+              {user && (
+                <>
+                  <Route path="/profile" component={Profile} />
+                  <Route path="/restaurant/:id" component={Restaurant} />
+                  <Route path="/admin/users" component={ViewUsers} />
+                  <Route
+                    path="/admin/restaurants"
+                    component={ViewRestaurants}
+                  />
+                  <Route path="/admin/reviews" component={ViewReviews} />
+                  <Route exact path="/" component={Home} />
+                </>
+              )}
             </Switch>
           </Flex>
           <Box fontStyle="italic" fontSize="xs" backgroundColor="red.100">

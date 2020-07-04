@@ -1,22 +1,21 @@
-import { Box, Stack, Avatar, Divider, Text } from "@chakra-ui/core";
+import { Box, Stack, Divider, Text } from "@chakra-ui/core";
 import React from "react";
 
 import StaticRating from "components/StaticRating";
+import Avatar from "components/Avatar";
 
 // TODO - rename ReviewItem
 const CommentItem = ({ review, refreshData, ...rest }) => {
   const { reviewer, comment, visitDate, rating, reply } = review;
-  const { avatarFilename, username, name } = reviewer;
+  const { name } = reviewer;
 
   const formattedDate = new Date(visitDate).toDateString();
-
-  const avatarImageUrl = `${process.env.REACT_APP_API_URL}/${avatarFilename}`;
 
   return (
     <Box {...rest}>
       <Stack isInline spacing="10">
         <Stack spacing="2">
-          <Avatar name={username} mr={4} src={avatarImageUrl} />
+          <Avatar user={reviewer} />
           <Text fontStyle="italic" fontSize="xs">
             {name}
           </Text>

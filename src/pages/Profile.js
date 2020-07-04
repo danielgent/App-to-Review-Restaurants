@@ -1,17 +1,11 @@
-import {
-  Flex,
-  Spinner,
-  Text,
-  Avatar,
-  Button,
-  useDisclosure,
-} from "@chakra-ui/core";
+import { Flex, Spinner, Text, Button, useDisclosure } from "@chakra-ui/core";
 import React from "react";
 
 import UserContext from "contexts/user-context";
 import UploadProfileModal from "components/UploadProfileModal";
 import { authAxios } from "utils";
 import { Container, Heading } from "components/Styled";
+import Avatar from "components/Avatar";
 
 const Profile = (props) => {
   const { user, updateUser } = React.useContext(UserContext);
@@ -20,9 +14,6 @@ const Profile = (props) => {
     onOpen: onUploadProfileModalOpen,
     onClose: onUploadProfileModalClose,
   } = useDisclosure();
-
-  const makeAvatarImageUrl = (avatarFilename) =>
-    `${process.env.REACT_APP_API_URL}/${avatarFilename}`;
 
   const refetch = () => {
     authAxios
@@ -54,11 +45,7 @@ const Profile = (props) => {
         {user ? (
           <>
             <Text mr={8}>Current Profile picture</Text>
-            <Avatar
-              name={user.username}
-              mr={4}
-              src={makeAvatarImageUrl(user.avatarFilename)}
-            />
+            <Avatar user={user} />
             <Button onClick={onUploadProfileModalOpen}>
               Upload new profile image
             </Button>
