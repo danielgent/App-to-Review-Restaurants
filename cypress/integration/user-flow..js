@@ -19,26 +19,14 @@ describe("User flow", function () {
     cy.findByText("Owner's Diner");
     cy.findByText("Steak House");
 
-    // TODO - read something that is better UX than this
-    // cy.findByText("4");
-    // cy.findByText("3");
-
-    cy.findByLabelText("Select minimum average rating").select("4");
+    cy.findByTestId("rating-4").click();
     cy.findByText("Owner's Diner");
     cy.findByText("Steak House").should("not.exist");
 
-    cy.findByLabelText("Select maximum average rating").select("3");
+    cy.findByTestId("rating-5").click();
     cy.findByText("no results");
 
-    cy.findByLabelText("Select minimum average rating").select("2");
-    cy.findByText("Owner's Diner").should("not.exist");
-    cy.findByText("Steak House");
-
-    cy.findByLabelText("Select minimum average rating").select("5");
-    cy.findByText("Owner's Diner").should("not.exist");
-    cy.findByText("Steak House").should("not.exist");
-
-    cy.findByRole("button", { name: "Clear filters" }).click();
+    cy.findByText("& unrated").click();
 
     // now go to detail page which is correctly populated
     cy.findByText("Owner's Diner").click();

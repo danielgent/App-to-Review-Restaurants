@@ -16,6 +16,7 @@ import ViewReviews from "pages/admin/ViewReviews";
 import UserContext from "contexts/user-context";
 import UserMe from "components/UserMe";
 import Menu from "components/Menu";
+import ErrorBoundary from "components/ErrorBoundary";
 
 import { LOCAL_STORAGE_TOKEN_KEY } from "globalConstants";
 
@@ -24,47 +25,49 @@ function App() {
 
   // TODO - put user fetching code here and show spinner until fetched. much easier
   return (
-    <UserContext.Provider value={{ user, updateUser: setUser }}>
-      <ThemeProvider>
-        <CSSReset />
-        <Router>
-          <UserMe />
-          <Menu />
-          <Flex
-            px={30}
-            py={50}
-            backgroundColor="gray.100"
-            alignItems="center"
-            justifyContent="center"
-          >
-            <Switch>
-              <Route path="/sign-up" component={SignUp} />
-              <Route path="/login" component={LogIn} />
-              <Route path="/verify/:code" component={Verify} />
-              {user && (
-                <>
-                  <Route path="/profile" component={Profile} />
-                  <Route path="/restaurant/:id" component={Restaurant} />
-                  <Route path="/admin/users" component={ViewUsers} />
-                  <Route
-                    path="/admin/restaurants"
-                    component={ViewRestaurants}
-                  />
-                  <Route path="/admin/reviews" component={ViewReviews} />
-                  <Route exact path="/" component={Home} />
-                </>
-              )}
-            </Switch>
-          </Flex>
-          <Box fontStyle="italic" fontSize="xs" backgroundColor="red.100">
-            <Box>User context {JSON.stringify(user)}</Box>
-            <Box>
-              local storage{localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY)}}
+    <ErrorBoundary>
+      <UserContext.Provider value={{ user, updateUser: setUser }}>
+        <ThemeProvider>
+          <CSSReset />
+          <Router>
+            <UserMe />
+            <Menu />
+            <Flex
+              px={30}
+              py={50}
+              backgroundColor="gray.100"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <Switch>
+                <Route path="/sign-up" component={SignUp} />
+                <Route path="/login" component={LogIn} />
+                <Route path="/verify/:code" component={Verify} />
+                {user && (
+                  <>
+                    <Route path="/profile" component={Profile} />
+                    <Route path="/restaurant/:id" component={Restaurant} />
+                    <Route path="/admin/users" component={ViewUsers} />
+                    <Route
+                      path="/admin/restaurants"
+                      component={ViewRestaurants}
+                    />
+                    <Route path="/admin/reviews" component={ViewReviews} />
+                    <Route exact path="/" component={Home} />
+                  </>
+                )}
+              </Switch>
+            </Flex>
+            <Box fontStyle="italic" fontSize="xs" backgroundColor="red.100">
+              <Box>User context {JSON.stringify(user)}</Box>
+              <Box>
+                local storage{localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY)}}
+              </Box>
             </Box>
-          </Box>
-        </Router>
-      </ThemeProvider>
-    </UserContext.Provider>
+          </Router>
+        </ThemeProvider>
+      </UserContext.Provider>
+    </ErrorBoundary>
   );
 }
 

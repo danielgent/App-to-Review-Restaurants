@@ -6,12 +6,14 @@ import {
   CircularProgress,
   Stack,
   Image,
+  Flex,
 } from "@chakra-ui/core";
 import { useParams } from "react-router-dom";
 
 import CommentItem from "components/CommentItem";
 import CreateReviewButton from "components/CreateReviewButton";
 import StaticRating from "components/StaticRating";
+import BackButton from "components/BackButton";
 
 import { authAxios } from "utils";
 import { Container } from "components/Styled";
@@ -72,50 +74,62 @@ const Restaurant = () => {
     galleryImage,
   } = restaurant;
 
-  const innerContent =
-    recentReviews.length === 0 ? (
-      <Text mb={6}>No reviews yet</Text>
-    ) : (
-      <>
-        <Text>Avg {averageRating}</Text>
-        <StaticRating value={averageRating} size="large" />
-        {galleryImage && <Image src={galleryImage} alt="Gallery Image" />}
-        <Section
-          backgroundColor="green.100"
-          borderColor="green.400"
-          borderWidth="2px"
-          padding={4}
-          rounded="md"
-        >
-          <SectionTitle>Top review</SectionTitle>
-          <CommentItem review={highReview} />
-        </Section>
-        <Section
-          backgroundColor="red.100"
-          borderColor="red.400"
-          borderWidth="2px"
-          padding={4}
-          rounded="md"
-        >
-          <SectionTitle>Worst review</SectionTitle>
-          <CommentItem review={lowReview} />
-        </Section>
-        <Section>
-          <SectionTitle>Recent reviews</SectionTitle>
-          <Stack spacing="8">
-            {recentReviews.map((review) => (
-              <CommentItem key={review._id} review={review} />
-            ))}
-          </Stack>
-        </Section>
-      </>
-    );
+  const hasReviews = recentReviews.length > 0;
+
+  const innerContent = !hasReviews ? (
+    <Text mb={6}>No reviews yet</Text>
+  ) : (
+    <>
+      {galleryImage && <Image src={galleryImage} alt="Gallery Image" mb={8} />}
+      <Section
+        backgroundColor="green.100"
+        borderColor="green.400"
+        borderWidth="2px"
+        padding={4}
+        rounded="md"
+      >
+        <SectionTitle>Top review</SectionTitle>
+        <CommentItem review={highReview} />
+      </Section>
+      <Section
+        backgroundColor="red.100"
+        borderColor="red.400"
+        borderWidth="2px"
+        padding={4}
+        rounded="md"
+      >
+        <SectionTitle>Worst review</SectionTitle>
+        <CommentItem review={lowReview} />
+      </Section>
+      <Section>
+        <SectionTitle>Recent reviews</SectionTitle>
+        <Stack spacing="8">
+          {recentReviews.map((review) => (
+            <CommentItem key={review._id} review={review} />
+          ))}
+        </Stack>
+      </Section>
+    </>
+  );
 
   return (
     <Container maxWidth={1200}>
       <Box p={4}>
-        <Heading as="h1">{name}</Heading>
-        <Box p={8}>{innerContent}</Box>
+        <Flex mb={6} justifyContent="stretch">
+          <Heading flexGrow={1} as="h1">
+            {name}
+          </Heading>
+          {hasReviews && (
+            <>
+              <Box mr={8}>
+                <StaticRating value={averageRating} size="large" />
+              </Box>
+              <BackButton />
+            </>
+          )}
+        </Flex>
+
+        {innerContent}
         {user.role === ROLES.user && (
           <CreateReviewButton
             user={user}

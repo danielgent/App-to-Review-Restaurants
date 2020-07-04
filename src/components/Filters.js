@@ -10,6 +10,7 @@ const RatingButton = ({ value, highlighted, ...restOfProps }) => (
     variant="ghost"
     {...restOfProps}
     mb={4}
+    data-testid={`rating-${value}`}
   >
     <Flex flexDirection="row" justifyContent="center" alignItems="center">
       <StaticRating value={value} size="small" />

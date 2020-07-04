@@ -10,7 +10,15 @@ import {
 } from "@chakra-ui/core";
 
 export const Container = (props) => (
-  <Box backgroundColor="white" rounded="md" w="100%" py={8} px={4} {...props} />
+  <Box
+    pos="relative"
+    backgroundColor="white"
+    rounded="md"
+    w="100%"
+    py={8}
+    px={4}
+    {...props}
+  />
 );
 
 export const Heading = (props) => <RHeading mb={10} {...props} />;
