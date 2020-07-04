@@ -38,7 +38,8 @@ const SignUp = (props) => {
     axios
       .post(`${process.env.REACT_APP_API_URL}/register`, {
         username: values.username,
-        email: values.email,
+        name: values.name.trim(),
+        email: values.email.trim(),
         password: values.password,
         role: values.role,
       })
@@ -79,6 +80,7 @@ const SignUp = (props) => {
       enableReinitialize
       initialValues={{
         username: "",
+        name: "",
         email: "",
         password: "",
         repeatPassword: "",
@@ -90,6 +92,11 @@ const SignUp = (props) => {
         if (!values.username) {
           errors.username = "Please enter a username";
         }
+
+        if (!values.name) {
+          errors.username = "Please enter a name";
+        }
+
         if (!values.email || !isEmail(values.email)) {
           errors.email = "Please enter a valid email";
         }
@@ -119,7 +126,7 @@ const SignUp = (props) => {
                         isInvalid={errors.username && touched.username}
                       >
                         <FormLabel htmlFor="username">
-                          Enter a username
+                          Enter a username. This will be used to log in
                         </FormLabel>
                         <Input
                           id="username"
@@ -129,6 +136,26 @@ const SignUp = (props) => {
                           {...restOfField}
                         />
                         <FormErrorMessage>{errors.username}</FormErrorMessage>
+                      </FormControl>
+                    );
+                  }}
+                </Field>
+                <Field type="text" name="name">
+                  {({ field, form }) => {
+                    const { errors, touched } = form;
+                    return (
+                      <FormControl isInvalid={errors.name && touched.name}>
+                        <FormLabel htmlFor="name">
+                          Enter a name. This will be displayed publically on the
+                          site
+                        </FormLabel>
+                        <Input
+                          id="name"
+                          type="text"
+                          autoComplete="off"
+                          {...field}
+                        />
+                        <FormErrorMessage>{errors.name}</FormErrorMessage>
                       </FormControl>
                     );
                   }}

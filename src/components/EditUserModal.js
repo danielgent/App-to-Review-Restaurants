@@ -27,6 +27,7 @@ const EditUserModal = ({ isOpen, onClose, onSubmit, user = {} }) => {
     authAxios
       .patch(`${process.env.REACT_APP_API_URL}/users/${user._id}`, {
         username: values.username,
+        name: values.name,
         email: values.email,
         role: values.role,
       })
@@ -52,6 +53,11 @@ const EditUserModal = ({ isOpen, onClose, onSubmit, user = {} }) => {
         if (!values.username) {
           errors.username = "Please enter a username";
         }
+
+        if (!values.name) {
+          errors.name = "Please enter a name";
+        }
+
         if (!values.email || !isEmail(values.email)) {
           errors.email = "Please enter a valid email";
         }
@@ -78,9 +84,7 @@ const EditUserModal = ({ isOpen, onClose, onSubmit, user = {} }) => {
                             w={{ xs: "100%", sm: "280px" }}
                             isInvalid={errors.username && touched.username}
                           >
-                            <FormLabel htmlFor="username">
-                              Enter a username
-                            </FormLabel>
+                            <FormLabel htmlFor="username">username</FormLabel>
                             <Input
                               id="username"
                               type="text"
@@ -90,6 +94,26 @@ const EditUserModal = ({ isOpen, onClose, onSubmit, user = {} }) => {
                             <FormErrorMessage>
                               {errors.username}
                             </FormErrorMessage>
+                          </FormControl>
+                        );
+                      }}
+                    </Field>
+                    <Field type="text" name="name">
+                      {({ field, form }) => {
+                        const { errors, touched } = form;
+                        return (
+                          <FormControl
+                            w={{ xs: "100%", sm: "280px" }}
+                            isInvalid={errors.name && touched.name}
+                          >
+                            <FormLabel htmlFor="name">name</FormLabel>
+                            <Input
+                              id="name"
+                              type="text"
+                              autoComplete="off"
+                              {...field}
+                            />
+                            <FormErrorMessage>{errors.name}</FormErrorMessage>
                           </FormControl>
                         );
                       }}

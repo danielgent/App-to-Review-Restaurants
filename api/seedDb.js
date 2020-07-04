@@ -17,6 +17,7 @@ const seedDatabases = async () => {
   const owner1 = UserModel({
     // QUICK LOGIN QA
     username: "o",
+    name: "Owner 1",
     password: Bcrypt.hashSync("o", Number(process.env.SALT_ROUNDS)),
     email: "owner@example.com",
     role: "owner",
@@ -40,6 +41,7 @@ const seedDatabases = async () => {
   // create owner 2
   const owner2 = UserModel({
     username: "another-owner",
+    name: "Onwer 2",
     password: Bcrypt.hashSync(
       "another-password",
       Number(process.env.SALT_ROUNDS)
@@ -76,6 +78,7 @@ const seedDatabases = async () => {
   // create normal users
   const user1 = UserModel({
     username: "a",
+    name: "User A",
     password: Bcrypt.hashSync("a", Number(process.env.SALT_ROUNDS)),
     email: "user1@example.com",
     role: "user",
@@ -86,6 +89,7 @@ const seedDatabases = async () => {
   await user1.save();
   const user2 = UserModel({
     username: "b-user",
+    name: "User B",
     password: Bcrypt.hashSync("password-2", Number(process.env.SALT_ROUNDS)),
     email: "user2@example.com",
     role: "user",
@@ -96,6 +100,7 @@ const seedDatabases = async () => {
   await user2.save();
   const user3 = UserModel({
     username: "user-no-reviews",
+    name: "User No Reviews",
     password: Bcrypt.hashSync("password-3", Number(process.env.SALT_ROUNDS)),
     email: "user3@example.com",
     role: "user",
@@ -106,6 +111,7 @@ const seedDatabases = async () => {
   await user3.save();
   const user4 = UserModel({
     username: "user-locked-out",
+    name: "User locked out",
     password: Bcrypt.hashSync("password", Number(process.env.SALT_ROUNDS)),
     email: "user4@example.com",
     role: "user",
@@ -117,6 +123,7 @@ const seedDatabases = async () => {
   await user4.save();
   const user5 = UserModel({
     username: "user-email-not-verified",
+    name: "User email not verified",
     password: Bcrypt.hashSync("password", Number(process.env.SALT_ROUNDS)),
     email: "user5@example.com",
     role: "user",
@@ -179,6 +186,7 @@ const seedDatabases = async () => {
   // create admin
   const admin = UserModel({
     username: "admin",
+    name: "Admin",
     password: Bcrypt.hashSync("admin", Number(process.env.SALT_ROUNDS)),
     email: "admin@example.com",
     role: "admin",

@@ -272,6 +272,7 @@ describe("api tests", () => {
 
         const res = await agent.post("/register").send({
           username: "fooooz",
+          name: "Foooz",
           email: "foooz@example.com",
           password: "xxxx",
           role: "user",

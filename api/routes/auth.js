@@ -26,7 +26,7 @@ router.post("/register", async (req, res) => {
   try {
     const verificationToken = crypto.randomBytes(16).toString("hex");
 
-    const { username, email, role } = req.body;
+    const { username, email, role, name } = req.body;
 
     const sameUsername = await UserModel.findOne({ username }).exec();
 
@@ -80,6 +80,7 @@ router.post("/register", async (req, res) => {
       email,
       role,
       verificationToken,
+      name,
     });
     await user.save();
 
