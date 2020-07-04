@@ -1,31 +1,23 @@
 import React from "react";
-import {
-  Box,
-  CircularProgress,
-  Select,
-  FormControl,
-  FormLabel,
-  Button,
-} from "@chakra-ui/core";
+import { Box, CircularProgress, Flex } from "@chakra-ui/core";
 
 import RestaurantListItem from "components/RestaurantListItem";
-import { Container, Divider, Heading } from "components/Styled";
-import { authAxios } from "utils";
+import { Container, Heading } from "components/Styled";
+import Filters from "components/Filters";
 
-const DEFAULT_FILTERS = { min: "", max: "" };
+import { authAxios } from "utils";
 
 const UserHomepage = (props) => {
   const [isLoading, setIsLoading] = React.useState(true);
   const [restaurants, setRestaurants] = React.useState([]);
-  const [filters, setFilters] = React.useState(DEFAULT_FILTERS);
+  const [minRating, setMinRating] = React.useState(null);
 
   React.useEffect(() => {
     setIsLoading(true);
     authAxios
       .get(`${process.env.REACT_APP_API_URL}/restaurants`, {
         params: {
-          ratingMin: filters.min,
-          ratingMax: filters.max,
+          ratingMin: minRating,
         },
       })
       .then((response) => {
@@ -34,82 +26,34 @@ const UserHomepage = (props) => {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [filters]);
-
-  const handleClearFilters = () => {
-    setFilters(DEFAULT_FILTERS);
-  };
-
-  const handleMinRatingChange = (e) => {
-    const min = e.target.value;
-    let max = filters.max;
-    if (min > max) {
-      max = min;
-    }
-    setFilters({ max, min });
-  };
-
-  const handleMaxRatingChange = (e) => {
-    const max = e.target.value;
-
-    let min = filters.min;
-    if (max < min) {
-      min = max;
-    }
-    setFilters({ max, min });
-  };
+  }, [minRating]);
 
   if (isLoading) {
     return <CircularProgress isIndeterminate color="green"></CircularProgress>;
   }
 
   return (
-    <Container maxWidth={700}>
+    <Container maxWidth={1200}>
       <Heading as="h1">View all restaurants</Heading>
-
-      <Box p={4}>
-        <FormControl>
-          <FormLabel htmlFor="minRating">
-            Select minimum average rating
-          </FormLabel>
-          <Select
-            id="minRating"
-            value={filters.min}
-            onChange={handleMinRatingChange}
-          >
-            <option value={""}>none</option>
-            <option value={1}>1</option>
-            <option value={2}>2</option>
-            <option value={3}>3</option>
-            <option value={4}>4</option>
-            <option value={5}>5</option>
-          </Select>
-        </FormControl>
-        <FormControl>
-          <FormLabel htmlFor="maxRating">
-            Select maximum average rating
-          </FormLabel>
-          <Select
-            id="maxRating"
-            value={filters.max}
-            onChange={handleMaxRatingChange}
-          >
-            <option value={""}>none</option>
-            <option value={1}>1</option>
-            <option value={2}>2</option>
-            <option value={3}>3</option>
-            <option value={4}>4</option>
-            <option value={5}>5</option>
-          </Select>
-          <Button onClick={handleClearFilters}>Clear filters</Button>
-        </FormControl>
-        <Divider />
-      </Box>
-      {restaurants.length === 0
-        ? "no results"
-        : restaurants.map((restaurant) => (
-            <RestaurantListItem key={restaurant._id} restaurant={restaurant} />
-          ))}
+      <Flex>
+        <Filters
+          onChange={setMinRating}
+          value={minRating}
+          flexGrow={0}
+          flexBasis="250px"
+          py={8}
+        />
+        <Box p={4} flexGrow={1}>
+          {restaurants.length === 0
+            ? "no results"
+            : restaurants.map((restaurant) => (
+                <RestaurantListItem
+                  key={restaurant._id}
+                  restaurant={restaurant}
+                />
+              ))}
+        </Box>
+      </Flex>
     </Container>
   );
 };

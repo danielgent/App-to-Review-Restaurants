@@ -9,13 +9,8 @@ var { enrichRestaurant } = require("../utils");
 router.get("/", authLoggedIn, async (req, res) => {
   try {
     const ratingMin = req.query.ratingMin;
-    const ratingMax = req.query.ratingMax;
 
-    if (
-      (ratingMin && ratingMin < 1) ||
-      (ratingMax && ratingMax > 5) ||
-      ratingMin > ratingMax
-    ) {
+    if (ratingMin && ratingMin < 1) {
       return res.status(400).send({ error: "Bad parameters" });
     }
 
@@ -29,13 +24,9 @@ router.get("/", authLoggedIn, async (req, res) => {
     );
 
     // TODO - do in Db if cache this step
-    const filteredRestaurants = enrichedRestaurants
-      .filter(({ averageRating }) =>
-        ratingMin ? averageRating >= ratingMin : true
-      )
-      .filter(({ averageRating }) =>
-        ratingMax ? averageRating <= ratingMax : true
-      );
+    const filteredRestaurants = enrichedRestaurants.filter(
+      ({ averageRating }) => (ratingMin ? averageRating >= ratingMin : true)
+    );
 
     // TODO - needs sorting by average rating as per specs (doesn't say asc/desc)
 
