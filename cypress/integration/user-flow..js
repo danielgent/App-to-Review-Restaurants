@@ -43,7 +43,7 @@ describe("User flow", function () {
     // now go to detail page which is correctly populated
     cy.findByText("Owner's Diner").click();
 
-    // TODO - ugly. better component and style and then assert
+    // TODO - how to assert star component?
     cy.findByText("Avg 4");
 
     cy.findByText("Top review")
@@ -56,7 +56,8 @@ describe("User flow", function () {
     cy.findByRole("button", { name: "Rate this restaurant" }).click();
 
     cy.findByLabelText("Comment").type("new cypress review");
-    cy.findByLabelText("Rating").select("1");
+    cy.findByLabelText("Rating").contains("1 Star").click();
+
     cy.findByRole("button", { name: "Create Review" }).click();
 
     // page should now be updated

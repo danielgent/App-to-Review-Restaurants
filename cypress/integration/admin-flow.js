@@ -30,8 +30,6 @@ describe("Admin flow", function () {
       .clear()
       .type("cypress new review text");
     cy.findByRole("button", { name: "Update Review" }).click();
-    cy.findByRole("progressbar");
-    cy.findByRole("progressbar").should("not.exist");
     cy.findByText("More or less").should("not.exist");
     cy.findByText("cypress new review text");
   });
