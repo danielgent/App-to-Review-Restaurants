@@ -44,7 +44,7 @@ router.post("/register", async (req, res) => {
     }
 
     if (!["user", "owner"].includes(role)) {
-      return res.status(401).json({ error: "unauthorized attempt" });
+      return res.status(403).json({ error: "unauthorized attempt" });
     }
 
     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -84,7 +84,7 @@ router.post("/register", async (req, res) => {
     await user.save();
 
     return res.status(200).json({
-      message: "Sign up done",
+      message: "Email sent for account verification",
     });
   } catch (error) {
     res.status(500).send(error);
@@ -123,7 +123,7 @@ router.post("/login", async (req, res) => {
 
     // TODO - haven't actually tested this part of the process!
     const token = jwt.sign(
-      // authentication: just include user id, authorization: also use role from here.  really should look up and add in middleware but meh
+      // NOTE - using token for authorization as well as authentication. Potential security hole
       { role: user.role, id: user._id },
       process.env.TOKEN_SECRET,
       {

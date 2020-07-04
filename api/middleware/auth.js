@@ -6,7 +6,7 @@ const authIsAdmin = function (req, res, next) {
   const role = req.user.role;
 
   if (role !== "admin") {
-    return res.status(401).send({ error: "Unauthorized route" });
+    return res.status(403).send({ error: "Unauthorized route" });
   }
   next();
 };

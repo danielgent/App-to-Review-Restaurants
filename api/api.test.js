@@ -263,7 +263,7 @@ describe("api tests", () => {
         });
 
         expect(res.body.error).toBe("unauthorized attempt");
-        expect(res.statusCode).toBe(401);
+        expect(res.statusCode).toBe(403);
 
         expect(sgMail.send).toHaveBeenCalledTimes(0);
       });
@@ -277,13 +277,35 @@ describe("api tests", () => {
           role: "user",
         });
 
-        expect(res.body.message).toBe("Sign up done");
+        expect(res.body.message).toBe("Email sent for account verification");
         expect(res.statusCode).toBe(200);
 
         expect(sgMail.send).toHaveBeenCalledTimes(1);
 
-        // TODO
-        // - verify that sgMail.send() has been passed object with correct fields
+        expect(sgMail.send).toHaveBeenLastCalledWith(
+          expect.objectContaining({
+            from: process.env.SENDGRID_FROM_EMAIL,
+            to: "foooz@example.com",
+            subject: "Please verify your email",
+          })
+        );
+
+        // Long one-liner for a test
+        const verifyCode = sgMail.send.mock.calls[0][0].text
+          .split("verify/")
+          .slice(-1)[0];
+
+        const res2 = await agent.get(`/verify/${verifyCode}`);
+
+        expect(res2.statusCode).toBe(200);
+
+        // now can login with this account (earlier test shows this failing)
+        const res3 = await agent.post("/login").send({
+          username: "fooooz",
+          password: "xxxx",
+        });
+
+        expect(res3.statusCode).toBe(200);
       });
 
       // TODO - check can login with this new username + pwd (but only after email activiation tests)
