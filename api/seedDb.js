@@ -248,7 +248,10 @@ const seedDatabases = async () => {
     await createRestaurant("The Laundrette Chorlton", owner2._id);
     await createRestaurant("One Plus Restaurant", owner2._id);
 
-    // await Promise.all(users.forEach((user) => createUser(...user)));
+    for (let i = 0; i < users.length; i++) {
+      const user = users[i];
+      await createUser(user[0], user[1], user[2]);
+    }
   }
 
   return {
