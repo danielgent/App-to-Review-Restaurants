@@ -1,10 +1,11 @@
 import React from "react";
-import { Box, CircularProgress, Flex } from "@chakra-ui/core";
+import { Box, Flex } from "@chakra-ui/core";
 
 import RestaurantListItem from "components/RestaurantListItem";
 import { Container, Heading } from "components/Styled";
 import Filters from "components/Filters";
 import Pagination from "components/Pagination";
+import GlobalLoading from "components/GlobalLoading";
 
 import { authAxios } from "utils";
 
@@ -46,7 +47,7 @@ const UserHomepage = (props) => {
         />
         <Box p={4} flexGrow={1}>
           {isLoading ? (
-            <CircularProgress isIndeterminate color="green" />
+            <GlobalLoading h="300px" />
           ) : restaurants.length === 0 ? (
             "no results"
           ) : (
