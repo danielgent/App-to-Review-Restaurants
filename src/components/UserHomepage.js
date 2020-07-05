@@ -4,6 +4,7 @@ import { Box, CircularProgress, Flex } from "@chakra-ui/core";
 import RestaurantListItem from "components/RestaurantListItem";
 import { Container, Heading } from "components/Styled";
 import Filters from "components/Filters";
+import Pagination from "components/Pagination";
 
 import { authAxios } from "utils";
 
@@ -11,6 +12,8 @@ const UserHomepage = (props) => {
   const [isLoading, setIsLoading] = React.useState(true);
   const [restaurants, setRestaurants] = React.useState([]);
   const [minRating, setMinRating] = React.useState(null);
+  const [page, setPage] = React.useState(0);
+  const [totalPages, setTotalPages] = React.useState(0);
 
   React.useEffect(() => {
     setIsLoading(true);
@@ -18,15 +21,17 @@ const UserHomepage = (props) => {
       .get(`${process.env.REACT_APP_API_URL}/restaurants`, {
         params: {
           ratingMin: minRating,
+          page,
         },
       })
       .then((response) => {
         setRestaurants(response.data.results);
+        setTotalPages(response.data.totalPages);
       })
       .finally(() => {
         setIsLoading(false);
       });
-  }, [minRating]);
+  }, [minRating, page]);
 
   if (isLoading) {
     return <CircularProgress isIndeterminate color="green"></CircularProgress>;
@@ -52,6 +57,7 @@ const UserHomepage = (props) => {
                   restaurant={restaurant}
                 />
               ))}
+          <Pagination page={page} totalPages={totalPages} setPage={setPage} />
         </Box>
       </Flex>
     </Container>
