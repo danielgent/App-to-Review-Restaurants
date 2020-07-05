@@ -19,6 +19,7 @@ import {
   FormLabel,
   SubmitButton,
   Divider,
+  FormLabelSubText,
 } from "components/Styled";
 import { disallowWhitespaceChangeHandler } from "utils";
 
@@ -95,7 +96,7 @@ const SignUp = (props) => {
         }
 
         if (!values.name) {
-          errors.username = "Please enter a name";
+          errors.name = "Please enter a name";
         }
 
         if (!values.email || !isEmail(values.email)) {
@@ -127,7 +128,10 @@ const SignUp = (props) => {
                         isInvalid={errors.username && touched.username}
                       >
                         <FormLabel htmlFor="username">
-                          Enter a username. This will be used to log in
+                          Enter a username
+                          <FormLabelSubText>
+                            This will be used to log in
+                          </FormLabelSubText>
                         </FormLabel>
                         <Input
                           id="username"
@@ -147,8 +151,10 @@ const SignUp = (props) => {
                     return (
                       <FormControl isInvalid={errors.name && touched.name}>
                         <FormLabel htmlFor="name">
-                          Enter a name. This will be displayed publically on the
-                          site
+                          Enter a name
+                          <FormLabelSubText>
+                            This will be displayed publically on the site
+                          </FormLabelSubText>
                         </FormLabel>
                         <Input
                           id="name"
@@ -166,7 +172,7 @@ const SignUp = (props) => {
                     const { errors, touched } = form;
                     return (
                       <FormControl isInvalid={errors.email && touched.email}>
-                        <FormLabel htmlFor="email">email</FormLabel>
+                        <FormLabel htmlFor="email">Email</FormLabel>
                         <Input
                           id="email"
                           type="text"

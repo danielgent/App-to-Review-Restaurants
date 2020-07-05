@@ -37,3 +37,7 @@ export const Divider = (props) => <RDivider mb={8} {...props} />;
 export const StyledLink = (props) => (
   <Text textDecoration="underline" {...props} />
 );
+
+export const FormLabelSubText = (props) => (
+  <Text fontSize="sm" color="gray.300" {...props} />
+);

@@ -25,7 +25,7 @@ const AddReplyModal = ({
   reviewId,
   handleSubmitReply,
 }) => {
-  const handleSubmit = (values, { setSubmitting, resetForm }) => {
+  const handleSubmit = (values, { setSubmitting, resetForm }) =>
     authAxios
       .post(`${process.env.REACT_APP_API_URL}/reviews/${reviewId}/reply`, {
         reply: values.reply,
@@ -36,7 +36,6 @@ const AddReplyModal = ({
       .catch(function (error) {
         console.log(error);
       });
-  };
 
   return (
     <Formik

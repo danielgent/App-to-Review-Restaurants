@@ -705,7 +705,7 @@ describe("api tests", () => {
 
       const reviews = res.body;
 
-      expect(reviews).toHaveLength(42);
+      expect(reviews).toHaveLength(26);
 
       expect(reviews[0].comment).toBe(
         "I currently don't need any changes, but it's good to know you'll be able to assist, and that later on I'll be able to do it myself."
