@@ -21,6 +21,7 @@ const RestaurantListItem = ({ restaurant }) => {
         justifyContent="space-between"
         alignItems="center"
         boxShadow="md"
+        flexDirection={{ xs: "column", md: "row" }}
       >
         <Text flexGrow="1">{name}</Text>
         <Box mr={3}>

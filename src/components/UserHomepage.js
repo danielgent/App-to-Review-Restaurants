@@ -37,7 +37,7 @@ const UserHomepage = (props) => {
   return (
     <Container maxWidth={1200}>
       <Heading as="h1">View all restaurants</Heading>
-      <Flex>
+      <Flex flexDirection={{ xs: "column", md: "row" }}>
         <Filters
           onChange={setMinRating}
           value={minRating}
