@@ -384,6 +384,10 @@ describe("api tests", () => {
 
       expect(restaurants).toHaveLength(19);
 
+      // should return sorted from highest rated to lowest
+      expect(restaurants[0].averageRating).toBe(4);
+      expect(restaurants[restaurants.length - 1].averageRating).toBe(null);
+
       const ownersDiner = restaurants.find((r) => r.name === "Owner's Diner");
 
       expect(ownersDiner).toEqual(

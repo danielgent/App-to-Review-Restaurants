@@ -54,9 +54,7 @@ const enrichRestaurant = async (r) => {
 
   const total = reviews.length;
 
-  const sortedReviews = reviews.sort(sortByDateCreatedDesc);
-
-  const reviewsEnriched = await Promise.all(sortedReviews.map(enrichReview));
+  const reviewsEnriched = await Promise.all(reviews.map(enrichReview));
 
   let sum = getSumReviews(reviewsEnriched);
   const highReview = getHighReview(reviewsEnriched);
@@ -65,14 +63,16 @@ const enrichRestaurant = async (r) => {
   // truncate to one decimal place
   const averageRating = Math.floor((sum / total) * 10) / 10;
 
+  const sortedReviews = reviewsEnriched.sort(sortByDateCreatedDesc);
+  const recentReviews = sortedReviews.slice(0, 10);
+
   return {
     // mongoose model to JS object
     ...r._doc,
     averageRating,
     highReview,
     lowReview,
-    // TODO - limit number returned here BUT need to be most recent as well!
-    recentReviews: reviewsEnriched,
+    recentReviews: recentReviews,
   };
 };
 
