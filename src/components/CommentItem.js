@@ -14,7 +14,7 @@ const CommentItem = ({ review, refreshData, ...rest }) => {
 
   return (
     <Box {...rest}>
-      <Flex mb={16}>
+      <Flex mb={16} flexDirection={{ xs: "column", md: "row" }}>
         <Stack
           spacing="2"
           flexBasis="100px"

@@ -124,7 +124,11 @@ const Restaurant = () => {
   return (
     <Container maxWidth={1200}>
       <Box p={4}>
-        <Flex mb={6} justifyContent="stretch">
+        <Flex
+          mb={6}
+          justifyContent="stretch"
+          flexDirection={{ xs: "column", md: "row" }}
+        >
           <Heading flexGrow={1} as="h1">
             {name}
           </Heading>

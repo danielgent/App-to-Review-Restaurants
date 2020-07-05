@@ -55,7 +55,14 @@ const Profile = (props) => {
         <Value>{user.email}</Value>
       </SimpleGrid>
 
-      <Flex align="center" justify="center" p={4} border="solid" rounded="lg">
+      <Flex
+        align="center"
+        justify="center"
+        p={4}
+        border="solid"
+        rounded="lg"
+        flexDirection={{ xs: "column", md: "row" }}
+      >
         {user ? (
           <>
             <Label mr={8}>Current Profile picture</Label>
