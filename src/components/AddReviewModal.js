@@ -39,13 +39,16 @@ const AddReviewModal = ({ isOpen, onClose, onSubmit, restaurantId }) => {
       enableReinitialize
       initialValues={{
         comment: "",
-        rating: 0,
+        rating: null,
         visitDate: new Date(),
       }}
       validate={(values) => {
         const errors = {};
         if (!values.comment) {
           errors.comment = "Please enter a comment";
+        }
+        if (!values.rating) {
+          errors.rating = "Please enter a rating";
         }
         return errors;
       }}
@@ -81,14 +84,25 @@ const AddReviewModal = ({ isOpen, onClose, onSubmit, restaurantId }) => {
                     <Field type="text" name="rating" autoComplete="off">
                       {({ field, form }) => {
                         const { errors, touched } = form;
+                        const { onChange, name, ...rest } = field;
+                        const handleChange = (e, value) => {
+                          onChange({
+                            target: { value, name },
+                          });
+                        };
                         return (
                           <FormControl
                             w={{ xs: "100%", sm: "280px" }}
                             isInvalid={errors.rating && touched.rating}
                           >
                             <FormLabel htmlFor="rating">Rating</FormLabel>
-                            {/* TODO - why turning into string on onChange? Still works but propType warning */}
-                            <Rating id="rating" size="large" {...field} />
+                            <Rating
+                              id="rating"
+                              size="large"
+                              onChange={handleChange}
+                              name={name}
+                              {...rest}
+                            />
                             <FormErrorMessage>{errors.rating}</FormErrorMessage>
                           </FormControl>
                         );
