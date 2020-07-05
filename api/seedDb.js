@@ -270,7 +270,8 @@ const seedDatabases = async () => {
           restaurant: id,
           rating: ratingsGroup[j % ratingsGroup.length],
           visitDate: "2020-04-03",
-          reply: j % 2 === 0 ? "Thanks for the review" : null,
+          // add much more replies!
+          reply: j % 5 !== 0 ? "Thanks for the review" : null,
         });
       }
     }

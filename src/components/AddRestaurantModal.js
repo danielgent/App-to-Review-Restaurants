@@ -18,13 +18,17 @@ import {
 import { Formik, Form, Field } from "formik";
 
 import { authAxios } from "utils";
+import Dropzone from "components/Dropzone";
 
 const AddRestaurantModal = ({ isOpen, onClose, onSubmit }) => {
   const handleSubmit = (values, { setSubmitting, resetForm }) => {
+    const data = new FormData();
+    data.append("name", values.name);
+    data.append("profileImage", values.profileImage);
+    data.append("galleryImage", values.galleryImage);
+
     authAxios
-      .post(`${process.env.REACT_APP_API_URL}/restaurants`, {
-        name: values.name,
-      })
+      .post(`${process.env.REACT_APP_API_URL}/restaurants`, data)
       .then(function (response) {
         onSubmit();
       })
@@ -38,12 +42,15 @@ const AddRestaurantModal = ({ isOpen, onClose, onSubmit }) => {
       enableReinitialize
       initialValues={{
         name: "",
+        profileImage: null,
+        galleryImage: null,
       }}
       validate={(values) => {
         const errors = {};
         if (!values.name) {
           errors.name = "Please enter a name";
         }
+
         return errors;
       }}
       onSubmit={handleSubmit}
@@ -66,6 +73,52 @@ const AddRestaurantModal = ({ isOpen, onClose, onSubmit }) => {
                             <FormLabel htmlFor="name">Name</FormLabel>
                             <Input id="name" type="text" {...field} />
                             <FormErrorMessage>{errors.name}</FormErrorMessage>
+                          </FormControl>
+                        );
+                      }}
+                    </Field>
+                    <Field type="text" name="profileImage" autoComplete="off">
+                      {({ field, form }) => {
+                        const { value, onChange } = field;
+                        const handleChange = (imageBlob) =>
+                          onChange({
+                            target: { name: "profileImage", value: imageBlob },
+                          });
+                        return (
+                          <FormControl>
+                            <FormLabel htmlFor="profileImage">
+                              profileImage
+                            </FormLabel>
+                            <Dropzone
+                              onDropAccepted={(imageBlob) =>
+                                handleChange(imageBlob)
+                              }
+                              file={value}
+                              setFile={handleChange}
+                            />
+                          </FormControl>
+                        );
+                      }}
+                    </Field>
+                    <Field type="text" name="galleryImage" autoComplete="off">
+                      {({ field, form }) => {
+                        const { value, onChange } = field;
+                        const handleChange = (imageBlob) =>
+                          onChange({
+                            target: { name: "galleryImage", value: imageBlob },
+                          });
+                        return (
+                          <FormControl>
+                            <FormLabel htmlFor="galleryImage">
+                              galleryImage
+                            </FormLabel>
+                            <Dropzone
+                              onDropAccepted={(imageBlob) =>
+                                handleChange(imageBlob)
+                              }
+                              file={value}
+                              setFile={handleChange}
+                            />
                           </FormControl>
                         );
                       }}

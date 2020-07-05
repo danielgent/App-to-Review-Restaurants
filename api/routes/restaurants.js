@@ -5,6 +5,14 @@ var ReviewsModel = require("../models/ReviewsModel");
 var { authLoggedIn, authIsAdmin, authIsOwner } = require("../middleware/auth");
 var { enrichRestaurant } = require("../utils");
 
+var multer = require("multer");
+var upload = multer({
+  dest: "uploads/",
+  limits: {
+    fileSize: 1e6,
+  },
+});
+
 // TODO - test first review is highest and last review is null
 const sortByAverageRatingAsc = (a, b) =>
   (b.averageRating || 0) - (a.averageRating || 0);
@@ -82,27 +90,44 @@ router.get("/:id", authLoggedIn, async (req, res) => {
   }
 });
 
-router.post("/", authLoggedIn, authIsOwner, (req, res) => {
-  try {
-    const restaurant = {
-      ...req.body,
-      owner: req.user.id,
-      dateAdded: new Date().toDateString(),
-    };
+router.post(
+  "/",
+  authLoggedIn,
+  authIsOwner,
+  upload.fields([
+    { name: "profileImage", maxCount: 1 },
+    { name: "galleryImage", maxCount: 1 },
+  ]),
 
-    var restaurant_instance = new RestaurantModel(restaurant);
-    restaurant_instance.save(function (err, dbRes) {
-      if (err) {
-        res.status(500).json({ error: err });
-      }
+  (req, res) => {
+    try {
+      const profileImage =
+        req.files.profileImage && req.files.profileImage[0].filename;
+      const galleryImage =
+        req.files.galleryImage && req.files.galleryImage[0].filename;
 
-      res.status(200).json(dbRes);
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).send(error);
+      const restaurant = {
+        ...req.body,
+        profileImage,
+        galleryImage,
+        owner: req.user.id,
+        dateAdded: new Date().toDateString(),
+      };
+
+      var restaurant_instance = new RestaurantModel(restaurant);
+      restaurant_instance.save(function (err, dbRes) {
+        if (err) {
+          res.status(500).json({ error: err });
+        }
+
+        res.status(200).json(dbRes);
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(500).send(error);
+    }
   }
-});
+);
 
 router.patch("/:id", authLoggedIn, authIsAdmin, async (req, res) => {
   const id = req.params.id;

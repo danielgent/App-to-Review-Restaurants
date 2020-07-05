@@ -546,9 +546,7 @@ describe("api tests", () => {
     it("should create new restaurant", async () => {
       const res = await agent
         .post("/restaurants")
-        .send({
-          name: "A new restaurant",
-        })
+        .field("name", "A new restaurant")
         .set("Authorization", `Bearer ${owner1Token}`);
 
       expect(res.statusCode).toBe(200);
@@ -667,7 +665,7 @@ describe("api tests", () => {
 
       const reviews = res.body;
 
-      expect(reviews).toHaveLength(98);
+      expect(reviews).toHaveLength(42);
 
       expect(reviews[0].comment).toBe(
         "I currently don't need any changes, but it's good to know you'll be able to assist, and that later on I'll be able to do it myself."

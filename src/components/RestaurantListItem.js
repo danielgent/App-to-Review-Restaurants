@@ -4,9 +4,12 @@ import { Text, Flex, Image, AspectRatioBox, Box } from "@chakra-ui/core";
 
 import StaticRating from "components/StaticRating";
 import FallbackLogo from "fixtures/baby-bird.png";
+import { makeImageUrl } from "utils";
 
 const RestaurantListItem = ({ restaurant }) => {
-  const { name, _id, averageRating, profileImage = FallbackLogo } = restaurant;
+  const { name, _id, averageRating, profileImage } = restaurant;
+
+  const src = profileImage ? makeImageUrl(profileImage) : FallbackLogo;
 
   return (
     <Link to={`/restaurant/${_id}`}>
@@ -25,7 +28,7 @@ const RestaurantListItem = ({ restaurant }) => {
         </Box>
         <Box rounded="lg" overflow="hidden">
           <AspectRatioBox ratio={1} minWidth="150px">
-            <Image src={profileImage} alt="Profile image" objectFit="cover" />
+            <Image src={src} alt="Profile image" objectFit="cover" />
           </AspectRatioBox>
         </Box>
       </Flex>

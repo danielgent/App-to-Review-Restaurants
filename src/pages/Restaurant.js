@@ -19,6 +19,7 @@ import { authAxios } from "utils";
 import { Container } from "components/Styled";
 import UserContext from "contexts/user-context";
 import { ROLES } from "globalConstants";
+import { makeImageUrl } from "utils";
 
 const SectionTitle = (props) => (
   <Heading as="h2" size="md" mb={6} color="gray.600" {...props} />
@@ -74,13 +75,14 @@ const Restaurant = () => {
     galleryImage,
   } = restaurant;
 
+  const src = makeImageUrl(galleryImage);
+
   const hasReviews = recentReviews.length > 0;
 
   const innerContent = !hasReviews ? (
     <Text mb={6}>No reviews yet</Text>
   ) : (
     <>
-      {galleryImage && <Image src={galleryImage} alt="Gallery Image" mb={8} />}
       <Section
         backgroundColor="green.100"
         borderColor="green.400"
@@ -135,7 +137,7 @@ const Restaurant = () => {
             </>
           )}
         </Flex>
-
+        {src && <Image src={src} alt="Gallery Image" mb={8} />}
         {innerContent}
         {user.role === ROLES.user && (
           <CreateReviewButton

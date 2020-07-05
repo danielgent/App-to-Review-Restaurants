@@ -56,3 +56,8 @@ export const convertIsoStringToDateObject = (isoString) => {
 
 export const convertDateObjectToIsoString = (date) =>
   `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+
+export const makeImageUrl = (filename) =>
+  filename.includes("http")
+    ? filename
+    : `${process.env.REACT_APP_API_URL}/${filename}`;
