@@ -4,11 +4,13 @@ import React from "react";
 import StaticRating from "components/StaticRating";
 import Avatar from "components/Avatar";
 
+import { convertIsoStringToDateObject } from "utils";
+
 const CommentItem = ({ review, refreshData, ...rest }) => {
   const { reviewer, comment, visitDate, rating, reply } = review;
   const { name } = reviewer;
 
-  const formattedDate = new Date(visitDate).toDateString();
+  const formattedDate = convertIsoStringToDateObject(visitDate).toDateString();
 
   return (
     <Box {...rest}>

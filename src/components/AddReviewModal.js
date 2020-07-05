@@ -17,11 +17,8 @@ import { Formik, Form, Field } from "formik";
 import DatePicker from "react-datepicker";
 import Rating from "@material-ui/lab/Rating";
 
-import { authAxios } from "utils";
 import { FormControl, FormLabel } from "components/Styled";
-
-const formatDate = (date) =>
-  `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+import { authAxios, convertDateObjectToIsoString } from "utils";
 
 const AddReviewModal = ({ isOpen, onClose, onSubmit, restaurantId }) => {
   const handleSubmit = (values, { setSubmitting, resetForm }) => {
@@ -30,7 +27,7 @@ const AddReviewModal = ({ isOpen, onClose, onSubmit, restaurantId }) => {
         comment: values.comment,
         restaurant: restaurantId,
         rating: Number.parseInt(values.rating, 10),
-        visitDate: formatDate(values.visitDate),
+        visitDate: convertDateObjectToIsoString(values.visitDate),
       })
       .then(function (response) {
         onSubmit();

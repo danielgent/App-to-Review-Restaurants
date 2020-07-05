@@ -19,10 +19,11 @@ import {
 import { Formik, Form, Field } from "formik";
 import DatePicker from "react-datepicker";
 
-import { authAxios } from "utils";
-
-const formatDate = (date) =>
-  `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+import {
+  authAxios,
+  convertDateObjectToIsoString,
+  convertIsoStringToDateObject,
+} from "utils";
 
 const EditReviewModal = ({ isOpen, onClose, onSubmit, review }) => {
   const handleSubmit = (values, { setSubmitting, resetForm }) => {
@@ -30,7 +31,7 @@ const EditReviewModal = ({ isOpen, onClose, onSubmit, review }) => {
       .patch(`${process.env.REACT_APP_API_URL}/reviews/${review._id}`, {
         comment: values.comment,
         rating: Number.parseInt(values.rating, 10),
-        visitDate: formatDate(values.visitDate),
+        visitDate: convertDateObjectToIsoString(values.visitDate),
         reply: values.reply,
       })
       .then(function (response) {
@@ -44,7 +45,9 @@ const EditReviewModal = ({ isOpen, onClose, onSubmit, review }) => {
       initialValues={{
         comment: review?.comment,
         rating: review?.rating,
-        visitDate: review?.visitDate ? new Date(review?.visitDate) : new Date(),
+        visitDate: review?.visitDate
+          ? convertIsoStringToDateObject(review.visitDate)
+          : new Date(),
         reply: review?.reply,
       }}
       validate={(values) => {

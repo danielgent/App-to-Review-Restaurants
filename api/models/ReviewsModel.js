@@ -8,7 +8,7 @@ const ReviewsModel = new Mongoose.model("review", {
   restaurant: { type: String, required: true },
   rating: { type: Number, required: true },
   reply: { type: String },
-  // storing as ISO date
+  // storing as ISO 8601 date
   visitDate: { type: String, required: true },
   dateCreated: { type: Date, default: Date.now() },
 });
