@@ -13,20 +13,49 @@ describe("User flow", function () {
     cy.findByLabelText("Password").type("password-3");
     cy.findByRole("button", { name: "Login" }).click();
 
-    // now on user home page
+    // Test rating filters
     cy.findAllByText("View all restaurants");
-    // should see two results and the average rating
-    cy.findByText("Owner's Diner");
-    cy.findByText("Steak House");
+
+    // 4 star restaurant
+    cy.findByText("Blue Eyed Panda");
+    // 3 star
+    cy.findByText("La Casita");
 
     cy.findByTestId("rating-4").click();
-    cy.findByText("Owner's Diner");
-    cy.findByText("Steak House").should("not.exist");
+    cy.findByText("Blue Eyed Panda");
+    cy.findByText("La Casita").should("not.exist");
+
+    cy.findByTestId("rating-3").click();
+    cy.findByText("Blue Eyed Panda");
+    cy.findByText("La Casita");
 
     cy.findByTestId("rating-5").click();
     cy.findByText("no results");
 
     cy.findByText("& unrated").click();
+
+    // now test pagination
+
+    // on first page
+    cy.findByText("Blue Eyed Panda");
+    // on second page
+    cy.findByText("Wah Ji Wah").should("not.exist");
+
+    // no back button as on first page
+    cy.findByText("Previous").should("not.exist");
+    cy.findByText("Next").click();
+
+    // now on second page
+    cy.findByText("Previous");
+    cy.findByText("Next").should("not.exist");
+    cy.findByText("Blue Eyed Panda").should("not.exist");
+    cy.findByText("Wah Ji Wah");
+
+    // now back to first
+    cy.findByText("Previous").click();
+    cy.findByText("Previous").should("not.exist");
+    cy.findByText("Blue Eyed Panda");
+    cy.findByText("Wah Ji Wah").should("not.exist");
 
     // now go to detail page which is correctly populated
     cy.findByText("Owner's Diner").click();
