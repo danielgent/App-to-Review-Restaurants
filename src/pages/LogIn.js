@@ -148,6 +148,8 @@ const LogIn = (props) => {
                 justifyContent="center"
                 textAlign="center"
                 height="200px"
+                mt={6}
+                rounded="lg"
               >
                 <Icon name="warning" size="32px" color="red.500" />
                 <Text maxWidth="sm">{serverErrorMessage}</Text>

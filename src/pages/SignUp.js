@@ -260,6 +260,4 @@ const SignUp = (props) => {
   );
 };
 
-SignUp.propTypes = {};
-
 export default SignUp;
