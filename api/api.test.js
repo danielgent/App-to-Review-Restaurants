@@ -377,7 +377,7 @@ describe("api tests", () => {
   });
 
   describe("restaurant tests", () => {
-    it.skip("/restaurants/ should give list of all restaurants enriched", async () => {
+    it("/restaurants/ should give list of all restaurants enriched", async () => {
       const res = await agent
         .get(`/restaurants`)
         .set("Authorization", `Bearer ${user3Token}`);
@@ -416,7 +416,7 @@ describe("api tests", () => {
       expect(steakHouse).toEqual(
         expect.objectContaining({
           name: "Steak House",
-          averageRating: 4,
+          averageRating: 2.6,
         })
       );
 

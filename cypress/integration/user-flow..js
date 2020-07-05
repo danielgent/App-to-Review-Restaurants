@@ -31,8 +31,10 @@ describe("User flow", function () {
     // now go to detail page which is correctly populated
     cy.findByText("Owner's Diner").click();
 
-    // TODO - how to assert star component?
-    cy.findByText("Avg 4");
+    // ugly way to assert that 4 stars for restaurant
+    cy.findByText("Owner's Diner")
+      .closest("div")
+      .find('[aria-label="4 Stars"]');
 
     cy.findByText("Top review")
       .closest("div")
@@ -50,8 +52,10 @@ describe("User flow", function () {
 
     // page should now be updated
     cy.findAllByText(/new cypress review/);
-
-    cy.findByText("Avg 3");
+    // review has now gone down
+    cy.findByText("Owner's Diner")
+      .closest("div")
+      .find('[aria-label="3 Stars"]');
     cy.findByText("Worst review")
       .closest("div")
       .contains(/new cypress review/);

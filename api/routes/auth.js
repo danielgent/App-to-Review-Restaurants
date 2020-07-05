@@ -22,7 +22,6 @@ const createToken = (user) =>
     }
   );
 
-// TODO - serious security hole. Need Cypress only auth key or dunno. Not ideal to use real server lol
 router.post("/reloadDB", async (req, res) => {
   console.log("REQUEST RECEIVED");
   if (process.env.SEED_DATABASE) {
