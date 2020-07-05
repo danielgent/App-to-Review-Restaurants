@@ -57,7 +57,6 @@ describe("api tests", () => {
 
     console.log("user3Id ", user3Id);
 
-    // TODO - create these by actually loggin in! safer
     owner1Token = jwt.sign(
       { role: "owner", id: owner1Id },
       process.env.TOKEN_SECRET,
@@ -308,9 +307,6 @@ describe("api tests", () => {
 
         expect(res3.statusCode).toBe(200);
       });
-
-      // TODO - check can login with this new username + pwd (but only after email activiation tests)
-      // - verify email activation by pulling id from link in email and then visiting that. possible to do whole flow
     });
 
     describe("/verify/", () => {

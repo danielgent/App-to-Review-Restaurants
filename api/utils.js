@@ -67,6 +67,7 @@ const enrichRestaurant = async (r) => {
     averageRating,
     highReview,
     lowReview,
+    // TODO - limit number returned here BUT need to be most recent as well!
     recentReviews: reviewsEnriched,
   };
 };

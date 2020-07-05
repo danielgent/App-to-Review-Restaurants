@@ -35,9 +35,6 @@ const EditReviewModal = ({ isOpen, onClose, onSubmit, review }) => {
       })
       .then(function (response) {
         onSubmit();
-      })
-      .catch(function (error) {
-        console.log(error);
       });
   };
 

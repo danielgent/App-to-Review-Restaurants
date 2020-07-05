@@ -29,7 +29,6 @@ const AddRestaurantModal = ({ isOpen, onClose, onSubmit }) => {
         onSubmit();
       })
       .catch(function (error) {
-        // here output to somewhere!
         console.log(error);
       });
   };

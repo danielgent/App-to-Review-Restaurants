@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Flex, ThemeProvider, CSSReset } from "@chakra-ui/core";
+import { Flex, ThemeProvider, CSSReset } from "@chakra-ui/core";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -18,12 +18,9 @@ import UserMe from "components/UserMe";
 import Menu from "components/Menu";
 import ErrorBoundary from "components/ErrorBoundary";
 
-import { LOCAL_STORAGE_TOKEN_KEY } from "globalConstants";
-
 function App() {
   const [user, setUser] = React.useState(null);
 
-  // TODO - put user fetching code here and show spinner until fetched. much easier
   return (
     <ErrorBoundary>
       <UserContext.Provider value={{ user, updateUser: setUser }}>
@@ -58,12 +55,6 @@ function App() {
                 )}
               </Switch>
             </Flex>
-            <Box fontStyle="italic" fontSize="xs" backgroundColor="red.100">
-              <Box>User context {JSON.stringify(user)}</Box>
-              <Box>
-                local storage{localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY)}}
-              </Box>
-            </Box>
           </Router>
         </ThemeProvider>
       </UserContext.Provider>

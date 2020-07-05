@@ -4,7 +4,6 @@ import React from "react";
 import StaticRating from "components/StaticRating";
 import Avatar from "components/Avatar";
 
-// TODO - rename ReviewItem
 const CommentItem = ({ review, refreshData, ...rest }) => {
   const { reviewer, comment, visitDate, rating, reply } = review;
   const { name } = reviewer;

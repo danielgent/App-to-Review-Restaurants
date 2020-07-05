@@ -55,8 +55,6 @@ const UploadProfileModal = ({
     multiple: false,
     maxSize: 1e6,
   });
-  // onDropRejected={handleDropRejected}
-  // error={dropError}
 
   const handleUpload = () => {
     const data = new FormData();
@@ -72,10 +70,6 @@ const UploadProfileModal = ({
           isClosable: true,
         });
         onSubmit();
-      })
-      .catch(function (error) {
-        // here output to somewhere!
-        console.log(error);
       });
   };
 

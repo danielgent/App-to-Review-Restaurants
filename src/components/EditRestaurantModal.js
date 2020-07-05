@@ -32,10 +32,6 @@ const EditRestaurantModal = ({
       })
       .then(function (response) {
         onSubmit();
-      })
-      .catch(function (error) {
-        // here output to somewhere!
-        console.log(error);
       });
   };
 

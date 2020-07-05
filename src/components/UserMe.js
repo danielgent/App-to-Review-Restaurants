@@ -17,7 +17,6 @@ const UserMe = () => {
   useMount(() => {
     const token = localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY);
 
-    // react-router lacks not! routing. Do nothing if on these routes
     if (
       pathname.includes("sign-up") ||
       pathname.includes("login") ||
@@ -25,9 +24,6 @@ const UserMe = () => {
     ) {
       return;
     }
-
-    // THINK => is this still needed? some request will do the token verification?
-    // just need this to update context right.
 
     if (pathname)
       if (!token) {

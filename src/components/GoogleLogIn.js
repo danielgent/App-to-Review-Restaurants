@@ -36,7 +36,7 @@ const GoogleLogIn = () => {
         push("/");
       })
       .catch((err) => {
-        // TODO - can't read codes here? WTF Axios. Just gives me an error object
+        // TODO - can't seem to read codes here? Axios...
         toast({
           description: "No account registered with this Google Id",
           status: "error",
@@ -51,7 +51,7 @@ const GoogleLogIn = () => {
       clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
       buttonText="Login with Google"
       onSuccess={responseGoogle}
-      // TODO - what should do here
+      // TODO - fail gracefully here
       onFailure={responseGoogle}
       cookiePolicy={"single_host_origin"}
     />

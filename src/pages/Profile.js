@@ -29,11 +29,13 @@ const Profile = (props) => {
     authAxios
       .get(`${process.env.REACT_APP_API_URL}/me`)
       .then(function ({ data }) {
-        // TODO this is duplicated from UserMe and Login. Want a hook to refresh userData raelly
+        // TODO this is duplicated from UserMe and Login. Want a hook to refresh userData really
         updateUser({
           role: data.role,
           avatarFilename: data.avatarFilename,
           username: data.username,
+          name: data.name,
+          email: data.email,
         });
       });
   };

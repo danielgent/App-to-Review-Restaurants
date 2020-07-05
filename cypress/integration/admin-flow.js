@@ -54,16 +54,16 @@ describe("Admin flow", function () {
     cy.findByText("Owner's Diner").should("not.exist");
 
     // edit restaurant name
-    cy.findByText("Steak House");
+    cy.findByText("Wah Ji Wah");
     cy.findAllByRole("button", { name: "Edit restaurant" }).eq(0).click();
     cy.findByLabelText("Name")
-      .should("have.value", "Steak House")
+      .should("have.value", "Wah Ji Wah")
       .clear()
       .type("cypress new restaurant name");
     cy.findByRole("button", { name: "Update restaurant" }).click();
     cy.findByRole("progressbar");
     cy.findByRole("progressbar").should("not.exist");
-    cy.findByText("Owner's Diner").should("not.exist");
+    cy.findByText("Wah Ji Wah").should("not.exist");
     cy.findByText("cypress new restaurant name");
   });
 

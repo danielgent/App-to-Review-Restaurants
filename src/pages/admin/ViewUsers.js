@@ -48,10 +48,6 @@ const ViewUsers = () => {
           isClosable: true,
         });
         fetchUsers();
-      })
-      .catch(function (error) {
-        // here output to somewhere!
-        console.log(error);
       });
   };
 
@@ -71,9 +67,6 @@ const ViewUsers = () => {
         });
         setUserToDelete();
         fetchUsers();
-      })
-      .catch(function (error) {
-        console.log(error);
       });
   };
 

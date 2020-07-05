@@ -63,7 +63,9 @@ const LogIn = (props) => {
 
   return (
     <Container maxWidth={380}>
-      {/* TODO - first round where Axios doesn't have access to React-router history */}
+      {/* TODO - improve this
+        This is from a hard refresh by axios because it doesn't have access to react-router history
+      */}
       {invalidToken && (
         <Text p={12} fontSize="lg">
           Token expired. Please login again

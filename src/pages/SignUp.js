@@ -30,7 +30,7 @@ const SignUp = (props) => {
     hasSubmittedSuccessfully,
     setHasSubmittedSuccessfully,
   ] = React.useState(false);
-  // new idea for server side errors
+
   const [serverErrorMessage, setServerErrorMessage] = React.useState("");
 
   const handleSubmit = (values, { setSubmitting, resetForm }) => {

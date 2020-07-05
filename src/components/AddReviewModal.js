@@ -34,9 +34,6 @@ const AddReviewModal = ({ isOpen, onClose, onSubmit, restaurantId }) => {
       })
       .then(function (response) {
         onSubmit();
-      })
-      .catch(function (error) {
-        console.log(error);
       });
   };
 
@@ -93,7 +90,7 @@ const AddReviewModal = ({ isOpen, onClose, onSubmit, restaurantId }) => {
                             isInvalid={errors.rating && touched.rating}
                           >
                             <FormLabel htmlFor="rating">Rating</FormLabel>
-                            {/* TODO - why turning into string on onChange? weird */}
+                            {/* TODO - why turning into string on onChange? Still works but propType warning */}
                             <Rating id="rating" size="large" {...field} />
                             <FormErrorMessage>{errors.rating}</FormErrorMessage>
                           </FormControl>

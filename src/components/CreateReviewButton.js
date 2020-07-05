@@ -17,8 +17,6 @@ const CreateReviewButton = ({ onCreateReview, restaurantId }) => {
       )
       .then((response) => {
         setShowReviewButton(!response.data);
-      })
-      .finally(() => {
         setIsLoading(false);
       });
   }, [restaurantId]);
