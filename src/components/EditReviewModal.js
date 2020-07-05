@@ -17,7 +17,8 @@ import {
   FormErrorMessage,
 } from "@chakra-ui/core";
 import { Formik, Form, Field } from "formik";
-import DatePicker from "react-datepicker";
+
+import DatePicker from "components/DatePicker";
 
 import {
   authAxios,
@@ -74,7 +75,6 @@ const EditReviewModal = ({ isOpen, onClose, onSubmit, review }) => {
                         const { errors, touched } = form;
                         return (
                           <FormControl
-                            w={{ xs: "100%", sm: "280px" }}
                             isInvalid={errors.comment && touched.comment}
                           >
                             <FormLabel htmlFor="comment">Comment</FormLabel>
@@ -91,7 +91,6 @@ const EditReviewModal = ({ isOpen, onClose, onSubmit, review }) => {
                         const { errors, touched } = form;
                         return (
                           <FormControl
-                            w={{ xs: "100%", sm: "280px" }}
                             isInvalid={errors.rating && touched.rating}
                           >
                             <FormLabel htmlFor="rating">Rating</FormLabel>
@@ -120,7 +119,7 @@ const EditReviewModal = ({ isOpen, onClose, onSubmit, review }) => {
                           });
                         };
                         return (
-                          <FormControl w={{ xs: "100%", sm: "280px" }}>
+                          <FormControl>
                             <FormLabel htmlFor="visitDate">
                               Date of visit
                             </FormLabel>
@@ -136,7 +135,7 @@ const EditReviewModal = ({ isOpen, onClose, onSubmit, review }) => {
                     <Field type="text" name="reply" autoComplete="off">
                       {({ field }) => {
                         return (
-                          <FormControl w={{ xs: "100%", sm: "280px" }}>
+                          <FormControl>
                             <FormLabel htmlFor="reply">Reply</FormLabel>
                             <Input id="reply" type="text" {...field} />
                           </FormControl>

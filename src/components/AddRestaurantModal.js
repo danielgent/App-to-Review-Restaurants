@@ -62,10 +62,7 @@ const AddRestaurantModal = ({ isOpen, onClose, onSubmit }) => {
                       {({ field, form }) => {
                         const { errors, touched } = form;
                         return (
-                          <FormControl
-                            w={{ xs: "100%", sm: "280px" }}
-                            isInvalid={errors.name && touched.name}
-                          >
+                          <FormControl isInvalid={errors.name && touched.name}>
                             <FormLabel htmlFor="name">Name</FormLabel>
                             <Input id="name" type="text" {...field} />
                             <FormErrorMessage>{errors.name}</FormErrorMessage>

@@ -82,7 +82,6 @@ const EditUserModal = ({ isOpen, onClose, onSubmit, user = {} }) => {
                         const { errors, touched } = form;
                         return (
                           <FormControl
-                            w={{ xs: "100%", sm: "280px" }}
                             isInvalid={errors.username && touched.username}
                           >
                             <FormLabel htmlFor="username">username</FormLabel>
@@ -103,10 +102,7 @@ const EditUserModal = ({ isOpen, onClose, onSubmit, user = {} }) => {
                       {({ field, form }) => {
                         const { errors, touched } = form;
                         return (
-                          <FormControl
-                            w={{ xs: "100%", sm: "280px" }}
-                            isInvalid={errors.name && touched.name}
-                          >
+                          <FormControl isInvalid={errors.name && touched.name}>
                             <FormLabel htmlFor="name">name</FormLabel>
                             <Input
                               id="name"
@@ -124,7 +120,6 @@ const EditUserModal = ({ isOpen, onClose, onSubmit, user = {} }) => {
                         const { errors, touched } = form;
                         return (
                           <FormControl
-                            w={{ xs: "100%", sm: "280px" }}
                             isInvalid={errors.email && touched.email}
                           >
                             <FormLabel htmlFor="email">email</FormLabel>
@@ -142,7 +137,7 @@ const EditUserModal = ({ isOpen, onClose, onSubmit, user = {} }) => {
                     <Field type="text" name="role">
                       {({ field, form }) => {
                         return (
-                          <FormControl w={{ xs: "100%", sm: "280px" }}>
+                          <FormControl>
                             <FormLabel htmlFor="role">Select role</FormLabel>
                             <Select id="role" {...field}>
                               <option value={ROLES.user}>User</option>

@@ -68,7 +68,6 @@ const AddReplyModal = ({
                         const { errors, touched } = form;
                         return (
                           <FormControl
-                            w={{ xs: "100%", sm: "280px" }}
                             isInvalid={errors.reply && touched.reply}
                           >
                             <FormLabel htmlFor="reply">Reply</FormLabel>

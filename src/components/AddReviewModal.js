@@ -14,11 +14,11 @@ import {
   FormErrorMessage,
 } from "@chakra-ui/core";
 import { Formik, Form, Field } from "formik";
-import DatePicker from "react-datepicker";
 import Rating from "@material-ui/lab/Rating";
 
 import { FormControl, FormLabel } from "components/Styled";
 import { authAxios, convertDateObjectToIsoString } from "utils";
+import DatePicker from "components/DatePicker";
 
 const AddReviewModal = ({ isOpen, onClose, onSubmit, restaurantId }) => {
   const handleSubmit = (values, { setSubmitting, resetForm }) => {
@@ -69,7 +69,6 @@ const AddReviewModal = ({ isOpen, onClose, onSubmit, restaurantId }) => {
                         const { errors, touched } = form;
                         return (
                           <FormControl
-                            w={{ xs: "100%", sm: "280px" }}
                             isInvalid={errors.comment && touched.comment}
                           >
                             <FormLabel htmlFor="comment">Comment</FormLabel>
@@ -92,7 +91,6 @@ const AddReviewModal = ({ isOpen, onClose, onSubmit, restaurantId }) => {
                         };
                         return (
                           <FormControl
-                            w={{ xs: "100%", sm: "280px" }}
                             isInvalid={errors.rating && touched.rating}
                           >
                             <FormLabel htmlFor="rating">Rating</FormLabel>
@@ -120,7 +118,7 @@ const AddReviewModal = ({ isOpen, onClose, onSubmit, restaurantId }) => {
                           });
                         };
                         return (
-                          <FormControl w={{ xs: "100%", sm: "280px" }}>
+                          <FormControl>
                             <FormLabel htmlFor="visitDate">
                               Date of visit
                             </FormLabel>
