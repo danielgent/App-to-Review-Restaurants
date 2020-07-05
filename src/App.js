@@ -35,6 +35,7 @@ function App() {
               backgroundColor="gray.100"
               alignItems="center"
               justifyContent="center"
+              minHeight="calc(100vh - 80px)"
             >
               <Switch>
                 <Route path="/sign-up" component={SignUp} />

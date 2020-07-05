@@ -57,7 +57,11 @@ const LogIn = (props) => {
         history.push("/");
       })
       .catch(function (error) {
-        setServerErrorMessage(error.response.data.error);
+        if (error?.response?.data?.error) {
+          setServerErrorMessage(error.response.data.error);
+        } else {
+          throw error;
+        }
       });
   };
 

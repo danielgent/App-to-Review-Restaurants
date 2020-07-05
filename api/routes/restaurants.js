@@ -44,8 +44,6 @@ router.get("/", authLoggedIn, async (req, res) => {
 
     const page = req.query.page;
 
-    console.log("page ", page);
-
     if (!page) {
       return res.status(200).send({ results: filteredAndSortedRestaurants });
     }
