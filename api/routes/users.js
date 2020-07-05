@@ -45,7 +45,6 @@ router.post(
   }
 );
 
-// TO TEST => should only be viewable by admin
 router.get("/", authLoggedIn, authIsAdmin, async (req, res) => {
   const users = await UserModel.find(
     {},
@@ -55,7 +54,6 @@ router.get("/", authLoggedIn, authIsAdmin, async (req, res) => {
   res.status(200).send(users);
 });
 
-// TO TEST: new untested admin only CRUD routes
 router.patch("/:id", authLoggedIn, authIsAdmin, async (req, res) => {
   const id = req.params.id;
 
@@ -67,9 +65,10 @@ router.patch("/:id", authLoggedIn, authIsAdmin, async (req, res) => {
     role,
   };
 
-  // TODO => use promise way and return 500 on failure in try-catch
   UserModel.findByIdAndUpdate(id, user_update, function (err, resMongo) {
-    // if (err) return handleError(err, res);
+    if (err) {
+      res.status(500).json({ error: err });
+    }
 
     return res.status(200).json({ message: "Updated Successfully", data: {} });
   });

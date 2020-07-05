@@ -47,7 +47,6 @@ const enrichRestaurant = async (r) => {
     restaurant: r._id,
   })
     .sort("-dateCreated")
-    // not sure if this makes a difference
     .lean()
     .exec();
 
@@ -59,7 +58,7 @@ const enrichRestaurant = async (r) => {
   const highReview = getHighReview(reviewsEnriched);
   const lowReview = getLowReview(reviewsEnriched);
 
-  // truncate to one decimal plase
+  // truncate to one decimal place
   const averageRating = Math.floor((sum / total) * 10) / 10;
 
   return {
@@ -68,7 +67,6 @@ const enrichRestaurant = async (r) => {
     averageRating,
     highReview,
     lowReview,
-    // TODO - need much more fixtures to then be able to return the first few
     recentReviews: reviewsEnriched,
   };
 };

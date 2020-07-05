@@ -2,9 +2,10 @@ var express = require("express");
 var router = express.Router();
 var RestaurantModel = require("../models/RestaurantModel");
 var ReviewsModel = require("../models/ReviewsModel");
-var { authLoggedIn, authIsAdmin } = require("../middleware/auth");
+var { authLoggedIn, authIsAdmin, authIsOwner } = require("../middleware/auth");
 var { enrichRestaurant } = require("../utils");
 
+// TODO - test first review is highest and last review is null
 const sortByAverageRatingAsc = (a, b) =>
   (b.averageRating || 0) - (a.averageRating || 0);
 
@@ -30,8 +31,6 @@ router.get("/", authLoggedIn, async (req, res) => {
         ratingMin ? averageRating >= ratingMin : true
       )
       .sort(sortByAverageRatingAsc);
-
-    // TODO - needs sorting by average rating as per specs (doesn't say asc/desc)
 
     return res.status(200).send(filteredAndSortedRestaurants);
   } catch (error) {
@@ -70,7 +69,10 @@ router.get("/:id", authLoggedIn, async (req, res) => {
 
     RestaurantModel.findById(id, function (err, resMongo) {
       enrichRestaurant(resMongo).then((enriched) => {
-        // here get latest reviews
+        if (err) {
+          res.status(500).json({ error: err });
+        }
+
         return res.status(200).json(enriched);
       });
     });
@@ -80,8 +82,7 @@ router.get("/:id", authLoggedIn, async (req, res) => {
   }
 });
 
-// PERMISSIONS - owner
-router.post("/", authLoggedIn, (req, res) => {
+router.post("/", authLoggedIn, authIsOwner, (req, res) => {
   try {
     const restaurant = {
       ...req.body,
@@ -91,7 +92,6 @@ router.post("/", authLoggedIn, (req, res) => {
 
     var restaurant_instance = new RestaurantModel(restaurant);
     restaurant_instance.save(function (err, dbRes) {
-      // TODO - need something like this in lots of places or silently failing.
       if (err) {
         res.status(500).json({ error: err });
       }
@@ -104,7 +104,6 @@ router.post("/", authLoggedIn, (req, res) => {
   }
 });
 
-// TO TEST: new untested admin only CRUD routes
 router.patch("/:id", authLoggedIn, authIsAdmin, async (req, res) => {
   const id = req.params.id;
 
@@ -114,12 +113,13 @@ router.patch("/:id", authLoggedIn, authIsAdmin, async (req, res) => {
     name,
   };
 
-  // TODO => use promise way and return 500 on failure in try-catch
   RestaurantModel.findByIdAndUpdate(id, restaurant_update, function (
     err,
     resMongo
   ) {
-    // if (err) return handleError(err, res);
+    if (err) {
+      res.status(500).json({ error: err });
+    }
 
     return res.status(200).json({ message: "Updated Successfully", data: {} });
   });

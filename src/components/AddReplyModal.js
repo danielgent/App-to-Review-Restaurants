@@ -34,7 +34,6 @@ const AddReplyModal = ({
         onSubmit();
       })
       .catch(function (error) {
-        // here output to somewhere!
         console.log(error);
       });
   };
@@ -63,7 +62,7 @@ const AddReplyModal = ({
               <ModalBody>
                 <Box p={4}>
                   <Stack spacing={5}>
-                    {/* TODO - show review here in quote box */}
+                    {/* TODO - show review that owner is replying to */}
                     <Field type="text" name="reply" autoComplete="off">
                       {({ field, form }) => {
                         const { errors, touched } = form;
@@ -73,8 +72,7 @@ const AddReplyModal = ({
                             isInvalid={errors.reply && touched.reply}
                           >
                             <FormLabel htmlFor="reply">Reply</FormLabel>
-                            {/* NOTE - text area.  Then need to change display to format new lines */}
-                            <Input id="reply" type="textarea" {...field} />
+                            <Input id="reply" type="text" {...field} />
                             <FormErrorMessage>{errors.reply}</FormErrorMessage>
                           </FormControl>
                         );

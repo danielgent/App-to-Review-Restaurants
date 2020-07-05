@@ -1,25 +1,26 @@
 var express = require("express");
 var router = express.Router();
-var { authLoggedIn, authIsAdmin } = require("../middleware/auth");
+var {
+  authLoggedIn,
+  authIsAdmin,
+  authIsOwner,
+  authIsUser,
+} = require("../middleware/auth");
 var { enrichReview } = require("../utils");
 
 var ReviewsModel = require("../models/ReviewsModel");
 var RestaurantModel = require("../models/RestaurantModel");
 
-// TO DELETE: endpoint debugging only
-router.get("/", async (req, res) => {
+router.get("/", authLoggedIn, authIsAdmin, async (req, res) => {
   const reviews = await ReviewsModel.find({}).exec();
 
   res.status(200).send(reviews);
 });
 
-router.get("/me/unreplied", authLoggedIn, async (req, res) => {
+// unreplied reviews for an owner
+router.get("/me/unreplied", authLoggedIn, authIsOwner, async (req, res) => {
   try {
-    const { role, id } = req.user;
-
-    if (role !== "owner") {
-      return res.status(400).send({ error: "Incorrect role" });
-    }
+    const { id } = req.user;
 
     // 1. get all restaurants filtered by owner
     const restaurants = await RestaurantModel.find(
@@ -50,16 +51,11 @@ router.get("/me/unreplied", authLoggedIn, async (req, res) => {
   }
 });
 
-router.get("/me/restaurant/:id", authLoggedIn, async (req, res) => {
+// check if user has left review for restaurant already
+router.get("/me/restaurant/:id", authLoggedIn, authIsUser, async (req, res) => {
   try {
-    const { role, id } = req.user;
+    const { id } = req.user;
     const restaurantId = req.params.id;
-
-    console.log("restaurantId ", restaurantId);
-
-    if (role !== "user") {
-      return res.status(400).send({ error: "Incorrect role" });
-    }
 
     const reviews = await ReviewsModel.find({
       restaurant: restaurantId,
@@ -77,14 +73,10 @@ router.get("/me/restaurant/:id", authLoggedIn, async (req, res) => {
   }
 });
 
-router.post("/", authLoggedIn, async (req, res) => {
-  const { role, id } = req.user;
+router.post("/", authLoggedIn, authIsUser, async (req, res) => {
+  const { id } = req.user;
 
   const { restaurant, comment, rating, visitDate } = req.body;
-
-  if (role !== "user") {
-    return res.status(400).send({ error: "Incorrect role" });
-  }
 
   const existingReview = await ReviewsModel.findOne({
     reviewer: id,
@@ -113,7 +105,7 @@ router.post("/", authLoggedIn, async (req, res) => {
   });
 });
 
-router.post("/:id/reply", authLoggedIn, (req, res) => {
+router.post("/:id/reply", authLoggedIn, authIsOwner, (req, res) => {
   const id = req.params.id;
 
   const review_update = { reply: req.body.reply };
@@ -127,7 +119,6 @@ router.post("/:id/reply", authLoggedIn, (req, res) => {
   });
 });
 
-// TO TEST: new untested admin only CRUD routes
 router.patch("/:id", authLoggedIn, authIsAdmin, async (req, res) => {
   const id = req.params.id;
 
@@ -140,12 +131,13 @@ router.patch("/:id", authLoggedIn, authIsAdmin, async (req, res) => {
     reply,
   };
 
-  // TODO => use promise way and return 500 on failure in try-catch
   ReviewsModel.findByIdAndUpdate(id, restaurant_update, function (
     err,
     resMongo
   ) {
-    // if (err) return handleError(err, res);
+    if (err) {
+      res.status(500).json({ error: err });
+    }
 
     return res.status(200).json({ message: "Updated Successfully", data: {} });
   });
