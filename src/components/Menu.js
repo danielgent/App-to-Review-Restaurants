@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, Stack, Link as Clink, Flex } from "@chakra-ui/core";
 import { Link, useHistory } from "react-router-dom";
+import { useGoogleLogout } from "react-google-login";
 
 import { LOCAL_STORAGE_TOKEN_KEY, ROLES } from "globalConstants";
 import UserContext from "contexts/user-context";
@@ -12,9 +13,14 @@ const Menu = () => {
   let history = useHistory();
   const { updateUser, user } = React.useContext(UserContext);
 
+  const { signOut } = useGoogleLogout({
+    clientId: process.env.REACT_APP_GOOGLE_CLIENT_ID,
+  });
+
   const logout = () => {
     localStorage.removeItem(LOCAL_STORAGE_TOKEN_KEY);
     updateUser();
+    signOut();
     history.push("/login");
   };
 
