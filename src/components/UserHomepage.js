@@ -33,10 +33,6 @@ const UserHomepage = (props) => {
       });
   }, [minRating, page]);
 
-  if (isLoading) {
-    return <CircularProgress isIndeterminate color="green"></CircularProgress>;
-  }
-
   return (
     <Container maxWidth={1200}>
       <Heading as="h1">View all restaurants</Heading>
@@ -49,21 +45,31 @@ const UserHomepage = (props) => {
           py={8}
         />
         <Box p={4} flexGrow={1}>
-          {restaurants.length === 0
-            ? "no results"
-            : restaurants.map((restaurant) => (
-                <RestaurantListItem
-                  key={restaurant._id}
-                  restaurant={restaurant}
-                />
-              ))}
-          <Pagination page={page} totalPages={totalPages} setPage={setPage} />
+          {isLoading ? (
+            <CircularProgress isIndeterminate color="green" />
+          ) : restaurants.length === 0 ? (
+            "no results"
+          ) : (
+            <>
+              <Box mb={8}>
+                {restaurants.map((restaurant) => (
+                  <RestaurantListItem
+                    key={restaurant._id}
+                    restaurant={restaurant}
+                  />
+                ))}
+              </Box>
+              <Pagination
+                page={page}
+                totalPages={totalPages}
+                setPage={setPage}
+              />
+            </>
+          )}
         </Box>
       </Flex>
     </Container>
   );
 };
-
-UserHomepage.propTypes = {};
 
 export default UserHomepage;
