@@ -45,3 +45,14 @@ export const authAxios = (() => {
 
   return newAxios;
 })();
+
+export const convertIsoStringToDateObject = (isoString) => {
+  const [y, m, d] = isoString.split("-");
+
+  const convertedDate = new Date(y, m - 1, d);
+
+  return convertedDate;
+};
+
+export const convertDateObjectToIsoString = (date) =>
+  `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
