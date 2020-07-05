@@ -496,6 +496,44 @@ describe("api tests", () => {
       expect(res3.body.results).toHaveLength(0);
     });
 
+    it("/restaurants/ should paginate", async () => {
+      const secondPage = await agent
+        .get(`/restaurants?page=1`)
+        .set("Authorization", `Bearer ${user3Token}`);
+
+      expect(secondPage.statusCode).toBe(200);
+
+      expect(secondPage.body.totalPages).toBe(2);
+      // not full second page
+      expect(secondPage.body.results).toHaveLength(9);
+
+      const firstPage = await agent
+        .get(`/restaurants?page=0`)
+        .set("Authorization", `Bearer ${user3Token}`);
+
+      expect(firstPage.statusCode).toBe(200);
+
+      expect(firstPage.body.totalPages).toBe(2);
+      // full first page
+      expect(firstPage.body.results).toHaveLength(10);
+
+      const firstResults = firstPage.body.results;
+      const secondResults = secondPage.body.results;
+
+      // still ordering by descending average rating
+      expect(
+        firstResults[0].averageRating >
+          firstResults[firstResults.length - 1].averageRating
+      ).toBe(true);
+      expect(
+        firstResults[0].averageRating > secondResults[0].averageRating
+      ).toBe(true);
+      expect(
+        secondResults[0].averageRating >
+          secondResults[secondResults.length - 1].averageRating
+      ).toBe(true);
+    });
+
     it("/restaurants/ should reject bad query parameters", async () => {
       const res = await agent
         .get(`/restaurants?ratingMin=7`)

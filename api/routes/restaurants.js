@@ -13,6 +13,8 @@ var upload = multer({
   },
 });
 
+const PAGE_SIZE = 10;
+
 // TODO - test first review is highest and last review is null
 const sortByAverageRatingAsc = (a, b) =>
   (b.averageRating || 0) - (a.averageRating || 0);
@@ -42,9 +44,22 @@ router.get("/", authLoggedIn, async (req, res) => {
 
     const page = req.query.page;
 
+    console.log("page ", page);
+
     if (!page) {
       return res.status(200).send({ results: filteredAndSortedRestaurants });
     }
+
+    const totalPages = Math.ceil(
+      filteredAndSortedRestaurants.length / PAGE_SIZE
+    );
+
+    const paginatedResults = filteredAndSortedRestaurants.slice(
+      PAGE_SIZE * page,
+      PAGE_SIZE * (page + 1)
+    );
+
+    return res.status(200).send({ results: paginatedResults, totalPages });
   } catch (error) {
     console.log(error);
     return res.status(500).send(error);
