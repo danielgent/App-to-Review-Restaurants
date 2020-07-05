@@ -75,7 +75,7 @@ const Restaurant = () => {
     galleryImage,
   } = restaurant;
 
-  const src = makeImageUrl(galleryImage);
+  const src = galleryImage && makeImageUrl(galleryImage);
 
   const hasReviews = recentReviews.length > 0;
 

@@ -40,20 +40,20 @@ router.get("/", authLoggedIn, async (req, res) => {
       )
       .sort(sortByAverageRatingAsc);
 
-    return res.status(200).send(filteredAndSortedRestaurants);
+    const page = req.query.page;
+
+    if (!page) {
+      return res.status(200).send({ results: filteredAndSortedRestaurants });
+    }
   } catch (error) {
     console.log(error);
     return res.status(500).send(error);
   }
 });
 
-router.get("/me", authLoggedIn, async (req, res) => {
+router.get("/me", authLoggedIn, authIsOwner, async (req, res) => {
   try {
-    const { role, id } = req.user;
-
-    if (role !== "owner") {
-      res.status(200).send([]);
-    }
+    const { id } = req.user;
 
     const restaurants = await RestaurantModel.find(
       { owner: id },

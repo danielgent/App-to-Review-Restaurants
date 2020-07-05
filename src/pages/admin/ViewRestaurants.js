@@ -26,7 +26,7 @@ const ViewRestaurants = () => {
     authAxios
       .get(`${process.env.REACT_APP_API_URL}/restaurants`)
       .then((response) => {
-        setRestaurants(response.data);
+        setRestaurants(response.data.results);
       })
       .finally(() => {
         setIsLoading(false);

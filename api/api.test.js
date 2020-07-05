@@ -380,7 +380,7 @@ describe("api tests", () => {
 
       expect(res.statusCode).toBe(200);
 
-      const restaurants = res.body;
+      const restaurants = res.body.results;
 
       expect(restaurants).toHaveLength(19);
 
@@ -466,9 +466,11 @@ describe("api tests", () => {
 
       expect(res.statusCode).toBe(200);
 
-      expect(res.body).toHaveLength(7);
+      expect(res.body.results).toHaveLength(7);
 
-      const ownersDiner = res.body.find(({ name }) => name === "Owner's Diner");
+      const ownersDiner = res.body.results.find(
+        ({ name }) => name === "Owner's Diner"
+      );
 
       expect(ownersDiner).toEqual(
         expect.objectContaining({
@@ -483,7 +485,7 @@ describe("api tests", () => {
 
       expect(res2.statusCode).toBe(200);
 
-      expect(res2.body).toHaveLength(18);
+      expect(res2.body.results).toHaveLength(18);
 
       const res3 = await agent
         .get(`/restaurants?ratingMin=5`)
@@ -491,7 +493,7 @@ describe("api tests", () => {
 
       expect(res3.statusCode).toBe(200);
 
-      expect(res3.body).toHaveLength(0);
+      expect(res3.body.results).toHaveLength(0);
     });
 
     it("/restaurants/ should reject bad query parameters", async () => {

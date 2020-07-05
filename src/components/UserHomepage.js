@@ -21,7 +21,7 @@ const UserHomepage = (props) => {
         },
       })
       .then((response) => {
-        setRestaurants(response.data);
+        setRestaurants(response.data.results);
       })
       .finally(() => {
         setIsLoading(false);
