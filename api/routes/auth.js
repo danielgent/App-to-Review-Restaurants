@@ -24,7 +24,7 @@ const createToken = (user) =>
 
 router.post("/reloadDB", async (req, res) => {
   console.log("REQUEST RECEIVED");
-  if (process.env.SEED_DATABASE) {
+  if (process.env.DEMO_MODE) {
     await seedDb();
     return res.status(200).json({
       message: "Database reset",

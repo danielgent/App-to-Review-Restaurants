@@ -235,7 +235,7 @@ const seedDatabases = async () => {
   console.log("user3Token ", user3Token);
 
   // putting behind flag in case tests get slow. These fixtures not used in tests
-  if (process.env.EXTENDED_SEED_DATABASE) {
+  if (process.env.EXTENDED_DEMO_MODE) {
     let userIds = [];
     let restaurantIds = [];
 

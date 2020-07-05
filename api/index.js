@@ -19,6 +19,7 @@ createApp(db).listen(port, () => {
 
 var seedDb = require("./seedDb");
 
-if (process.env.SEED_DATABASE) {
+if (process.env.DEMO_MODE) {
+  console.log("process.env.DEMO_MODE ", process.env.DEMO_MODE);
   seedDb();
 }
