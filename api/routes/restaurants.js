@@ -5,7 +5,9 @@ var ReviewsModel = require("../models/ReviewsModel");
 var { authLoggedIn, authIsAdmin } = require("../middleware/auth");
 var { enrichRestaurant } = require("../utils");
 
-// TODO - bad endpoint! need to return restaurants with no reviews when  no query
+const sortByAverageRatingAsc = (a, b) =>
+  (b.averageRating || 0) - (a.averageRating || 0);
+
 router.get("/", authLoggedIn, async (req, res) => {
   try {
     const ratingMin = req.query.ratingMin;
@@ -23,14 +25,15 @@ router.get("/", authLoggedIn, async (req, res) => {
       restaurants.map(enrichRestaurant)
     );
 
-    // TODO - do in Db if cache this step
-    const filteredRestaurants = enrichedRestaurants.filter(
-      ({ averageRating }) => (ratingMin ? averageRating >= ratingMin : true)
-    );
+    const filteredAndSortedRestaurants = enrichedRestaurants
+      .filter(({ averageRating }) =>
+        ratingMin ? averageRating >= ratingMin : true
+      )
+      .sort(sortByAverageRatingAsc);
 
     // TODO - needs sorting by average rating as per specs (doesn't say asc/desc)
 
-    return res.status(200).send(filteredRestaurants);
+    return res.status(200).send(filteredAndSortedRestaurants);
   } catch (error) {
     console.log(error);
     return res.status(500).send(error);

@@ -178,8 +178,7 @@ router.get("/verify/:code", async (req, res) => {
     const { code } = req.params;
 
     if (!code) {
-      // TODO - send properly but what code?
-      throw new Error("Code not provided");
+      return res.status(400).send({ error: "Code not provided" });
     }
 
     const filter = {
@@ -189,13 +188,11 @@ router.get("/verify/:code", async (req, res) => {
     const user = await UserModel.findOne(filter);
 
     if (!user) {
-      // TODO - send properly but what code?
-      throw new Error("Code not provided");
+      return res.status(400).send({ error: "Invalid code" });
     }
 
     if (user.isVerified) {
-      // TODO - send properly but what code?
-      throw new Error("User already verified");
+      return res.status(400).send({ error: "User already verified" });
     }
 
     const update = { isVerified: true };
@@ -251,13 +248,11 @@ router.get("/google/verify/:token", async (req, res) => {
       return payload["sub"];
     }
 
-    // TODO - what happens if not a real token?
     const googleId = await verify();
 
     const user = await UserModel.findOne({ googleId }).exec();
 
     if (!user) {
-      // TODO - correct status here?
       return res.status(400).json({
         error: "No account registered with this Google Id",
       });
@@ -281,8 +276,6 @@ router.get("/google/verify/:token", async (req, res) => {
   }
 });
 
-// NOTE - one endpoint seems dangerous, but a weird flow by having two
-// WAIT => How to select role though? Just hardcode to User for now
 router.post("/google/create", async (req, res) => {
   try {
     const { token } = req.body;
@@ -331,24 +324,21 @@ payload
     const existingUser = await UserModel.findOne({ googleId }).exec();
 
     if (existingUser) {
-      // TODO - correct status here?
       return res.status(400).json({
         error: "Account already registered with this Google Id. Please login",
       });
     }
-
+    // NOTE - problems here with required fields when is a Google login
     var user = new UserModel({
-      // note these fields show problem with this model.
       username: `Google-${googleId}`,
       password: crypto.randomBytes(16).toString("hex"),
       email,
-      // 'problem here'
+      // TODO - need way to select one of the two!
       role: "user",
       isVerified: true,
       verificationToken: "not-used",
       name,
       googleId,
-      // TODO - shouldn't be filename. should be full path? Makes hosting harder...
       avatarFilename: picture,
     });
     await user.save();
