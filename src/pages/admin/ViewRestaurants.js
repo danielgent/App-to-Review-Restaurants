@@ -70,11 +70,13 @@ const ViewRestaurants = () => {
       <Heading>View restaurants</Heading>
       <Table>
         <TableHead>
-          <TableCell>
-            <HeaderText>Restaurant name</HeaderText>
-          </TableCell>
-          <TableCell />
-          <TableCell />
+          <TableRow>
+            <TableCell>
+              <HeaderText>Restaurant name</HeaderText>
+            </TableCell>
+            <TableCell />
+            <TableCell />
+          </TableRow>
         </TableHead>
         <TableBody>
           {restaurants.map((restaurant) => (

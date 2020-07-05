@@ -66,20 +66,22 @@ const ViewReviews = () => {
       <Heading>View reviews</Heading>
       <Table>
         <TableHead>
-          <TableCell>
-            <HeaderText>Comment</HeaderText>
-          </TableCell>
-          <TableCell>
-            <HeaderText>Rating</HeaderText>
-          </TableCell>
-          <TableCell>
-            <HeaderText>Visit Date</HeaderText>
-          </TableCell>
-          <TableCell>
-            <HeaderText>Reply</HeaderText>
-          </TableCell>
-          <TableCell></TableCell>
-          <TableCell></TableCell>
+          <TableRow>
+            <TableCell>
+              <HeaderText>Comment</HeaderText>
+            </TableCell>
+            <TableCell>
+              <HeaderText>Rating</HeaderText>
+            </TableCell>
+            <TableCell>
+              <HeaderText>Visit Date</HeaderText>
+            </TableCell>
+            <TableCell>
+              <HeaderText>Reply</HeaderText>
+            </TableCell>
+            <TableCell></TableCell>
+            <TableCell></TableCell>
+          </TableRow>
         </TableHead>
         <TableBody>
           {reviews.map((review) => (

@@ -79,26 +79,28 @@ const ViewUsers = () => {
       <Heading>View users</Heading>
       <Table>
         <TableHead>
-          <TableCell>
-            <HeaderText>Username</HeaderText>
-          </TableCell>
-          <TableCell>
-            <HeaderText>Name</HeaderText>
-          </TableCell>
-          <TableCell>
-            <HeaderText>Email</HeaderText>
-          </TableCell>
-          <TableCell>
-            <HeaderText>Role</HeaderText>
-          </TableCell>
-          <TableCell>
-            <HeaderText>AvatarFilename</HeaderText>
-          </TableCell>
-          <TableCell>
-            <HeaderText>Login Attempts</HeaderText>
-          </TableCell>
-          <TableCell />
-          <TableCell />
+          <TableRow>
+            <TableCell>
+              <HeaderText>Username</HeaderText>
+            </TableCell>
+            <TableCell>
+              <HeaderText>Name</HeaderText>
+            </TableCell>
+            <TableCell>
+              <HeaderText>Email</HeaderText>
+            </TableCell>
+            <TableCell>
+              <HeaderText>Role</HeaderText>
+            </TableCell>
+            <TableCell>
+              <HeaderText>AvatarFilename</HeaderText>
+            </TableCell>
+            <TableCell>
+              <HeaderText>Login Attempts</HeaderText>
+            </TableCell>
+            <TableCell />
+            <TableCell />
+          </TableRow>
         </TableHead>
         <TableBody>
           {users.map((user) => (
