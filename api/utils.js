@@ -13,6 +13,8 @@ const enrichReview = async (r) => {
   };
 };
 
+const sortByDateCreatedDesc = (a, b) => b.dateCreated - a.dateCreated;
+
 const getHighReview = (reviews) => {
   let highReview = null;
 
@@ -52,7 +54,9 @@ const enrichRestaurant = async (r) => {
 
   const total = reviews.length;
 
-  const reviewsEnriched = await Promise.all(reviews.map(enrichReview));
+  const sortedReviews = reviews.sort(sortByDateCreatedDesc);
+
+  const reviewsEnriched = await Promise.all(sortedReviews.map(enrichReview));
 
   let sum = getSumReviews(reviewsEnriched);
   const highReview = getHighReview(reviewsEnriched);

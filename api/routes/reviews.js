@@ -93,6 +93,7 @@ router.post("/", authLoggedIn, authIsUser, async (req, res) => {
     comment,
     rating,
     visitDate,
+    dateCreated: Date.now(),
   };
 
   var review_instance = new ReviewsModel(review);
