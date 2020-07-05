@@ -385,7 +385,7 @@ describe("api tests", () => {
       expect(restaurants).toHaveLength(19);
 
       // should return sorted from highest rated to lowest
-      expect(restaurants[0].averageRating).toBe(4);
+      expect(restaurants[0].averageRating).toBe(4.6);
       expect(restaurants[restaurants.length - 1].averageRating).toBe(null);
 
       const ownersDiner = restaurants.find((r) => r.name === "Owner's Diner");
@@ -466,9 +466,11 @@ describe("api tests", () => {
 
       expect(res.statusCode).toBe(200);
 
-      expect(res.body).toHaveLength(1);
+      expect(res.body).toHaveLength(7);
 
-      expect(res.body[0]).toEqual(
+      const ownersDiner = res.body.find(({ name }) => name === "Owner's Diner");
+
+      expect(ownersDiner).toEqual(
         expect.objectContaining({
           name: "Owner's Diner",
           averageRating: 4,
@@ -476,19 +478,12 @@ describe("api tests", () => {
       );
 
       const res2 = await agent
-        .get(`/restaurants?ratingMin=4`)
+        .get(`/restaurants?ratingMin=2`)
         .set("Authorization", `Bearer ${user3Token}`);
 
       expect(res2.statusCode).toBe(200);
 
-      expect(res2.body).toHaveLength(1);
-
-      expect(res2.body[0]).toEqual(
-        expect.objectContaining({
-          name: "Owner's Diner",
-          averageRating: 4,
-        })
-      );
+      expect(res2.body).toHaveLength(18);
 
       const res3 = await agent
         .get(`/restaurants?ratingMin=5`)

@@ -6,6 +6,7 @@ const Bcrypt = require("bcryptjs");
 var users = require("./fixtures/users");
 var restaurants = require("./fixtures/restaurants");
 var comments = require("./fixtures/comments");
+var { highRatings, mediumRatings, lowRatings } = require("./fixtures/ratings");
 var { restaurantsSmall, restaurantsLarge } = require("./fixtures/images");
 
 const createRestaurant = async (res) => {
@@ -245,6 +246,7 @@ const seedDatabases = async () => {
     }
 
     // console.log("userIds ", userIds);
+    const ratings = [highRatings, mediumRatings, lowRatings];
 
     for (let i = 0; i < restaurants.length; i++) {
       const owner = i % 2 ? owner1._id : owner2._id;
@@ -257,13 +259,16 @@ const seedDatabases = async () => {
 
       restaurantIds.push(id);
 
+      const ratingsGroup = ratings[i % 3];
+
       for (let j = 0; j < comments.length; j++) {
+        // Don't want real random or every value is average!
+
         await createReview({
           comment: comments[j],
           reviewer: userIds[j],
           restaurant: id,
-          // TODO => too average
-          rating: (j % 5) + 1,
+          rating: ratingsGroup[j % ratingsGroup.length],
           visitDate: "2020-04-03",
           reply: j % 2 === 0 ? "Thanks for the review" : null,
         });

@@ -45,25 +45,25 @@ describe("Admin flow", function () {
     cy.findByRole("link", { name: "View all restaurants" }).click();
 
     // delete restaurant
-    cy.findByText("Owner's Diner");
+    cy.findByText("Blue Eyed Panda");
     cy.findAllByRole("button", { name: "Delete restaurant" }).eq(0).click();
-    cy.findByText(/Are you sure you want to delete Owner's Diner?/);
+    cy.findByText(/Are you sure you want to delete Blue Eyed Panda?/);
     cy.findByRole("button", { name: "Confirm" }).click();
     cy.findByRole("progressbar");
     cy.findByRole("progressbar").should("not.exist");
-    cy.findByText("Owner's Diner").should("not.exist");
+    cy.findByText("Blue Eyed Panda").should("not.exist");
 
     // edit restaurant name
-    cy.findByText("Wah Ji Wah");
+    cy.findByText("One Plus Restaurant");
     cy.findAllByRole("button", { name: "Edit restaurant" }).eq(0).click();
     cy.findByLabelText("Name")
-      .should("have.value", "Wah Ji Wah")
+      .should("have.value", "One Plus Restaurant")
       .clear()
       .type("cypress new restaurant name");
     cy.findByRole("button", { name: "Update restaurant" }).click();
     cy.findByRole("progressbar");
     cy.findByRole("progressbar").should("not.exist");
-    cy.findByText("Wah Ji Wah").should("not.exist");
+    cy.findByText("One Plus Restaurant").should("not.exist");
     cy.findByText("cypress new restaurant name");
   });
 
