@@ -39,5 +39,5 @@ export const StyledLink = (props) => (
 );
 
 export const FormLabelSubText = (props) => (
-  <Text fontSize="sm" color="gray.300" {...props} />
+  <Text fontSize="sm" color="gray.500" fontWeight="300" {...props} />
 );

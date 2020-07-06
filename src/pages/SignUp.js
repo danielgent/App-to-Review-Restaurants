@@ -65,7 +65,7 @@ const SignUp = (props) => {
             textAlign="center"
             height="200px"
           >
-            <Icon name="warning" size="32px" color="red.500" />
+            <Icon name="warning" size="32px" color="green.500" />
             <Text mt={4} mb={1} fontSize="lg">
               You have been sent a confirmation email
             </Text>

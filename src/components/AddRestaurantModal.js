@@ -10,8 +10,6 @@ import {
   ModalCloseButton,
   Box,
   Stack,
-  FormControl,
-  FormLabel,
   Input,
   FormErrorMessage,
 } from "@chakra-ui/core";
@@ -19,6 +17,12 @@ import { Formik, Form, Field } from "formik";
 
 import { authAxios } from "utils";
 import Dropzone from "components/Dropzone";
+import {
+  FormControl,
+  FormLabel,
+  SubmitButton,
+  FormLabelSubText,
+} from "components/Styled";
 
 const AddRestaurantModal = ({ isOpen, onClose, onSubmit }) => {
   const handleSubmit = (values, { setSubmitting, resetForm }) => {
@@ -87,7 +91,10 @@ const AddRestaurantModal = ({ isOpen, onClose, onSubmit }) => {
                         return (
                           <FormControl>
                             <FormLabel htmlFor="profileImage">
-                              profileImage
+                              Profile image
+                              <FormLabelSubText>
+                                This will be shown in a list
+                              </FormLabelSubText>
                             </FormLabel>
                             <Dropzone
                               onDropAccepted={(imageBlob) =>
@@ -110,7 +117,10 @@ const AddRestaurantModal = ({ isOpen, onClose, onSubmit }) => {
                         return (
                           <FormControl>
                             <FormLabel htmlFor="galleryImage">
-                              galleryImage
+                              Gallery Image
+                              <FormLabelSubText>
+                                Main image shown on the detail page
+                              </FormLabelSubText>
                             </FormLabel>
                             <Dropzone
                               onDropAccepted={(imageBlob) =>
@@ -136,9 +146,7 @@ const AddRestaurantModal = ({ isOpen, onClose, onSubmit }) => {
                 >
                   Close
                 </Button>
-                <Button variant="ghost" type="submit">
-                  Create restaurant
-                </Button>
+                <SubmitButton type="submit">Create restaurant</SubmitButton>
               </ModalFooter>
             </Form>
           </ModalContent>
