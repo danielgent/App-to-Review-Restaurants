@@ -19,7 +19,7 @@ const Dropzone = ({
 
   const handleDropRejected = (rejectedFiles) => {
     setError("Please check uploaded images and try again");
-    onDropRejected(rejectedFiles);
+    onDropRejected && onDropRejected(rejectedFiles);
   };
 
   const {
