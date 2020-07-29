@@ -242,6 +242,26 @@ const seedDatabases = async () => {
 
   console.log("user3Token ", user3Token);
 
+  const adminToken = jwt.sign(
+    { role: "admin", id: admin._id },
+    process.env.TOKEN_SECRET,
+    {
+      expiresIn: "24h",
+    }
+  );
+
+  console.log("adminToken ", adminToken);
+
+  const owner1Token = jwt.sign(
+    { role: "owner", id: owner1._id },
+    process.env.TOKEN_SECRET,
+    {
+      expiresIn: "24h",
+    }
+  );
+
+  console.log("owner1Token ", owner1Token);
+
   // putting behind flag in case tests get slow. These fixtures not used in tests
   if (process.env.EXTENDED_DEMO_MODE) {
     let userIds = [];
