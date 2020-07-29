@@ -1,68 +1,56 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Demo full-stack application for reviewing restaurants
 
-## Available Scripts
+### Functionality
+Three types of user roles:
+  * Normal User: Can rate and leave a comment once for any restaurant
+  * Restaurant Owner: Can create restaurants, and reply to comments for own restaurants
+  * Admin: Can CRUD everything
 
-In the project directory, you can run:
+Users can sign up and then login. An email is sent first to verify the email account, but also Google sign-on is supported
+Different user roles will see different home pages.
+Normal users will see a list of all the restaurants which they can then filter by average rating
+Restaurant owners will see a list of their restaurants and also reviews that they haven't replied to
 
-### `npm start`
+There's some moderate brute force protection (after 3 failed logins, only the admin can unblock an account)
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+A user can upload their profile picture, and this is pulled from Google initially if they sign in this way.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+It's also possible to interact with the backend API directly
+    
+### Technology
+React on the front-end (using create-react-app), Mongo on the backend.
+Chakra-ui and some material-ui components
+Mongo and Mongoose for persistence
+Express for API server
+Send-grid for sending confirmation emails
+Multer for uploading images with Express
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Tests
+* Almost full test coverage for API using supertest
+* Cypress e2e tests for user, admin, and owner flows
+* some unit tests.  None of the components are very complex so I just put some unit tests in there.
 
-### `npm run build`
+### Demo
+https://www.loom.com/share/c8d5f758d5b249c3a6b7ff2854561516
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Configuration
+Copy .env.sample to .env and enter correct values
+DEMO_MODE: prefills the database so it's ready to demo
+EXTENDED_DEMO_MODE: adds even more fixtures!
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+### Areas I could improve
+* there's obviously lots, but in terms of security, this site isn't secure.
+It has protection against CSRF because it doesn't use cookies and only uses JWT
+But it doesn't have protection against malicious JavaScript (XSS) because the JWT is stored in local storage and thus could be read by anything off that page (e.g. Chrome extensions, compromised NPM packages)
+As a solution I'd want to use HTTP only cookies but the API can also be connected to with postman (see tests) so I'd have to think about this
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Rest of CRA readme has been moved to cra-readme.md
+Rename readme.md => cra-readme.md.  
 
-## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
