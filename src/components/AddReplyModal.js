@@ -61,7 +61,6 @@ const AddReplyModal = ({
               <ModalBody>
                 <Box p={4}>
                   <Stack spacing={5}>
-                    {/* TODO - show review that owner is replying to */}
                     <Field type="text" name="reply" autoComplete="off">
                       {({ field, form }) => {
                         const { errors, touched } = form;

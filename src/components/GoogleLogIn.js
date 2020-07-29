@@ -36,7 +36,6 @@ const GoogleLogIn = () => {
         push("/");
       })
       .catch((err) => {
-        // TODO - can't seem to read codes here? Axios...
         toast({
           description: "No account registered with this Google Id",
           status: "error",

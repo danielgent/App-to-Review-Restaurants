@@ -87,7 +87,6 @@ const ViewReviews = () => {
             <TableBody>
               {reviews.map((review) => (
                 <TableRow key={review._id}>
-                  {/* TODO - should enrich data then pull down resturant name and username. or even group by restaurant */}
                   <TableCell>{review.comment}</TableCell>
                   <TableCell>{review.rating}</TableCell>
                   <TableCell>{review.visitDate}</TableCell>

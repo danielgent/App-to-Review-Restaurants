@@ -38,7 +38,6 @@ const GoogleSignUp = () => {
       clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
       buttonText="Create an account with Google"
       onSuccess={responseGoogle}
-      // TODO - what should do here
       onFailure={responseGoogle}
       cookiePolicy={"single_host_origin"}
     />

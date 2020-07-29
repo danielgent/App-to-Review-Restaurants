@@ -15,7 +15,6 @@ var upload = multer({
 
 const PAGE_SIZE = 10;
 
-// TODO - test first review is highest and last review is null
 const sortByAverageRatingAsc = (a, b) =>
   (b.averageRating || 0) - (a.averageRating || 0);
 

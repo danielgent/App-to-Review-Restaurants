@@ -31,14 +31,6 @@ const createUser = async (username, name, email) => {
   return u._id;
 };
 
-// EMPTY DATABASE
-// (async () => {
-//   console.log("Emptying databases");
-//   await UserModel.remove({}).exec();
-//   await RestaurantModel.remove({}).exec();
-//   await ReviewsModel.remove({}).exec();
-// })();
-
 const seedDatabases = async () => {
   // Deprecated methods but work for testing
   await UserModel.remove({}).exec();

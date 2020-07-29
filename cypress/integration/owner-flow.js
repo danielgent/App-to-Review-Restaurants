@@ -22,9 +22,6 @@ describe("Owner flow", function () {
     cy.findByLabelText("Reply").type("new cypress reply");
     cy.findByRole("button", { name: "Reply" }).click();
 
-    // assert no more unreplied review
-    // cy.findByText("All your reviews are replied to");
-
     // now create a restaurant
     cy.findByRole("button", { name: "Create new restaurant" }).click();
     cy.findByLabelText("Name").type("new cypress restaurant");

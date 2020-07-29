@@ -10,14 +10,12 @@ var { authLoggedIn } = require("../middleware/auth");
 var UserModel = require("../models/UserModel");
 var seedDb = require("../seedDb");
 
-// TODO - haven't actually tested this part of the process!
 const createToken = (user) =>
   jwt.sign(
     // NOTE - using token for authorization as well as authentication. Potential security hole
     { role: user.role, id: user._id },
     process.env.TOKEN_SECRET,
     {
-      // TODO - set really low and then test token refresh
       expiresIn: "24h",
     }
   );
@@ -208,30 +206,6 @@ router.get("/verify/:code", async (req, res) => {
   }
 });
 
-/*
-payload
-{
-  iss: 'accounts.google.com',
-  azp:
-  '704776074916-0qnnuet5oh6avhr96t5svl895lk4sas8.apps.googleusercontent.com',
-  aud:
-  '704776074916-0qnnuet5oh6avhr96t5svl895lk4sas8.apps.googleusercontent.com',
-  sub: '112515345231656147064',
-  hd: 'whalar.com',
-  email: 'dan@whalar.com',
-  email_verified: true,
-  at_hash: 'Cx86g6Dqu1j-kvgo_COnJg',
-  name: 'Dan Gent',
-  picture:
-  'https://lh4.googleusercontent.com/-G3waE7TikKA/AAAAAAAAAAI/AAAAAAAAAAA/AMZuucnHuYCsvdueY58DoRhdy53_sU-wKQ/s96-c/photo.jpg',
-  given_name: 'Dan',
-  family_name: 'Gent',
-  locale: 'en',
-  iat: 1593875705,
-  exp: 1593879305,
-  jti: '425361e201e20ff78c58c09977a1cd17c75755ed'
-}
-*/
 router.get("/google/verify/:token", async (req, res) => {
   try {
     const { token: googleToken } = req.params;
@@ -289,37 +263,12 @@ router.post("/google/create", async (req, res) => {
       });
       const payload = ticket.getPayload();
 
-      // return payload["sub"];
       return payload;
     }
 
     const payload = await verify();
 
     const { sub: googleId, name, email, picture } = payload;
-    /*
-payload
-{
-  iss: 'accounts.google.com',
-  azp:
-  '704776074916-0qnnuet5oh6avhr96t5svl895lk4sas8.apps.googleusercontent.com',
-  aud:
-  '704776074916-0qnnuet5oh6avhr96t5svl895lk4sas8.apps.googleusercontent.com',
-  sub: '112515345231656147064',
-  hd: 'whalar.com',
-  email: 'dan@whalar.com',
-  email_verified: true,
-  at_hash: 'Cx86g6Dqu1j-kvgo_COnJg',
-  name: 'Dan Gent',
-  picture:
-  'https://lh4.googleusercontent.com/-G3waE7TikKA/AAAAAAAAAAI/AAAAAAAAAAA/AMZuucnHuYCsvdueY58DoRhdy53_sU-wKQ/s96-c/photo.jpg',
-  given_name: 'Dan',
-  family_name: 'Gent',
-  locale: 'en',
-  iat: 1593875705,
-  exp: 1593879305,
-  jti: '425361e201e20ff78c58c09977a1cd17c75755ed'
-}
-*/
 
     const existingUser = await UserModel.findOne({ googleId }).exec();
 
@@ -328,12 +277,10 @@ payload
         error: "Account already registered with this Google Id. Please login",
       });
     }
-    // NOTE - problems here with required fields when is a Google login
     var user = new UserModel({
       username: `Google-${googleId}`,
       password: crypto.randomBytes(16).toString("hex"),
       email,
-      // TODO - need way to select one of the two!
       role: "user",
       isVerified: true,
       verificationToken: "not-used",
